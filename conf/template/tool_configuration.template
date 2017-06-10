@@ -1,0 +1,4 @@
+app_name = ${TOOL_PROCESS_FILE}
+app_version = 1.0
+app_build_date = ${DATE}
+app_license = Vladimir Roncevic GPLv3
