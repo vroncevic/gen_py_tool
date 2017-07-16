@@ -48,7 +48,7 @@ class ReadTemplate(object):
             )
             check_template_dir = isdir(self.__template)
             if not check_template_dir:
-                msg = 'failed to load configuration'
+                msg = 'missing template directory!'
                 raise AppError(msg)
         except AppError as e:
             print("Error: ", e)

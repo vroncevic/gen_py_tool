@@ -59,9 +59,8 @@ class GenTool(ReadTemplate, WriteTemplate):
                 GenTool.__STATUS[FormatName.PROCESS]: process,
                 GenTool.__STATUS[FormatName.CONF]: conf
             }
-            loaded_templates = all(
-                r_status for r_status in template_read_status.values()
-            )
+            template_reads = template_read_status.values()
+            loaded_templates = all(r_status for r_status in template_reads)
             if loaded_templates:
                 main = self.write(
                     template_read_status[GenTool.__STATUS[FormatName.MAIN]],
@@ -83,7 +82,6 @@ class GenTool(ReadTemplate, WriteTemplate):
                     GenTool.__STATUS[FormatName.PROCESS]: process,
                     GenTool.__STATUS[FormatName.CONF]: conf
                 }
-                status = all(
-                    w_status for w_status in template_write_status.values()
-                )
+                template_writes = template_write_status.values()
+                status = all(w_status for w_status in template_writes)
         return True if status else False

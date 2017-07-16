@@ -38,7 +38,8 @@ class GenPyTool(CfgBase, GenTool):
         Setting options for CL interface and load configuration.
         """
         try:
-            current_dir = dirname(realpath(__file__))
+            file_location = realpath(__file__)
+            current_dir = dirname(file_location)
             base_config_file = "{0}{1}".format(current_dir, GenPyTool.__CONFIG)
             CfgBase.__init__(self, base_config_file)
             status = self.get_tool_status()

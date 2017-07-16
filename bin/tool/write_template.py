@@ -62,20 +62,20 @@ class WriteTemplate(object):
         """
         status = False
         current_dir = getcwd()
+        module_name_lower = module_name.lower()
         if module_type == FormatName.MAIN or module_type == FormatName.PROCESS:
-            prefix_dir = "{0}/{1}/bin".format(current_dir, module_name.lower())
+            prefix_dir = "{0}/{1}/bin".format(current_dir, module_name_lower)
             github_editor = FormatName.editor_config(
                 WriteTemplate.__EDITOR_CONFIG_PY
             )
         else:
-            prefix_dir = "{0}/{1}/conf".format(current_dir, module_name.lower())
+            prefix_dir = "{0}/{1}/conf".format(current_dir, module_name_lower)
             github_editor = FormatName.editor_config(
                 WriteTemplate.__EDITOR_CONFIG_CFG
             )
         module_formatted_name = FormatName.format_name(module_name, module_type)
         module_file_name = "{0}/{1}".format(prefix_dir, module_formatted_name)
         today = date.today()
-        module_name_lower = module_name.lower()
         module = {
             WriteTemplate.__CLASS: "{0}".format(module_name),
             WriteTemplate.__FILE: "{0}".format(module_name_lower),
