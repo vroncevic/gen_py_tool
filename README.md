@@ -10,9 +10,7 @@ INSTALLATION
 To install this set of modules type the following:
 
 	cp -R ~/gen_py_tool/bin/   /root/scripts/gen_py_tool/ver.1.0/
-
 	cp -R ~/gen_py_tool/conf/  /root/scripts/gen_py_tool/ver.1.0/
-
 	cp -R ~/gen_py_tool/log/   /root/scripts/gen_py_tool/ver.1.0/
 
 DEPENDENCIES
@@ -36,5 +34,5 @@ it under the same terms as Python itself, either Python version 3.4.2 or,
 at your option, any later version of Python 3 you may have available.
 
 ![alt tag](https://raw.githubusercontent.com/vroncevic/gen_py_tool/master/python_logo.png)
-![alt tag](https://raw.githubusercontent.com/vroncevic/gen_py_tool/master/linux_logo.jpg)
+![alt tag](https://raw.githubusercontent.com/vroncevic/gen_py_tool/master/linux_logo.png)
 
