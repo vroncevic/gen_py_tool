@@ -1,4 +1,4 @@
-app_name = ${TOOL_PROCESS_FILE}
-app_version = 1.0
-app_build_date = ${DATE}
-app_license = Vladimir Roncevic GPLv3
+ats_name = ${TOOL_PROCESS_FILE}
+ats_version = 1.0
+ats_build_date = ${DATE}
+ats_license = Vladimir Roncevic GPLv3
