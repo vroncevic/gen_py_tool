@@ -33,6 +33,8 @@ Base flow of generation process:
 
 ### TOOL STRUCTURE
 
+gen_py_tool is based on Template mechanism:
+
 ![alt tag](https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/python-tool-docs/gen_py_tool.png)
 
 Generator structure:
