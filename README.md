@@ -1,5 +1,9 @@
 # Generate Python Tool
 
+gen_py_tool is toolset for generation Py Tool.
+
+Developed in python code: 100%.
+
 The README is used to introduce the modules and provide instructions on
 how to install the modules, any machine dependencies it may have and any
 other information that should be provided before the modules are installed.
@@ -21,9 +25,17 @@ This module requires these other modules and libraries:
 
 * ats_utilities https://vroncevic.github.io/ats_utilities
 
-### Tool structure
+### GENERATION FLOW OF PY TOOL
+
+Base flow of generation process:
+
+![alt tag](https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/python-tool-docs/gen_py_tool_flow.png)
+
+### TOOL STRUCTURE
 
 ![alt tag](https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/python-tool-docs/gen_py_tool.png)
+
+Generator structure:
 
 ```
 .
