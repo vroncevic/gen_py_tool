@@ -1,20 +1,24 @@
 # -*- coding: UTF-8 -*-
-# write_template.py
-# Copyright (C) 2018 Vladimir Roncevic <elektron.ronca@gmail.com>
-#
-# gen_py_tool is free software: you can redistribute it and/or modify it
-# under the terms of the GNU General Public License as published by the
-# Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# gen_py_tool is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-# See the GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License along
-# with this program. If not, see <http://www.gnu.org/licenses/>.
-#
+
+"""
+ Module
+     write_template.py
+ Copyright
+     Copyright (C) 2018 Vladimir Roncevic <elektron.ronca@gmail.com>
+     gen_py_tool is free software: you can redistribute it and/or modify it
+     under the terms of the GNU General Public License as published by the
+     Free Software Foundation, either version 3 of the License, or
+     (at your option) any later version.
+     gen_py_tool is distributed in the hope that it will be useful, but
+     WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+     See the GNU General Public License for more details.
+     You should have received a copy of the GNU General Public License along
+     with this program. If not, see <http://www.gnu.org/licenses/>.
+ Info
+     Define class WriteTemplate with attribute(s) and method(s).
+     Write a template content with parameters to a file.
+"""
 
 import sys
 from os import getcwd, chmod
@@ -29,9 +33,9 @@ try:
     from ats_utilities.console_io.verbose import verbose_message
     from ats_utilities.exceptions.ats_type_error import ATSTypeError
     from ats_utilities.exceptions.ats_bad_call_error import ATSBadCallError
-except ImportError as e:
-    msg = "\n{0}\n{1}\n".format(__file__, e)
-    sys.exit(msg)  # Force close python ATS ##################################
+except ImportError as error:
+    MESSAGE = "\n{0}\n{1}\n".format(__file__, error)
+    sys.exit(MESSAGE)  # Force close python ATS ##############################
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright 2018, Free software to use and distributed it.'
@@ -51,7 +55,6 @@ class WriteTemplate(object):
             attribute:
                 __slots__ - Setting class slots
                 VERBOSE - Console text indicator for current process-phase
-                __CHMOD - Change mode code
                 __EDITOR_CONFIG - GitHub online editor configuration
                 __EDITOR_CONFIG_PY - Python extension name
                 __EDITOR_CONFIG_CFG - Configuration extension name
@@ -65,7 +68,6 @@ class WriteTemplate(object):
 
     __slots__ = (
         'VERBOSE',
-        '__CHMOD',
         '__EDITOR_CONFIG',
         '__EDITOR_CONFIG_PY',
         '__EDITOR_CONFIG_CFG',
@@ -74,7 +76,6 @@ class WriteTemplate(object):
         '__DATE'
     )
     VERBOSE = 'GEN_PY_TOOL::TOOL::WRITE_TEMPLATE'
-    __CHMOD = 0666
     __EDITOR_CONFIG = '.editorconfig'
     __EDITOR_CONFIG_PY = 'py'
     __EDITOR_CONFIG_CFG = 'cfg'
@@ -91,7 +92,7 @@ class WriteTemplate(object):
         """
         verbose_message(WriteTemplate.VERBOSE, verbose, 'Initial writer')
 
-    def write(self, module_content, module_name, module_type):
+    def write(self, module_content, module_name, module_type, verbose=False):
         """
             Write a template content with parameters to a file.
             :param module_content: Template content
@@ -100,6 +101,8 @@ class WriteTemplate(object):
             :type module_name: <str>
             :param module_type: Type of module
             :type module_type: <str>
+            :param verbose: Enable/disable verbose option
+            :type verbose: <bool>
             :return: Boolean status, True (success) | False
             :rtype: <bool>
             :exceptions: ATSBadCallError | ATSTypeError
@@ -123,6 +126,7 @@ class WriteTemplate(object):
             raise ATSBadCallError(mod_type_msg)
         if not isinstance(module_type, int):
             raise ATSTypeError(mod_type_msg)
+        verbose_message(WriteTemplate.VERBOSE, verbose, 'Write templates')
         module_name_lower, prefix_dir = module_name.lower(), None
         github_editor, module_formatted_name = None, None
         module_file_name, today, module = None, None, None
@@ -158,8 +162,7 @@ class WriteTemplate(object):
             if not github_editor_file_exists:
                 with open(github_editor_file_path, 'w') as github_file_editor:
                     github_file_editor.write(github_editor)
-                chmod(github_editor_file_path, WriteTemplate.__CHMOD)
-            chmod(module_file_name, WriteTemplate.__CHMOD)
+                chmod(github_editor_file_path, 0o666)
+            chmod(module_file_name, 0o666)
             status = True
         return True if status else False
-

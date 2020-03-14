@@ -68,12 +68,12 @@ Generator structure:
 │       └── tool_process_class.template
 └── log
     └── gen_py_tool.log
-
 ```
 
 ### COPYRIGHT AND LICENCE
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 
 Copyright (C) 2018 by https://vroncevic.github.io/gen_py_tool
 
