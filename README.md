@@ -8,14 +8,21 @@ The README is used to introduce the modules and provide instructions on
 how to install the modules, any machine dependencies it may have and any
 other information that should be provided before the modules are installed.
 
+![Python package](https://github.com/vroncevic/gen_py_tool/workflows/Python%20package/badge.svg)
+ [![GitHub issues open](https://img.shields.io/github/issues/vroncevic/gen_py_tool.svg)](https://github.com/vroncevic/gen_py_tool/issues)
+ [![GitHub contributors](https://img.shields.io/github/contributors/vroncevic/gen_py_tool.svg)](https://github.com/vroncevic/gen_py_tool/graphs/contributors)
+
 ### INSTALLATION
+Navigate to release [page](https://github.com/vroncevic/gen_py_tool/releases) download and extract release archive.
 
 To install this set of modules type the following:
 
 ```
-cp -R ~/gen_py_tool/bin/   /root/scripts/gen_py_tool/ver.1.0/
-cp -R ~/gen_py_tool/conf/  /root/scripts/gen_py_tool/ver.1.0/
-cp -R ~/gen_py_tool/log/   /root/scripts/gen_py_tool/ver.1.0/
+tar xvzf gen_py_tool-x.y.z.tar.gz
+cd gen_py_tool-x.y.z/python-tool
+cp -R ~/bin/   /root/scripts/gen_py_tool/
+cp -R ~/conf/  /root/scripts/gen_py_tool/
+cp -R ~/log/   /root/scripts/gen_py_tool/
 ```
 
 ### DEPENDENCIES
@@ -61,10 +68,12 @@ Generator structure:
 │       └── tool_process_class.template
 └── log
     └── gen_py_tool.log
-
 ```
 
 ### COPYRIGHT AND LICENCE
+
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 
 Copyright (C) 2018 by https://vroncevic.github.io/gen_py_tool
 
