@@ -8,7 +8,7 @@ The README is used to introduce the modules and provide instructions on
 how to install the modules, any machine dependencies it may have and any
 other information that should be provided before the modules are installed.
 
-![Python package](https://github.com/vroncevic/gen_py_tool/workflows/Python%20package/badge.svg)
+![Python package](https://github.com/vroncevic/gen_py_tool/workflows/Python%20package/badge.svg?branch=master)
  [![GitHub issues open](https://img.shields.io/github/issues/vroncevic/gen_py_tool.svg)](https://github.com/vroncevic/gen_py_tool/issues)
  [![GitHub contributors](https://img.shields.io/github/contributors/vroncevic/gen_py_tool.svg)](https://github.com/vroncevic/gen_py_tool/graphs/contributors)
 
