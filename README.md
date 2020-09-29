@@ -27,7 +27,6 @@ other information that should be provided before the modules are installed.
 ### Installation
 
 Navigate to release **[release page](https://github.com/vroncevic/gen_py_tool/releases)** download and extract release archive.
-To install modules, locate and run setup.py, type the following:
 
 ```
 tar xvzf gen_py_tool-x.y.z.tar.gz
@@ -47,13 +46,13 @@ These modules requires other modules and libraries (Python 2.x/3.x):
 
 Base flow of generation process:
 
-![alt tag](https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/python-tool-docs/gen_py_tool_flow.png)
+![alt tag](https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/gen_py_tool_flow.png)
 
 ### Tool structure
 
 gen_py_tool is based on Template mechanism:
 
-![alt tag](https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/python-tool-docs/gen_py_tool.png)
+![alt tag](https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/gen_py_tool.png)
 
 Generator structure:
 
