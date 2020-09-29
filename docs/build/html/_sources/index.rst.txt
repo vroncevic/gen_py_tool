@@ -1,0 +1,120 @@
+Generate Python Tool
+---------------------
+
+**gen_py_tool** is package for generation of Python tool.
+
+Developed in `python <https://www.python.org/>`_ code: **100%**.
+
+The README is used to introduce the modules and provide instructions on
+how to install the modules, any machine dependencies it may have and any
+other information that should be provided before the modules are installed.
+
+|Python package| |GitHub issues| |Documentation Status| |GitHub contributors|
+
+.. |Python package| image:: https://github.com/vroncevic/gen_py_tool/workflows/Python%20package%20gen_py_tool/badge.svg
+   :target: https://github.com/vroncevic/gen_py_tool/workflows/Python%20package/badge.svg?branch=master
+
+.. |GitHub issues| image:: https://img.shields.io/github/issues/vroncevic/gen_py_tool.svg
+   :target: https://github.com/vroncevic/gen_py_tool/issues
+
+.. |GitHub contributors| image:: https://img.shields.io/github/contributors/vroncevic/gen_py_tool.svg
+   :target: https://github.com/vroncevic/gen_py_tool/graphs/contributors
+
+.. |Documentation Status| image:: https://readthedocs.org/projects/gen_py_tool/badge/?version=latest
+   :target: https://gen_py_tool.readthedocs.io/projects/gen_py_tool/en/latest/?badge=latest
+
+.. toctree::
+   :maxdepth: 4
+   :caption: Contents:
+
+   self
+   modules
+
+Installation
+-------------
+
+Navigate to release `page`_ download and extract release archive.
+
+.. _page: https://github.com/vroncevic/gen_py_tool/releases
+
+To install this set of modules type the following:
+
+.. code-block:: bash
+
+    tar xvzf gen_py_tool-x.y.z.tar.gz
+    cd gen_py_tool-x.y.z/
+    pip install -r requirements.txt
+    python setup.py install_lib
+    python setup.py install_egg_info
+    python setup.py install_data
+
+Dependencies
+-------------
+
+**gen_py_tool** requires next modules and libraries:
+
+* `ats-utilities - Python App/Tool/Script Utilities <https://pypi.org/project/ats-utilities/>`_
+
+Generation flow of py tool
+---------------------------
+
+Base flow of generation process:
+
+.. image:: https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/gen_py_tool_flow.png
+
+Tool structure
+---------------
+
+**gen_py_tool** is based on OOP:
+
+.. image:: https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/gen_py_tool.png
+
+Code structure:
+
+.. code-block:: bash
+
+    gen_py_tool
+    ├── conf/
+    │   ├── gen_py_tool.cfg
+    │   ├── gen_py_tool_util.cfg
+    │   └── template/
+    │       ├── editorconfig.template
+    │       ├── main_module.template
+    │       ├── tool_configuration.template
+    │       └── tool_process_class.template
+    ├── __init__.py
+    ├── log/
+    │   └── gen_py_tool.log
+    ├── run/
+    │   └── gen_py_tool_run.py
+    └── tool/
+        ├── format_name.py
+        ├── gen_tool.py
+        ├── __init__.py
+        ├── read_template.py
+        ├── tool_structure.py
+        └── write_template.py
+
+Copyright and licence
+----------------------
+
+|License: GPL v3| |License: Apache 2.0|
+
+.. |License: GPL v3| image:: https://img.shields.io/badge/License-GPLv3-blue.svg
+   :target: https://www.gnu.org/licenses/gpl-3.0
+
+.. |License: Apache 2.0| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
+   :target: https://opensource.org/licenses/Apache-2.0
+
+Copyright (C) 2018 by `vroncevic.github.io/gen_py_tool <https://vroncevic.github.io/gen_py_tool>`_
+
+**gen_py_tool** is free software; you can redistribute it and/or modify
+it under the same terms as Python itself, either Python version 2.x/3.x or,
+at your option, any later version of Python 3 you may have available.
+
+Indices and tables
+------------------
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
