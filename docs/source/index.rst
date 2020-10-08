@@ -48,6 +48,13 @@ To install this set of modules type the following:
     python setup.py install_egg_info
     python setup.py install_data
 
+You can use Docker to create image/container.
+
+|GitHub docker checker|
+
+.. |GitHub docker checker| image:: https://github.com/vroncevic/gen_py_tool/workflows/gen_py_tool%20docker%20checker/badge.svg
+   :target: https://github.com/vroncevic/gen_py_tool/actions?query=workflow%3A%22gen_py_tool+docker+checker%22
+
 Dependencies
 -------------
 
