@@ -119,6 +119,18 @@ Copyright (C) 2018 by `vroncevic.github.io/gen_py_tool <https://vroncevic.github
 it under the same terms as Python itself, either Python version 2.x/3.x or,
 at your option, any later version of Python 3 you may have available.
 
+Lets help and support PSF.
+
+|Python Software Foundation|
+
+.. |Python Software Foundation| IMAGE:: https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/psf-logo-alpha.png
+   :target: https://www.python.org/psf/
+
+|Donate|
+
+.. |Donate| image:: https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif
+   :target: https://psfmember.org/index.php?q=civicrm/contribute/transact&reset=1&id=2
+
 Indices and tables
 ------------------
 
