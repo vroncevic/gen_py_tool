@@ -25,6 +25,8 @@ other information that should be provided before the modules are installed.
 
 ### Installation
 
+![Install Python2 Package](https://github.com/vroncevic/gen_py_tool/workflows/Install%20Python2%20Package%20gen_py_tool/badge.svg?branch=master) ![Install Python3 Package](https://github.com/vroncevic/gen_py_tool/workflows/Install%20Python3%20Package%20gen_py_tool/badge.svg?branch=master)
+
 Navigate to release **[release page](https://github.com/vroncevic/gen_py_tool/releases)** download and extract release archive.
 
 ```
@@ -42,7 +44,7 @@ You can use docker to create image/container.
 
 ### Dependencies
 
-These modules requires other modules and libraries (Python 2.x/3.x):
+**gen_py_tool** requires next modules and libraries:
 * [ats-utilities - Python App/Tool/Script Utilities](https://pypi.org/project/ats-utilities/)
 
 ### Generation flow of py tool
