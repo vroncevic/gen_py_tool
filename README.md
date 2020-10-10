@@ -2,7 +2,7 @@
 
 **gen_py_tool** is toolset for generation of Python tool.
 
-Developed in python code: **100%**.
+Developed in **[python](https://www.python.org/)** code: **100%**.
 
 The README is used to introduce the modules and provide instructions on
 how to install the modules, any machine dependencies it may have and any
@@ -53,7 +53,7 @@ Base flow of generation process:
 
 ### Tool structure
 
-gen_py_tool is based on Template mechanism:
+**gen_py_tool** is based on Template mechanism:
 
 ![alt tag](https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/gen_py_tool.png)
 
@@ -101,3 +101,8 @@ Copyright (C) 2018 by [vroncevic.github.io/gen_py_tool](https://vroncevic.github
 it under the same terms as Python itself, either Python version 2.x/3.x or,
 at your option, any later version of Python 3 you may have available.
 
+Lets help and support PSF.
+
+[![Python Software Foundation](https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/psf-logo-alpha.png)](https://www.python.org/psf/)
+
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://psfmember.org/index.php?q=civicrm/contribute/transact&reset=1&id=2)
