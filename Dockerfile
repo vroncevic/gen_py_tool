@@ -27,6 +27,7 @@ RUN pip install --upgrade setuptools
 RUN mkdir /gen_py_tool/
 COPY gen_py_tool /gen_py_tool/
 COPY setup.py /
+COPY README.md /
 COPY requirements.txt /
 RUN pip install -r requirements.txt
 RUN rm -f requirements.txt
@@ -34,6 +35,7 @@ RUN find /gen_py_tool/ -name "*.editorconfig" -type f -exec rm -Rf {} \;
 RUN python setup.py install_lib && python setup.py install_egg_info && python setup.py install_data
 RUN rm -rf /gen_py_tool/
 RUN rm -f setup.py
+RUN rm -f README.md
 RUN chmod -R 755 /usr/local/lib/python2.7/dist-packages/gen_py_tool/
 RUN tree /usr/local/lib/python2.7/dist-packages/gen_py_tool/
 RUN ln -s /usr/local/bin/gen_py_tool_run.py /usr/local/bin/gen_py_tool
