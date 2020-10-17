@@ -5,7 +5,7 @@
  Module
      setup.py
  Copyright
-     Copyright (C) 2018 Vladimir Roncevic <elektron.ronca@gmail.com>
+     Copyright (C) 2020 Vladimir Roncevic <elektron.ronca@gmail.com>
      gen_py_tool is free software: you can redistribute it and/or modify it
      under the terms of the GNU General Public License as published by the
      Free Software Foundation, either version 3 of the License, or
@@ -20,26 +20,32 @@
      Define setup for gen_py_tool package.
 """
 
+from os.path import abspath, dirname, join
 from setuptools import setup
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright 2020, Free software to use and distributed it.'
 __credits__ = ['Vladimir Roncevic']
 __license__ = 'GNU General Public License (GPL)'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
+THIS_DIR, LONG_DESCRIPTION = abspath(dirname(__file__)), None
+with open(join(THIS_DIR, 'README.md')) as readme:
+    LONG_DESCRIPTION = readme.read()
+
 setup(
     name='gen_py_tool',
-    version='1.0.0',
+    version='1.1.0',
     description='Generating python tool',
     author='Vladimir Roncevic',
     author_email='elektron.ronca@gmail.com',
     url='https://vroncevic.github.io/gen_py_tool/',
     license='GPL 2020 Free software to use and distributed it.',
-    long_description='Generating python tool in Unix/Linux OS.',
+    long_description=LONG_DESCRIPTION,
+    long_description_content_type='text/markdown',
     keywords='Unix, Linux, Python, Tool',
     platforms='POSIX',
     classifiers=[
@@ -62,8 +68,8 @@ setup(
     data_files=[
         ('/usr/local/bin/', ['gen_py_tool/run/gen_py_tool_run.py']),
         (
-             '/usr/local/lib/python2.7/dist-packages/gen_py_tool/conf/',
-             ['gen_py_tool/conf/gen_py_tool.cfg']
+            '/usr/local/lib/python2.7/dist-packages/gen_py_tool/conf/',
+            ['gen_py_tool/conf/gen_py_tool.cfg']
         ),
         (
             '/usr/local/lib/python2.7/dist-packages/gen_py_tool/conf/',
