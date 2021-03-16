@@ -1,3 +1,5 @@
+<img align="right" src="https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/gen_py_tool_logo.png" width="25%">
+
 # Generate Python Tool
 
 **gen_py_tool** is toolset for generation of Python tool.
@@ -15,6 +17,9 @@ other information that should be provided before the modules are installed.
 **Table of Contents**
 
 - [Installation](#installation)
+    - [Install using pip](#install-using-pip)
+    - [Install using setuptools](#install-using-setuptools)
+    - [Install using docker](#install-using-docker)
 - [Dependencies](#dependencies)
 - [Generation flow of py tool](#generation-flow-of-py-tool)
 - [Tool structure](#tool-structure)
@@ -27,18 +32,37 @@ other information that should be provided before the modules are installed.
 
 ![Install Python2 Package](https://github.com/vroncevic/gen_py_tool/workflows/Install%20Python2%20Package%20gen_py_tool/badge.svg?branch=master) ![Install Python3 Package](https://github.com/vroncevic/gen_py_tool/workflows/Install%20Python3%20Package%20gen_py_tool/badge.svg?branch=master)
 
-Navigate to release **[release page](https://github.com/vroncevic/gen_py_tool/releases)** download and extract release archive.
+Currently there are three ways to install tool:
+* Install process based on pip
+* Install process based on setup.py (setuptools)
+* Install process based on docker mechanism
 
+##### Install using pip
+
+Python package is located at **[pypi.org](https://pypi.org/project/gen_py_tool/)**.
+
+You can install by using pip
+```
+pip install gen_py_tool
+```
+
+##### Install using setuptools
+
+Navigate to **[release page](https://github.com/vroncevic/gen_py_tool/releases)** download and extract release archive.
+
+To install modules, locate and run setup.py, type the following:
 ```
 tar xvzf gen_py_tool-x.y.z.tar.gz
-cd gen_py_tool-x.y.z/python-tool
+cd gen_py_tool-x.y.z
 pip install -r requirements.txt
 python setup.py install_lib
 python setup.py install_egg_info
 python setup.py install_data
 ```
 
-You can use docker to create image/container.
+##### Install using docker
+
+You can use Dockerfile to create image/container.
 
 [![gen_py_tool docker checker](https://github.com/vroncevic/gen_py_tool/workflows/gen_py_tool%20docker%20checker/badge.svg)](https://github.com/vroncevic/gen_py_tool/actions?query=workflow%3A%22gen_py_tool+docker+checker%22)
 
@@ -55,7 +79,7 @@ Base flow of generation process:
 
 ### Tool structure
 
-**gen_py_tool** is based on Template mechanism:
+**gen_py_tool** is based on OOP:
 
 ![alt tag](https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/gen_py_tool.png)
 

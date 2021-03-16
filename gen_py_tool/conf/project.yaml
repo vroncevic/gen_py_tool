@@ -1,0 +1,19 @@
+templates:
+    - tool:
+        - run_module.template
+        - tool_process_class.template
+        - tool_configuration.template
+        - tool_configuration_util.template
+        - editorconfig.template
+    - generator:
+        - run_module.template
+        - tool_process_class.template
+        - tool_configuration.template
+        - tool_configuration_util.template
+        - generator_read_template.template
+        - generator_write_template.template
+        - generator_test.template
+        - editorconfig.template
+schema:
+    - schema_tool.yaml
+    - schema_generator.yaml
