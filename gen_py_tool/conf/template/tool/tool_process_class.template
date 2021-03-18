@@ -5,8 +5,8 @@
      __init__.py
  Copyright
      Copyright (C) ${DATE} Vladimir Roncevic <elektron.ronca@gmail.com>
-     ${TOOL_PROCESS_FILE} is free software: you can redistribute it and/or modify it
-     under the terms of the GNU General Public License as published by the
+     ${TOOL_PROCESS_FILE} is free software: you can redistribute it and/or modify
+     it under the terms of the GNU General Public License as published by the
      Free Software Foundation, either version 3 of the License, or
      (at your option) any later version.
      ${TOOL_PROCESS_FILE} is distributed in the hope that it will be useful, but
@@ -89,9 +89,9 @@ class ${TOOL_PROCESS_CLASS}(CfgCLI):
         '''
             Process and run operation.
 
-            :param verbose: Enable/disable verbose option
+            :param verbose: Enable/disable verbose option.
             :type verbose: <bool>
-            :return: True (success) | False
+            :return: True (success) | False.
             :rtype: <bool>
             :exceptions: None
         '''

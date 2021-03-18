@@ -27,6 +27,7 @@ from os import getcwd, chmod
 from string import Template
 
 try:
+    from ats_utilities.checker import ATSChecker
     from ats_utilities.console_io.verbose import verbose_message
     from ats_utilities.exceptions.ats_type_error import ATSTypeError
     from ats_utilities.exceptions.ats_bad_call_error import ATSBadCallError
@@ -38,7 +39,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright 2018, Free software to use and distributed it.'
 __credits__ = ['Vladimir Roncevic']
 __license__ = 'GNU General Public License (GPL)'
-__version__ = '1.0.0'
+__version__ = '1.2.0'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -61,33 +62,48 @@ class WriteTemplate(object):
                 | __DATE - Date key for template
             :methods:
                 | __init__ - Initial constructor
-                | write - Write a template content with parameters to a file
+                | write - Write templates content with parameters to modules.
     '''
 
     __slots__ = (
         'VERBOSE',
     )
-    VERBOSE = 'GEN_PY_TOOL::TOOL::WRITE_TEMPLATE'
+    VERBOSE = 'GEN_PY_TOOL::PRO::WRITE_TEMPLATE'
 
     def __init__(self, verbose=False):
         '''
             Initial constructor.
 
-            :param verbose: Enable/disable verbose option
+            :param verbose: Enable/disable verbose option.
             :type verbose: <bool>
             :exceptions: None
         '''
         verbose_message(WriteTemplate.VERBOSE, verbose, 'Initial writer')
 
-    def write(self, verbose=False):
+    def write(self, project_name, templates, schema, verbose=False):
         '''
-            Write a template content with parameters to a file.
+            Write templates content with parameters to modules.
 
-            :param verbose: Enable/disable verbose option
+            :param project_name: Project name.
+            :type project_name: <str>
+            :param templates: List with templates.
+            :type templates: <list>
+            :param schema: Schema for tool/generator.
+            :type schema: <dict>
+            :param verbose: Enable/disable verbose option.
             :type verbose: <bool>
-            :return: Boolean status, True (success) | False
+            :return: Boolean status, True (success) | False.
             :rtype: <bool>
-            :exceptions: ATSBadCallError | ATSTypeError
+            :exceptions: ATSTypeError | ATSBadCallError
         '''
+        checker, error, status = ATSChecker(), None, False
+        error, status = checker.check_params([
+            ('str:project_name', project_name),
+            ('list:templates', templates),
+            ('dict:schema', schema)
+        ])
+        if status == ATSChecker.TYPE_ERROR: raise ATSTypeError(error)
+        if status == ATSChecker.VALUE_ERROR: raise ATSBadCallError(error)
+        import pdb;pdb.set_trace()
         status = False
         return True if status else False

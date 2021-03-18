@@ -42,7 +42,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright 2018, Free software to use and distributed it.'
 __credits__ = ['Vladimir Roncevic']
 __license__ = 'GNU General Public License (GPL)'
-__version__ = '1.0.0'
+__version__ = '1.2.0'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -61,6 +61,7 @@ class GenTool(FileChecking):
                 | __config - Configuration dictionary.
                 | __reader - Reader API.
                 | __writer - Writer API.
+                | __project_name - Project name.
             :methods:
                 | __init__ - Initial constructor.
                 | get_reader - Getter for reader object.
@@ -69,7 +70,8 @@ class GenTool(FileChecking):
     '''
 
     __slots__ = (
-        'VERBOSE', '__PRO_STRUCTURE', '__config', '__reader', '__writer'
+        'VERBOSE', '__PRO_STRUCTURE', '__config',
+        '__reader', '__writer', '__project_name'
     )
     VERBOSE = 'GEN_PY_TOOL::PRO::GEN_TOOL'
     __PRO_STRUCTURE = '../conf/project.yaml'
@@ -92,6 +94,7 @@ class GenTool(FileChecking):
         if status == ATSChecker.VALUE_ERROR: raise ATSBadCallError(error)
         verbose_message(GenTool.VERBOSE, verbose, 'init generator')
         FileChecking.__init__(self, verbose=verbose)
+        self.__project_name = project_name
         self.__reader = ReadTemplate(verbose=verbose)
         self.__writer = WriteTemplate(verbose=verbose)
         project = '{0}/{1}'.format(
@@ -146,8 +149,12 @@ class GenTool(FileChecking):
             schema_selector = SchemaSelector(tool_types, schema_files)
             schema, schema_id = schema_selector.get_schema()
             if schema and schema_id is not None:
-                print(self.__config['templates'][schema_id])
-                # read templates by read API
-                # provide templates and schema to write API
-            import pdb;pdb.set_trace()
+                templates, status = self.__reader.read(
+                    self.__config['templates'][schema_id], verbose=verbose
+                )
+                if status:
+                    status = self.__writer.write(
+                        self.__project_name, templates,
+                        schema, verbose=verbose
+                    )
         return True if status else False
