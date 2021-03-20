@@ -4,7 +4,7 @@
  Module
      read_template.py
  Copyright
-     Copyright (C) 2018 Vladimir Roncevic <elektron.ronca@gmail.com>
+     Copyright (C) 2017 Vladimir Roncevic <elektron.ronca@gmail.com>
      gen_py_tool is free software: you can redistribute it and/or modify it
      under the terms of the GNU General Public License as published by the
      Free Software Foundation, either version 3 of the License, or
@@ -35,7 +35,7 @@ except ImportError as error_message:
     sys.exit(MESSAGE)  # Force close python ATS ##############################
 
 __author__ = 'Vladimir Roncevic'
-__copyright__ = 'Copyright 2018, Free software to use and distributed it.'
+__copyright__ = 'Copyright 2017, Free software to use and distributed it.'
 __credits__ = ['Vladimir Roncevic']
 __license__ = 'GNU General Public License (GPL)'
 __version__ = '1.2.0'
@@ -94,7 +94,7 @@ class ReadTemplate(object):
         '''
         return self.__template_dir
 
-    def read(self, template_modules, verbose=False):
+    def read(self, template_modules, tool_type_key, verbose=False):
         '''
             Read a templates and return a content with status.
 
@@ -107,14 +107,14 @@ class ReadTemplate(object):
             :exceptions: ATSTypeError | ATSBadCallError
         '''
         checker, error, status = ATSChecker(), None, False
-        error, status = checker.check_params(
-            [('dict:template_modules', template_modules)]
-        )
+        error, status = checker.check_params([
+            ('dict:template_modules', template_modules),
+            ('str:tool_type_key', tool_type_key)
+        ])
         if status == ATSChecker.TYPE_ERROR: raise ATSTypeError(error)
         if status == ATSChecker.VALUE_ERROR: raise ATSBadCallError(error)
         verbose_message(ReadTemplate.VERBOSE, verbose, 'load templates')
         modules_content, status = [], False
-        tool_type_key = template_modules.keys()[0]
         verbose_message(ReadTemplate.VERBOSE, verbose, tool_type_key, 'type')
         expected_num_of_modules = len(template_modules[tool_type_key])
         if self.__template_dir is not None:

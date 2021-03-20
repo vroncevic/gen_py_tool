@@ -4,7 +4,7 @@
  Module
      write_template.py
  Copyright
-     Copyright (C) 2018 Vladimir Roncevic <elektron.ronca@gmail.com>
+     Copyright (C) 2017 Vladimir Roncevic <elektron.ronca@gmail.com>
      gen_py_tool is free software: you can redistribute it and/or modify it
      under the terms of the GNU General Public License as published by the
      Free Software Foundation, either version 3 of the License, or
@@ -21,7 +21,7 @@
 '''
 
 import sys
-from datetime import date
+from time import strftime
 from os.path import exists
 from os import getcwd, chmod
 from string import Template
@@ -36,7 +36,7 @@ except ImportError as error_message:
     sys.exit(MESSAGE)  # Force close python ATS ##############################
 
 __author__ = 'Vladimir Roncevic'
-__copyright__ = 'Copyright 2018, Free software to use and distributed it.'
+__copyright__ = 'Copyright 2017, Free software to use and distributed it.'
 __credits__ = ['Vladimir Roncevic']
 __license__ = 'GNU General Public License (GPL)'
 __version__ = '1.2.0'
@@ -65,10 +65,9 @@ class WriteTemplate(object):
                 | write - Write templates content with parameters to modules.
     '''
 
-    __slots__ = (
-        'VERBOSE',
-    )
+    __slots__ = ('VERBOSE', '__ELEMENTS')
     VERBOSE = 'GEN_PY_TOOL::PRO::WRITE_TEMPLATE'
+    __ELEMENTS = '/../conf/substitute_tool.yaml'
 
     def __init__(self, verbose=False):
         '''
@@ -78,7 +77,28 @@ class WriteTemplate(object):
             :type verbose: <bool>
             :exceptions: None
         '''
-        verbose_message(WriteTemplate.VERBOSE, verbose, 'Initial writer')
+        verbose_message(WriteTemplate.VERBOSE, verbose, 'init writer')
+
+    def gen_class_name(self, project_name, verbose=False):
+        '''
+            Generate class name.
+
+            :param project_name: Project name.
+            :type project_name: <str>
+            :param verbose: Enable/disable verbose option.
+            :type verbose: <bool>
+            :return: Class processed name for tool.
+            :rtype: <str>
+            :exceptions: None
+        '''
+        class_name =''
+        split_project_name = project_name.split('_')
+        if len(split_project_name) > 1:
+            for index, part_name in enumerate(split_project_name):
+                split_project_name[index] = part_name.capitalize()
+        else:
+            split_project_name[0] = project_name.capitalize()
+        return class_name.join(split_project_name)
 
     def write(self, project_name, templates, schema, verbose=False):
         '''
@@ -104,6 +124,23 @@ class WriteTemplate(object):
         ])
         if status == ATSChecker.TYPE_ERROR: raise ATSTypeError(error)
         if status == ATSChecker.VALUE_ERROR: raise ATSBadCallError(error)
+        print()
         import pdb;pdb.set_trace()
+        print(templates)
+        print(schema)
+        template, status = Template(content), False
+        module_content = template.substitute({
+            WriteTemplate.TOOL_NAME: '{0}'.format(project_name.lower()),
+            WriteTemplate.TOOL_UPPER:'{0}'.format(project_name.upper()),
+            WriteTemplate.TOOL_CLASS:'{0}'.format(
+                self.gen_class_name(project_name, verbose=verbose)
+            ),
+            WriteTemplate.YEAR:'{0}'.format(strftime("%Y"))
+        })
+        module_path = '{0}/{1}'.format(self.__pro_dir, module_name)
+        with open(module_path, 'w') as module_file:
+            
+            module_file.write(module_content)
+            chmod(module_path, 0o666)
         status = False
         return True if status else False

@@ -9,11 +9,6 @@ schema_tool:
                 modules:
                     - tool_name_run.py
                     - .editorconfig
-            - pro:
-                type: package
-                modules:
-                    - __init__.py
-                    - .editorconfig
             - conf:
                 type: dir
                 modules:

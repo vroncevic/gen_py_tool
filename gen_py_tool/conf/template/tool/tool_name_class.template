@@ -4,19 +4,19 @@
  Module
      __init__.py
  Copyright
-     Copyright (C) ${DATE} Vladimir Roncevic <elektron.ronca@gmail.com>
-     ${TOOL_PROCESS_FILE} is free software: you can redistribute it and/or modify
+     Copyright (C) ${YEAR} Vladimir Roncevic <elektron.ronca@gmail.com>
+     ${TOOL_NAME} is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by the
      Free Software Foundation, either version 3 of the License, or
      (at your option) any later version.
-     ${TOOL_PROCESS_FILE} is distributed in the hope that it will be useful, but
+     ${TOOL_NAME} is distributed in the hope that it will be useful, but
      WITHOUT ANY WARRANTY; without even the implied warranty of
      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
      See the GNU General Public License for more details.
      You should have received a copy of the GNU General Public License along
      with this program. If not, see <http://www.gnu.org/licenses/>.
  Info
-     Define class ${TOOL_PROCESS_CLASS} with attribute(s) and method(s).
+     Define class ${TOOL_NAME_CLASS} with attribute(s) and method(s).
      Load a base info, create an CLI interface and run operation(s).
 '''
 
@@ -28,12 +28,12 @@ try:
     from ats_utilities.console_io.error import error_message
     from ats_utilities.console_io.verbose import verbose_message
     from ats_utilities.console_io.success import success_message
-except ImportError as e:
-    MESSAGE = '\n{0}\n{1}\n'.format(__file__, error)
+except ImportError as error_message:
+    MESSAGE = '\n{0}\n{1}\n'.format(__file__, error_message)
     sys.exit(MESSAGE)  # Force close python ATS ##############################
 
 __author__ = 'Vladimir Roncevic'
-__copyright__ = 'Copyright ${DATE}, Free software to use and distributed it.'
+__copyright__ = 'Copyright ${YEAR}, Free software to use and distributed it.'
 __credits__ = ['Vladimir Roncevic']
 __license__ = 'GNU General Public License (GPL)'
 __version__ = '1.0.0'
@@ -42,9 +42,9 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class ${TOOL_PROCESS_CLASS}(CfgCLI):
+class ${TOOL_NAME_CLASS}(CfgCLI):
     '''
-        Define class ${TOOL_PROCESS_CLASS} with attribute(s) and method(s).
+        Define class ${TOOL_NAME_CLASS} with attribute(s) and method(s).
         Load a base info, create an CLI interface and run operation(s).
         It defines:
 
@@ -59,8 +59,8 @@ class ${TOOL_PROCESS_CLASS}(CfgCLI):
     '''
 
     __slots__ = ('VERBOSE', '__CONFIG', '__OPS')
-    VERBOSE = '${TOOL_PROCESS_FILE}'
-    __CONFIG = '/conf/${TOOL_PROCESS_FILE}.cfg'
+    VERBOSE = '${TOOL_NAME_UPPER}'
+    __CONFIG = '/conf/${TOOL_NAME}.cfg'
     __OPS = ['-o', '--opt', '-v']
 
     def __init__(self, verbose=False):
@@ -71,17 +71,17 @@ class ${TOOL_PROCESS_CLASS}(CfgCLI):
             :type verbose: <bool>
             :exceptions: None
         '''
-        verbose_message(${TOOL_PROCESS_CLASS}.VERBOSE, verbose, 'Initial configuration')
+        verbose_message(${TOOL_NAME_CLASS}.VERBOSE, verbose, 'init tool info')
         current_dir = Path(__file__).resolve().parent
-        base_info = '{0}{1}'.format(current_dir, ${TOOL_PROCESS_CLASS}.__CONFIG)
+        base_info = '{0}{1}'.format(current_dir, ${TOOL_NAME_CLASS}.__CONFIG)
         CfgCLI.__init__(self, base_info, verbose=verbose)
         if self.tool_operational:
             self.add_new_option(
-                ${TOOL_PROCESS_CLASS}.__OPS[0], ${TOOL_PROCESS_CLASS}.__OPS[1],
+                ${TOOL_NAME_CLASS}.__OPS[0], ${TOOL_NAME_CLASS}.__OPS[1],
                 dest='opt', help='option'
             )
             self.add_new_option(
-                ${TOOL_PROCESS_CLASS}.__OPS[2], action='store_true', default=False,
+                ${TOOL_NAME_CLASS}.__OPS[2], action='store_true', default=False,
                 help='activate verbose mode for tool operation'
             )
 
@@ -100,7 +100,7 @@ class ${TOOL_PROCESS_CLASS}(CfgCLI):
             num_of_args_sys = len(sys.argv)
             if num_of_args_sys > 1:
                 option = sys.argv[1]
-                if option not in ${TOOL_PROCESS_CLASS}.__OPS:
+                if option not in ${TOOL_NAME_CLASS}.__OPS:
                     sys.argv = []
                     sys.argv.append('-h')
             else:
@@ -110,7 +110,7 @@ class ${TOOL_PROCESS_CLASS}(CfgCLI):
             if num_of_args >= 1 and bool(opts.opt):
                 print(
                     '{0} {1} [{2}]'.format(
-                        '[{0}]'.format(${TOOL_PROCESS_CLASS}.VERBOSE.lower()),
+                        '[{0}]'.format(${TOOL_NAME_CLASS}.VERBOSE.lower()),
                         'running option', opts.opt
                     )
                 )
@@ -119,15 +119,15 @@ class ${TOOL_PROCESS_CLASS}(CfgCLI):
                 #
                 status = True
                 if status:
-                    success_message(${TOOL_PROCESS_CLASS}.VERBOSE, 'done\n')
+                    success_message(${TOOL_NAME_CLASS}.VERBOSE, 'done\n')
                 else:
                     error_message(
-                        ${TOOL_PROCESS_CLASS}.VERBOSE, 'failed to run option'
+                        ${TOOL_NAME_CLASS}.VERBOSE, 'failed to run option'
                     )
             else:
                 error_message(
-                    ${TOOL_PROCESS_CLASS}.VERBOSE, 'provide option'
+                    ${TOOL_NAME_CLASS}.VERBOSE, 'provide option'
                 )
         else:
-            error_message(${TOOL_PROCESS_CLASS}.VERBOSE, 'tool is not operational')
+            error_message(${TOOL_NAME_CLASS}.VERBOSE, 'tool is not operational')
         return True if status else False

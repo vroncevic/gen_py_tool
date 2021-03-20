@@ -1,19 +1,23 @@
 templates:
     - tool:
-        - run_module.template
-        - tool_process_class.template
-        - tool_configuration.template
-        - tool_configuration_util.template
+        - tool_name_class.template
         - editorconfig.template
-    - generator:
-        - run_module.template
-        - tool_process_class.template
+        - run_tool.template
         - tool_configuration.template
         - tool_configuration_util.template
+    - generator:
+        - generator_process_class.template
+        - editorconfig.template
+        - run_generator.template
+        - generator_io_class.template
         - generator_read_template.template
         - generator_write_template.template
+        - generator_configuration.template
+        - generator_configuration_util.template
         - generator_test.template
-        - editorconfig.template
 schema:
     - schema_tool.yaml
     - schema_generator.yaml
+elements:
+    - substitute_tool.yaml
+    - substitute_generator.yaml

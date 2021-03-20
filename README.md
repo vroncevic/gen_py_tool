@@ -86,27 +86,38 @@ Base flow of generation process:
 Generator structure:
 
 ```
- gen_py_tool
- ├── conf/
- │   ├── gen_py_tool.cfg
- │   ├── gen_py_tool_util.cfg
- │   └── template/
- │       ├── editorconfig.template
- │       ├── main_module.template
- │       ├── tool_configuration.template
- │       └── tool_process_class.template
- ├── __init__.py
- ├── log/
- │   └── gen_py_tool.log
- ├── run/
- │   └── gen_py_tool_run.py
- └── tool/
-     ├── format_name.py
-     ├── gen_tool.py
-     ├── __init__.py
-     ├── read_template.py
-     ├── tool_structure.py
-     └── write_template.py
+gen_py_tool/
+├── conf/
+│   ├── gen_py_tool.cfg
+│   ├── gen_py_tool_util.cfg
+│   ├── project.yaml
+│   ├── schema_generator.yaml
+│   ├── schema_tool.yaml
+│   └── template/
+│       ├── generator/
+│       │   ├── editorconfig.template
+│       │   ├── generator_configuration.template
+│       │   ├── generator_configuration_util.template
+│       │   ├── generator_process_class.template
+│       │   ├── generator_read_template.template
+│       │   ├── generator_write_template.template
+│       │   └── run_module.template
+│       └── tool/
+│           ├── editorconfig.template
+│           ├── run_module.template
+│           ├── tool_configuration.template
+│           ├── tool_configuration_util.template
+│           └── tool_process_class.template
+├── __init__.py
+├── log/
+│   └── gen_py_tool.log
+├── pro/
+│   ├── __init__.py
+│   ├── read_template.py
+│   ├── schema_selector.py
+│   └── write_template.py
+└── run/
+    └── gen_py_tool_run.py
 ```
 
 ### Docs
@@ -121,7 +132,7 @@ More documentation and info at:
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Copyright (C) 2018 by [vroncevic.github.io/gen_py_tool](https://vroncevic.github.io/gen_py_tool/)
+Copyright (C) 2017 by [vroncevic.github.io/gen_py_tool](https://vroncevic.github.io/gen_py_tool/)
 
 **gen_py_tool** is free software; you can redistribute it and/or modify
 it under the same terms as Python itself, either Python version 2.x/3.x or,

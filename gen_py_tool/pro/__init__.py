@@ -4,7 +4,7 @@
  Module
      __init__.py
  Copyright
-     Copyright (C) 2018 Vladimir Roncevic <elektron.ronca@gmail.com>
+     Copyright (C) 2017 Vladimir Roncevic <elektron.ronca@gmail.com>
      gen_py_tool is free software: you can redistribute it and/or modify it
      under the terms of the GNU General Public License as published by the
      Free Software Foundation, either version 3 of the License, or
@@ -39,7 +39,7 @@ except ImportError as error_message:
     sys.exit(MESSAGE)  # Force close python ATS ##############################
 
 __author__ = 'Vladimir Roncevic'
-__copyright__ = 'Copyright 2018, Free software to use and distributed it.'
+__copyright__ = 'Copyright 2017, Free software to use and distributed it.'
 __credits__ = ['Vladimir Roncevic']
 __license__ = 'GNU General Public License (GPL)'
 __version__ = '1.2.0'
@@ -66,7 +66,10 @@ class GenTool(FileChecking):
                 | __init__ - Initial constructor.
                 | get_reader - Getter for reader object.
                 | get_writer - Getter for writer object.
-                | gen_project - Generate python tool.
+                | get_tool_types - Get tool types.
+                | get_schema_files -  Get schema files.
+                | get_templates - Get template files.
+                | gen_tool - Generate python tool.
     '''
 
     __slots__ = (
@@ -131,6 +134,84 @@ class GenTool(FileChecking):
         '''
         return self.__writer
 
+    def get_tool_types(self, verbose=False):
+        '''
+            Get tool types.
+
+            :param verbose: Enable/disable verbose option.
+            :type verbose: <bool>
+            :return: List of tool types | empty list.
+            :rtype: <list>
+            :exceptions: None
+        '''
+        tool_types = []
+        if bool(self.__config):
+            for tool_type in self.__config['templates']:
+                if len(tool_type.keys()) == 1:
+                    verbose_message(
+                        GenTool.VERBOSE, verbose, 'tool type: {0}'.format(
+                            tool_type.keys()[0]
+                        )
+                    )
+                    tool_types.append(tool_type.keys()[0])
+                else:
+                    error_message(
+                        GenTool.VERBOSE, 'tool types: num of keys {0}'.format(
+                            len(tool_type.keys())
+                        )
+                    )
+                    break
+        else:
+            error_message(
+                GenTool.VERBOSE, 'tool types: check configuration'
+            )
+        return tool_types
+
+    def get_schema_files(self, verbose=False):
+        '''
+            Get schema files.
+
+            :param verbose: Enable/disable verbose option.
+            :type verbose: <bool>
+            :return: List of schema files | empty list.
+            :rtype: <list>
+            :exceptions: None
+        '''
+        schema_files = []
+        if bool(self.__config):
+            verbose_message(GenTool.VERBOSE, verbose, 'schema files: setup')
+            schema_files = self.__config['schema']
+        else:
+            error_message(
+                GenTool.VERBOSE, 'schema files: check configuration'
+            )
+        return schema_files
+
+    def get_templates(self, schema_id, verbose=False):
+        '''
+            Get template files.
+
+            :param schema_id: Schema ID.
+            :type schema_id: <int>
+            :param verbose: Enable/disable verbose option.
+            :type verbose: <bool>
+            :return: List of template files | empty list.
+            :rtype: <list>
+            :exceptions: None
+        '''
+        templates = []
+        if bool(self.__config):
+            verbose_message(
+                GenTool.VERBOSE, verbose,
+                'template files: schema ID{0}'.format(schema_id)
+            )
+            templates = self.__config['templates'][schema_id]
+        else:
+            error_message(
+                GenTool.VERBOSE, 'template files: check configuration'
+            )
+        return templates
+
     def gen_tool(self, verbose=False):
         '''
             Generate project structure.
@@ -142,19 +223,22 @@ class GenTool(FileChecking):
             :exceptions: None
         '''
         status = False
-        if bool(self.__config):
-            tool_types, schema_files = [
-                tool_type.keys()[0] for tool_type in self.__config['templates']
-            ], self.__config['schema']
-            schema_selector = SchemaSelector(tool_types, schema_files)
+        tool_types = self.get_tool_types(verbose=verbose)
+        schema_files = self.get_schema_files(verbose=verbose)
+        if all([bool(tool_types), bool(schema_files)]):
+            schema_selector = SchemaSelector(
+                tool_types, schema_files, verbose=verbose
+            )
             schema, schema_id = schema_selector.get_schema()
             if schema and schema_id is not None:
-                templates, status = self.__reader.read(
-                    self.__config['templates'][schema_id], verbose=verbose
-                )
-                if status:
-                    status = self.__writer.write(
-                        self.__project_name, templates,
-                        schema, verbose=verbose
+                template_dict = self.get_templates(schema_id, verbose=verbose)
+                if bool(template_dict):
+                    templates, status = self.__reader.read(
+                        template_dict, tool_types[schema_id], verbose=verbose
                     )
+                    if all([status, bool(templates)]):
+                        status = self.__writer.write(
+                            self.__project_name, templates,
+                            schema, verbose=verbose
+                        )
         return True if status else False
