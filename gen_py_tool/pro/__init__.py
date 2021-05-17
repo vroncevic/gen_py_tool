@@ -16,229 +16,204 @@
      You should have received a copy of the GNU General Public License along
      with this program. If not, see <http://www.gnu.org/licenses/>.
  Info
-     Define class GenTool with attribute(s) and method(s).
-     Generate python tool by templates and parameters.
+     Defined class GenPro with attribute(s) and method(s).
+     Generate project by setup of parameters, templates, schemas.
 '''
 
 import sys
 
 try:
     from pathlib import Path
-    from ats_utilities.checker import ATSChecker
+    from gen_py_tool.pro.config import ProConfig
+    from gen_py_tool.pro.config.pro_name import ProName
+    from gen_py_tool.pro.config.pro_type import ProType
+    from gen_py_tool.pro.config.pro_selector import ProjectSelector
     from gen_py_tool.pro.read_template import ReadTemplate
     from gen_py_tool.pro.write_template import WriteTemplate
-    from gen_py_tool.pro.schema_selector import SchemaSelector
+    from gen_py_tool.pro.schema import SchemaLoader
+    from gen_py_tool.pro.element import ElementLoader
+    from gen_py_tool.pro.template import TemplateLoader
+    from gen_py_tool.pro.factory import Factory
+    from ats_utilities.checker import ATSChecker
     from ats_utilities.config_io.base_check import FileChecking
-    from ats_utilities.console_io.success import success_message
+    from ats_utilities.console_io.error import error_message
     from ats_utilities.console_io.verbose import verbose_message
     from ats_utilities.config_io.yaml.yaml2object import Yaml2Object
     from ats_utilities.exceptions.ats_type_error import ATSTypeError
     from ats_utilities.exceptions.ats_bad_call_error import ATSBadCallError
-except ImportError as error_message:
-    MESSAGE = '\n{0}\n{1}\n'.format(__file__, error_message)
+except ImportError as ats_error_message:
+    MESSAGE = '\n{0}\n{1}\n'.format(__file__, ats_error_message)
     sys.exit(MESSAGE)  # Force close python ATS ##############################
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright 2017, Free software to use and distributed it.'
 __credits__ = ['Vladimir Roncevic']
-__license__ = 'GNU General Public License (GPL)'
+__license__ = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
 __version__ = '1.2.0'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class GenTool(FileChecking):
+class GenPro(FileChecking, ProConfig, ProName, ProType):
     '''
-        Define class GenPro with attribute(s) and method(s).
-        Generate project by templates and parameters.
+        Defined class GenPro with attribute(s) and method(s).
+        Generate project by setup of parameters, templates, schemas.
         It defines:
 
             :attributes:
-                | __slots__ - Setting class slots.
-                | VERBOSE - Console text indicator for current process-phase.
-                | __PRO_STRUCTURE - Project structure.
-                | __config - Configuration dictionary.
-                | __reader - Reader API.
-                | __writer - Writer API.
-                | __project_name - Project name.
+                | GEN_VERBOSE - console text indicator for process-phase.
+                | PRO_STRUCTURE - project structure.
             :methods:
-                | __init__ - Initial constructor.
-                | get_reader - Getter for reader object.
-                | get_writer - Getter for writer object.
-                | get_tool_types - Get tool types.
-                | get_schema_files -  Get schema files.
-                | get_templates - Get template files.
-                | gen_tool - Generate python tool.
+                | __init__ - initial constructor.
+                | is_pro_config_ok - checking is project configuration ok.
+                | gen_pro - generate project structure.
+                | __str__ - dunder method for GenPro.
     '''
 
-    __slots__ = (
-        'VERBOSE', '__PRO_STRUCTURE', '__config',
-        '__reader', '__writer', '__project_name'
-    )
-    VERBOSE = 'GEN_PY_TOOL::PRO::GEN_TOOL'
-    __PRO_STRUCTURE = '../conf/project.yaml'
+    GEN_VERBOSE = 'GEN_PY_TOOL::PRO::GEN_PRO'
+    PRO_STRUCTURE = '/../conf/project.yaml'
 
     def __init__(self, project_name, verbose=False):
         '''
             Initial constructor.
 
-            :param project_name: Parameter tool name.
+            :param project_name: project tool/generator name.
             :type project_name: <str>
-            :param verbose: Enable/disable verbose option.
+            :param verbose: enable/disable verbose option.
             :type verbose: <bool>
             :exceptions: ATSTypeError | ATSBadCallError
         '''
         checker, error, status = ATSChecker(), None, False
-        error, status = checker.check_params(
-            [('str:project_name', project_name)]
-        )
-        if status == ATSChecker.TYPE_ERROR: raise ATSTypeError(error)
-        if status == ATSChecker.VALUE_ERROR: raise ATSBadCallError(error)
-        verbose_message(GenTool.VERBOSE, verbose, 'init generator')
+        error, status = checker.check_params([
+            ('str:project_name', project_name)
+        ])
+        if status == ATSChecker.TYPE_ERROR:
+            raise ATSTypeError(error)
+        if status == ATSChecker.VALUE_ERROR:
+            raise ATSBadCallError(error)
+        verbose_message(GenPro.GEN_VERBOSE, verbose, 'init generator')
         FileChecking.__init__(self, verbose=verbose)
-        self.__project_name = project_name
-        self.__reader = ReadTemplate(verbose=verbose)
-        self.__writer = WriteTemplate(verbose=verbose)
-        project = '{0}/{1}'.format(
-            Path(__file__).parent, GenTool.__PRO_STRUCTURE
+        ProConfig.__init__(self)
+        ProName.__init__(self)
+        ProType.__init__(self)
+        project_structure = '{0}{1}'.format(
+            Path(__file__).parent, GenPro.PRO_STRUCTURE
         )
-        self.check_path(file_path=project, verbose=verbose)
+        self.check_path(file_path=project_structure, verbose=verbose)
         self.check_mode(file_mode='r', verbose=verbose)
         self.check_format(
-            file_path=project, file_format='yaml', verbose=verbose
+            file_path=project_structure, file_format='yaml', verbose=verbose
         )
         if self.is_file_ok():
-            yml2obj = Yaml2Object(project)
-            self.__config = yml2obj.read_configuration()
-        else:
-            self.__config = None
+            yml2obj = Yaml2Object(project_structure)
+            self.config = yml2obj.read_configuration()
+            self.pro_name = project_name
 
-    def get_reader(self):
+    def is_pro_config_ok(self, verbose=False):
         '''
-            Getter for reader object.
+            Checking is project configuration ok.
 
-            :return: Read template object.
-            :rtype: <ReadTemplate>
-            :exceptions: None
-        '''
-        return self.__reader
-
-    def get_writer(self):
-        '''
-            Getter for writer object.
-
-            :return: Write template object.
-            :rtype: <WriteTemplate>
-            :exceptions: None
-        '''
-        return self.__writer
-
-    def get_tool_types(self, verbose=False):
-        '''
-            Get tool types.
-
-            :param verbose: Enable/disable verbose option.
+            :param verbose: enable/disable verbose option.
             :type verbose: <bool>
-            :return: List of tool types | empty list.
-            :rtype: <list>
+            :return: boolean status, True (ok) | False.
+            :rtype: <bool>
             :exceptions: None
         '''
-        tool_types = []
-        if bool(self.__config):
-            for tool_type in self.__config['templates']:
-                if len(tool_type.keys()) == 1:
-                    verbose_message(
-                        GenTool.VERBOSE, verbose, 'tool type: {0}'.format(
-                            tool_type.keys()[0]
-                        )
-                    )
-                    tool_types.append(tool_type.keys()[0])
-                else:
-                    error_message(
-                        GenTool.VERBOSE, 'tool types: num of keys {0}'.format(
-                            len(tool_type.keys())
-                        )
-                    )
-                    break
-        else:
-            error_message(
-                GenTool.VERBOSE, 'tool types: check configuration'
+        return all([
+            self.is_config_ok(), ProjectSelector.check_config_keys(
+                self.config, verbose=verbose
             )
-        return tool_types
+        ])
 
-    def get_schema_files(self, verbose=False):
-        '''
-            Get schema files.
-
-            :param verbose: Enable/disable verbose option.
-            :type verbose: <bool>
-            :return: List of schema files | empty list.
-            :rtype: <list>
-            :exceptions: None
-        '''
-        schema_files = []
-        if bool(self.__config):
-            verbose_message(GenTool.VERBOSE, verbose, 'schema files: setup')
-            schema_files = self.__config['schema']
-        else:
-            error_message(
-                GenTool.VERBOSE, 'schema files: check configuration'
-            )
-        return schema_files
-
-    def get_templates(self, schema_id, verbose=False):
-        '''
-            Get template files.
-
-            :param schema_id: Schema ID.
-            :type schema_id: <int>
-            :param verbose: Enable/disable verbose option.
-            :type verbose: <bool>
-            :return: List of template files | empty list.
-            :rtype: <list>
-            :exceptions: None
-        '''
-        templates = []
-        if bool(self.__config):
-            verbose_message(
-                GenTool.VERBOSE, verbose,
-                'template files: schema ID{0}'.format(schema_id)
-            )
-            templates = self.__config['templates'][schema_id]
-        else:
-            error_message(
-                GenTool.VERBOSE, 'template files: check configuration'
-            )
-        return templates
-
-    def gen_tool(self, verbose=False):
+    def gen_pro(self, verbose=False):
         '''
             Generate project structure.
 
-            :param verbose: Enable/disable verbose option.
+            :param verbose: enable/disable verbose option.
             :type verbose: <bool>
-            :return: Boolean status True (success) | False.
+            :return: boolean status, True (success) | False.
             :rtype: <bool>
             :exceptions: None
         '''
         status = False
-        tool_types = self.get_tool_types(verbose=verbose)
-        schema_files = self.get_schema_files(verbose=verbose)
-        if all([bool(tool_types), bool(schema_files)]):
-            schema_selector = SchemaSelector(
-                tool_types, schema_files, verbose=verbose
+        if self.is_pro_config_ok(verbose=verbose):
+            pro_type, pro_type_id = ProjectSelector.select_pro_type(
+                self.config, verbose=verbose
             )
-            schema, schema_id = schema_selector.get_schema()
-            if schema and schema_id is not None:
-                template_dict = self.get_templates(schema_id, verbose=verbose)
-                if bool(template_dict):
-                    templates, status = self.__reader.read(
-                        template_dict, tool_types[schema_id], verbose=verbose
+            self.pro_type = pro_type
+            schema_loader = SchemaLoader(
+                self.config[ProjectSelector.SCHEMA_KEY][pro_type_id],
+                verbose=verbose
+            )
+            element_loader = ElementLoader(
+                self.config[ProjectSelector.ELEMENT_KEY][pro_type_id],
+                verbose=verbose
+            )
+            template_loader = TemplateLoader(
+                self.config[ProjectSelector.TEMPLATE_KEY][pro_type_id],
+                verbose=verbose
+            )
+            if self.is_pro_name_ok():
+                status = element_loader.process_element(
+                    self.pro_name, verbose=verbose
+                )
+            else:
+                error_message(GenPro.GEN_VERBOSE, 'project name not ok')
+            if status:
+
+                status = all([
+                    bool(schema_loader), bool(element_loader),
+                    bool(template_loader)
+                ])
+                if status:
+                    reader = ReadTemplate(verbose=verbose)
+                    writer = WriteTemplate(verbose=verbose)
+                    template, status = reader.read(
+                        template_loader.template, self.pro_type,
+                        verbose=verbose
                     )
-                    if all([status, bool(templates)]):
-                        status = self.__writer.write(
-                            self.__project_name, templates,
-                            schema, verbose=verbose
+                    if all([bool(template), bool(status)]):
+                        project_property = {
+                            'name': self.pro_name, 'type': self.pro_type
+                        }
+                        factory = Factory(
+                            self.config['types'], verbose=verbose
                         )
-        return True if status else False
+                        product_container = factory.produce(
+                            project_property, schema_loader.schema, template,
+                            element_loader.element, verbose=verbose
+                        )
+                        preparer = product_container.get_preparer()
+                        schema, status = preparer.export(verbose=verbose)
+                        if all([bool(schema), bool(status)]):
+                            deployer = product_container.get_deployer()
+                            modules = deployer.deploy_modules()
+                            import pdb;pdb.set_trace()
+                            status = writer.write(
+                                element_loader.element, schema,
+                                verbose=verbose
+                            )
+                        else:
+                            error_message(GenPro.GEN_VERBOSE, 'failed to prepare project schema')
+                    else:
+                        error_message(GenPro.GEN_VERBOSE, 'failed to load templates')
+                else:
+                    error_message(GenPro.GEN_VERBOSE, 'configuration keys not ok')
+        else:
+            error_message(GenPro.GEN_VERBOSE, 'configuration keys not ok')
+        return status
+
+    def __str__(self):
+        '''
+            Dunder method for GenPro.
+
+            :return: object in a human-readable format.
+            :rtype: <str>
+            :exceptions: None
+        '''
+        return '{0} ({1}, {2}, {3}, {4})'.format(
+            self.__class__.__name__, FileChecking.__str__(self),
+            ProConfig.__str__(self), ProName.__str__(self),
+            ProType.__str__(self)
+        )

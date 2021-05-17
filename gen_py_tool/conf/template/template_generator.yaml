@@ -1,0 +1,10 @@
+generator:
+    - generator_process_class.template
+    - editorconfig.template
+    - run_generator.template
+    - generator_io_class.template
+    - generator_read_template.template
+    - generator_write_template.template
+    - generator_configuration.template
+    - generator_configuration_util.template
+    - generator_test.template

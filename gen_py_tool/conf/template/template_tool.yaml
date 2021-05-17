@@ -1,0 +1,6 @@
+tool:
+    - tool_name_class.template
+    - editorconfig.template
+    - run_tool.template
+    - tool_configuration.template
+    - tool_configuration_util.template

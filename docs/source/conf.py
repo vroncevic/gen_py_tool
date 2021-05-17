@@ -6,7 +6,7 @@ import sys
 sys.path.insert(0, os.path.abspath('../../'))
 
 project = u'gen_py_tool'
-copyright = u'2020, Vladimir Roncevic <elektron.ronca@gmail.com>'
+copyright = u'2017, Vladimir Roncevic <elektron.ronca@gmail.com>'
 author = u'Vladimir Roncevic <elektron.ronca@gmail.com>'
 version = u'1.2.0'
 release = u'https://github.com/vroncevic/gen_py_tool/releases'

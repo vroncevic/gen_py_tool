@@ -16,8 +16,8 @@
      You should have received a copy of the GNU General Public License along
      with this program. If not, see <http://www.gnu.org/licenses/>.
  Info
-     Define class ReadTemplate with attribute(s) and method(s).
-     Read a templates and return a string representations.
+     Defined class ReadTemplate with attribute(s) and method(s).
+     Created API for reading a project templates.
 '''
 
 import sys
@@ -27,56 +27,57 @@ try:
     from pathlib import Path
     from ats_utilities.checker import ATSChecker
     from ats_utilities.console_io.error import error_message
+    from ats_utilities.config_io.base_check import FileChecking
     from ats_utilities.console_io.verbose import verbose_message
     from ats_utilities.exceptions.ats_type_error import ATSTypeError
     from ats_utilities.exceptions.ats_bad_call_error import ATSBadCallError
-except ImportError as error_message:
-    MESSAGE = '\n{0}\n{1}\n'.format(__file__, error_message)
+except ImportError as ats_error_message:
+    MESSAGE = '\n{0}\n{1}\n'.format(__file__, ats_error_message)
     sys.exit(MESSAGE)  # Force close python ATS ##############################
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright 2017, Free software to use and distributed it.'
 __credits__ = ['Vladimir Roncevic']
-__license__ = 'GNU General Public License (GPL)'
+__license__ = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
 __version__ = '1.2.0'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class ReadTemplate(object):
+class ReadTemplate(FileChecking):
     '''
-        Define class ReadTemplate with attribute(s) and method(s).
-        Read a templates and return a string representations.
+        Defined class ReadTemplate with attribute(s) and method(s).
+        Created API for reading a project templates.
         It defines:
 
             :attributes:
-                | __slots__ - Setting class slots.
-                | VERBOSE - Console text indicator for current process-phase.
-                | __TEMPLATE_DIR - Prefix path to templates.
-                | __template_dir - Absolute template dir.
+                | GEN_VERBOSE - console text indicator for process-phase.
+                | TEMPLATE_DIR - prefix path to templates.
+                | __template_dir - absolute template directory.
             :methods:
-                | __init__ - Initial constructor.
-                | get_template_dir - Get template dir path.
-                | read - Read a templates and return a content with status.
+                | __init__ - initial constructor.
+                | get_template_dir - get template dir path.
+                | read - read a templates and return a content with status.
+                | __str__ - dunder method for ReadTemplate.
     '''
 
-    __slots__ = ('VERBOSE', '__TEMPLATE_DIR', '__template_dir')
-    VERBOSE = 'GEN_PY_TOOL::PRO::READ_TEMPLATE'
-    __TEMPLATE_DIR = '/../conf/template/'
+    GEN_VERBOSE = 'GEN_PY_TOOL::PRO::READ_TEMPLATE'
+    TEMPLATE_DIR = '/../conf/template/'
 
     def __init__(self, verbose=False):
         '''
-            Setting template configuration directory.
+            Initial constructor.
 
-            :param verbose: Enable/disable verbose option.
+            :param verbose: enable/disable verbose option.
             :type verbose: <bool>
             :exceptions: None
         '''
-        verbose_message(ReadTemplate.VERBOSE, verbose, 'init reader')
+        FileChecking.__init__(self, verbose=verbose)
+        verbose_message(ReadTemplate.GEN_VERBOSE, verbose, 'init reader')
         current_dir = Path(__file__).parent
         template_dir = '{0}{1}'.format(
-            current_dir, ReadTemplate.__TEMPLATE_DIR
+            current_dir, ReadTemplate.TEMPLATE_DIR
         )
         check_template_dir = isdir(template_dir)
         if check_template_dir:
@@ -88,52 +89,71 @@ class ReadTemplate(object):
         '''
             Getter for template dir path.
 
-            :return: Template dir path | None.
+            :return: template dir path | None.
             :rtype: <str> | <NoneType>
             :exceptions: None
         '''
         return self.__template_dir
 
-    def read(self, template_modules, tool_type_key, verbose=False):
+    def read(self, template_loader, pro_type, verbose=False):
         '''
             Read a templates and return a content with status.
 
-            :param template_modules: Dict with template modules.
-            :type template_modules: <dict>
-            :param verbose: Enable/disable verbose option.
+            :param template_loader: dict with template modules.
+            :type template_loader: <dict>
+            :param pro_type: project type (tool | generator).
+            :type pro_type: <str>
+            :param verbose: enable/disable verbose option.
             :type verbose: <bool>
-            :return: List of templates and True | empty list and False.
-            :rtype: <list> <bool>
+            :return: dict with templates and True | empty dict and False.
+            :rtype: <dict> <bool>
             :exceptions: ATSTypeError | ATSBadCallError
         '''
         checker, error, status = ATSChecker(), None, False
         error, status = checker.check_params([
-            ('dict:template_modules', template_modules),
-            ('str:tool_type_key', tool_type_key)
+            ('dict:template_loader', template_loader),
+            ('str:pro_type', pro_type)
         ])
-        if status == ATSChecker.TYPE_ERROR: raise ATSTypeError(error)
-        if status == ATSChecker.VALUE_ERROR: raise ATSBadCallError(error)
-        verbose_message(ReadTemplate.VERBOSE, verbose, 'load templates')
-        modules_content, status = [], False
-        verbose_message(ReadTemplate.VERBOSE, verbose, tool_type_key, 'type')
-        expected_num_of_modules = len(template_modules[tool_type_key])
+        if status == ATSChecker.TYPE_ERROR:
+            raise ATSTypeError(error)
+        if status == ATSChecker.VALUE_ERROR:
+            raise ATSBadCallError(error)
+        template, modules_content, status = dict(), [], False
+        expected_num_of_templates = len(template_loader[pro_type])
         if self.__template_dir is not None:
-            for template_module in template_modules[tool_type_key]:
+            for template_module in template_loader[pro_type]:
                 template_path = '{0}{1}/{2}'.format(
-                    self.__template_dir, tool_type_key, template_module
+                    self.__template_dir, pro_type, template_module
                 )
                 if exists(template_path):
                     verbose_message(
-                        ReadTemplate.VERBOSE, verbose,
+                        ReadTemplate.GEN_VERBOSE, verbose,
                         'load template', template_path
                     )
                     with open(template_path, 'r') as template_file:
-                        modules_content.append(template_file.read())
+                        modules_content.append({
+                            template_module.split('.')[0]:
+                            template_file.read()
+                        })
                 else:
                     error_message(
-                        ReadTemplate.VERBOSE, 'failed to load template',
+                        ReadTemplate.GEN_VERBOSE, 'failed to load template',
                         template_path
                     )
-            if len(modules_content) == expected_num_of_modules:
+            if len(modules_content) == expected_num_of_templates:
+                template[pro_type] = modules_content
                 status = True
-        return modules_content, status
+        return template, status
+
+    def __str__(self):
+        '''
+            Dunder method for ReadTemplate.
+
+            :return: object in a human-readable format.
+            :rtype: <str>
+            :exceptions: None
+        '''
+        return '{0} ({1}, {2})'.format(
+            self.__class__.__name__, FileChecking.__str__(self),
+            self.__template_dir
+        )

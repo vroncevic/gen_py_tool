@@ -43,7 +43,10 @@ Python package is located at **[pypi.org](https://pypi.org/project/gen_py_tool/)
 
 You can install by using pip
 ```
-pip install gen_py_tool
+# python2
+pip install gen-py-tool
+# python3
+pip3 install gen-py-tool
 ```
 
 ##### Install using setuptools
@@ -54,10 +57,16 @@ To install modules, locate and run setup.py, type the following:
 ```
 tar xvzf gen_py_tool-x.y.z.tar.gz
 cd gen_py_tool-x.y.z
+# python2
 pip install -r requirements.txt
 python setup.py install_lib
-python setup.py install_egg_info
 python setup.py install_data
+python setup.py install_egg_info
+# python3
+pip3 install -r requirements.txt
+python3 setup.py install_lib
+python3 setup.py install_data
+python3 setup.py install_egg_info
 ```
 
 ##### Install using docker
@@ -88,34 +97,64 @@ Generator structure:
 ```
 gen_py_tool/
 ├── conf/
+│   ├── element/
+│   │   ├── substitute_generator.yaml
+│   │   └── substitute_tool.yaml
 │   ├── gen_py_tool.cfg
 │   ├── gen_py_tool_util.cfg
 │   ├── project.yaml
-│   ├── schema_generator.yaml
-│   ├── schema_tool.yaml
+│   ├── schema/
+│   │   ├── schema_generator.yaml
+│   │   └── schema_tool.yaml
 │   └── template/
 │       ├── generator/
 │       │   ├── editorconfig.template
 │       │   ├── generator_configuration.template
 │       │   ├── generator_configuration_util.template
+│       │   ├── generator_io_class.template
 │       │   ├── generator_process_class.template
 │       │   ├── generator_read_template.template
+│       │   ├── generator_test.template
 │       │   ├── generator_write_template.template
-│       │   └── run_module.template
+│       │   └── run_generator.template
+│       ├── template_generator.yaml
+│       ├── template_tool.yaml
 │       └── tool/
 │           ├── editorconfig.template
-│           ├── run_module.template
+│           ├── run_tool.template
 │           ├── tool_configuration.template
 │           ├── tool_configuration_util.template
-│           └── tool_process_class.template
+│           └── tool_name_class.template
 ├── __init__.py
 ├── log/
 │   └── gen_py_tool.log
 ├── pro/
+│   ├── element/
+│   │   ├── element_util.py
+│   │   └── __init__.py
+│   ├── factory/
+│   │   ├── container/
+│   │   │   └── __init__.py
+│   │   ├── gen/
+│   │   │   ├── gen_elements.py
+│   │   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   └── tool/
+│   │       ├── __init__.py
+│   │       └── tool_elements.py
 │   ├── __init__.py
-│   ├── read_template.py
-│   ├── schema_selector.py
-│   └── write_template.py
+│   ├── schema/
+│   │   ├── __init__.py
+│   │   └── schema_util.py
+│   ├── template/
+│   │   ├── __init__.py
+│   │   └── template_util.py
+│   └── utils/
+│       ├── __init__.py
+│       ├── pro_name.py
+│       ├── pro_selector.py
+│       ├── read_template.py
+│       └── write_template.py
 └── run/
     └── gen_py_tool_run.py
 ```

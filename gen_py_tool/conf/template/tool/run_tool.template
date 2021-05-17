@@ -23,9 +23,9 @@
 import sys
 
 try:
-    from ${TOOL_NAME} import ${TOOL_NAME_CLASS}
-except ImportError as error_message:
-    MESSAGE = '\n{0}\n{1}\n'.format(__file__, error_message)
+    from ${TOOL_NAME} import ${TOOL_CLASS}
+except ImportError as ats_error_message:
+    MESSAGE = '\n{0}\n{1}\n'.format(__file__, ats_error_message)
     sys.exit(MESSAGE)  # Force close python ATS ##############################
 
 __author__ = 'Vladimir Roncevic'
@@ -38,5 +38,5 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 if __name__ == '__main__':
-    TOOL = ${TOOL_NAME_CLASS}(verbose=False)
+    TOOL = ${TOOL_CLASS}(verbose=False)
     TOOL.process(verbose=False)

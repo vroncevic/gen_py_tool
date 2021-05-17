@@ -1,4 +1,4 @@
-ats_name = ${TOOL_PROCESS_FILE}
+ats_name = ${TOOL_NAME}
 ats_version = v1.0.0
-ats_build_date = ${DATE}
+ats_build_date = ${YEAR}
 ats_license = Vladimir Roncevic GPLv3

@@ -16,7 +16,7 @@
      You should have received a copy of the GNU General Public License along
      with this program. If not, see <http://www.gnu.org/licenses/>.
  Info
-     Define class ${TOOL_NAME_CLASS} with attribute(s) and method(s).
+     Define class ${TOOL_CLASS} with attribute(s) and method(s).
      Load a base info, create an CLI interface and run operation(s).
 '''
 
@@ -24,12 +24,14 @@ import sys
 
 try:
     from pathlib import Path
+    from ats_utilities.logging import ATSLogger
     from ats_utilities.cli.cfg_cli import CfgCLI
+    from ats_utilities.cooperative import CooperativeMeta
     from ats_utilities.console_io.error import error_message
     from ats_utilities.console_io.verbose import verbose_message
     from ats_utilities.console_io.success import success_message
-except ImportError as error_message:
-    MESSAGE = '\n{0}\n{1}\n'.format(__file__, error_message)
+except ImportError as ats_error_message:
+    MESSAGE = '\n{0}\n{1}\n'.format(__file__, ats_error_message)
     sys.exit(MESSAGE)  # Force close python ATS ##############################
 
 __author__ = 'Vladimir Roncevic'
@@ -42,56 +44,63 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class ${TOOL_NAME_CLASS}(CfgCLI):
+class ${TOOL_CLASS}(CfgCLI):
     '''
-        Define class ${TOOL_NAME_CLASS} with attribute(s) and method(s).
+        Define class ${TOOL_CLASS} with attribute(s) and method(s).
         Load a base info, create an CLI interface and run operation(s).
         It defines:
 
             :attributes:
-                | __slots__ - Setting class slots.
-                | VERBOSE - Console text indicator for current process-phase.
-                | __CONFIG - Configuration file path.
-                | __OPS - Tool options (list).
+                | __metaclass__ - setting cooperative metaclasses.
+                | TOOL_VERBOSE - console text indicator for process-phase.
+                | CONFIG - tool info file path.
+                | LOG - tool log file path.
+                | OPS - list of tool options.
+                | logger - logger object API.
             :methods:
-                | __init__ - Initial constructor.
-                | process - Process and run tool option(s).
+                | __init__ - initial constructor.
+                | process - process and run tool option(s).
     '''
 
-    __slots__ = ('VERBOSE', '__CONFIG', '__OPS')
-    VERBOSE = '${TOOL_NAME_UPPER}'
-    __CONFIG = '/conf/${TOOL_NAME}.cfg'
-    __OPS = ['-o', '--opt', '-v']
+    __metaclass__ = CooperativeMeta
+    TOOL_VERBOSE = '${TOOL_UPPER}'
+    CONFIG = '/conf/${TOOL_NAME}.cfg'
+    LOG = '/log/${TOOL_NAME}.log'
+    OPS = ['-g', '--gen', '-v', '--verbose', '--version']
 
     def __init__(self, verbose=False):
         '''
             Initial constructor.
 
-            :param verbose: Enable/disable verbose option.
+            :param verbose: enable/disable verbose option.
             :type verbose: <bool>
             :exceptions: None
         '''
-        verbose_message(${TOOL_NAME_CLASS}.VERBOSE, verbose, 'init tool info')
         current_dir = Path(__file__).resolve().parent
-        base_info = '{0}{1}'.format(current_dir, ${TOOL_NAME_CLASS}.__CONFIG)
+        base_info = '{0}{1}'.format(current_dir, ${TOOL_CLASS}.CONFIG)
         CfgCLI.__init__(self, base_info, verbose=verbose)
+        verbose_message(${TOOL_CLASS}.TOOL_VERBOSE, verbose, 'init tool info')
         if self.tool_operational:
             self.add_new_option(
-                ${TOOL_NAME_CLASS}.__OPS[0], ${TOOL_NAME_CLASS}.__OPS[1],
+                ${TOOL_CLASS}.OPS[0], ${TOOL_CLASS}.OPS[1],
                 dest='opt', help='option'
             )
             self.add_new_option(
-                ${TOOL_NAME_CLASS}.__OPS[2], action='store_true', default=False,
-                help='activate verbose mode for tool operation'
+                ${TOOL_CLASS}.OPS[2], ${TOOL_CLASS}.OPS[3],
+                action='store_true', default=False,
+                help='activate verbose mode for generation'
+            )
+            self.add_new_option(
+                ${TOOL_CLASS}.OPS[4], action='version', version=__version__
             )
 
     def process(self, verbose=False):
         '''
             Process and run operation.
 
-            :param verbose: Enable/disable verbose option.
+            :param verbose: enable/disable verbose option.
             :type verbose: <bool>
-            :return: True (success) | False.
+            :return: boolean status, True (success) | False.
             :rtype: <bool>
             :exceptions: None
         '''
@@ -99,19 +108,17 @@ class ${TOOL_NAME_CLASS}(CfgCLI):
         if self.tool_operational:
             num_of_args_sys = len(sys.argv)
             if num_of_args_sys > 1:
-                option = sys.argv[1]
-                if option not in ${TOOL_NAME_CLASS}.__OPS:
-                    sys.argv = []
+                operation = sys.argv[1]
+                if operation not in ${TOOL_CLASS}.OPS:
                     sys.argv.append('-h')
             else:
                 sys.argv.append('-h')
-            opts, args = self.parse_args(sys.argv)
-            num_of_args = len(args)
-            if num_of_args >= 1 and bool(opts.opt):
+            args = self.parse_args(sys.argv[1:])
+            if bool(getattr(args, 'opt')):
                 print(
                     '{0} {1} [{2}]'.format(
-                        '[{0}]'.format(${TOOL_NAME_CLASS}.VERBOSE.lower()),
-                        'running option', opts.opt
+                        '[{0}]'.format(${TOOL_CLASS}.TOOL_VERBOSE.lower()),
+                        'running option', getattr(args, 'opt')
                     )
                 )
                 #
@@ -119,15 +126,43 @@ class ${TOOL_NAME_CLASS}(CfgCLI):
                 #
                 status = True
                 if status:
-                    success_message(${TOOL_NAME_CLASS}.VERBOSE, 'done\n')
+                    success_message(${TOOL_CLASS}.TOOL_VERBOSE, 'done\n')
+                    self.logger.write_log(
+                        '{0} {1} done'.format(
+                            'run operation', getattr(args, 'opt')
+                        ), ATSLogger.ATS_INFO
+                    )
                 else:
                     error_message(
-                        ${TOOL_NAME_CLASS}.VERBOSE, 'failed to run option'
+                        ${TOOL_CLASS}.TOOL_VERBOSE, 'failed to run option'
+                    )
+                    self.logger.write_log(
+                        'failed to run option', ATSLogger.ATS_ERROR
                     )
             else:
                 error_message(
-                    ${TOOL_NAME_CLASS}.VERBOSE, 'provide option'
+                    ${TOOL_CLASS}.TOOL_VERBOSE, 'provide option'
+                )
+                self.logger.write_log(
+                    'provide option', ATSLogger.ATS_ERROR
                 )
         else:
-            error_message(${TOOL_NAME_CLASS}.VERBOSE, 'tool is not operational')
-        return True if status else False
+            error_message(
+                ${TOOL_CLASS}.TOOL_VERBOSE, 'tool is not operational'
+            )
+            self.logger.write_log(
+                'tool is not operational', ATSLogger.ATS_ERROR
+            )
+        return status
+
+    def __str__(self):
+        '''
+            Dunder method for ${TOOL_CLASS}.
+
+            :return: object in a human-readable format.
+            :rtype: <str>
+            :exceptions: None
+        '''
+        return '{0} ({1}, {2})'.format(
+            self.__class__.__name__, CfgCLI.__str__(self), str(self.logger)
+        )
