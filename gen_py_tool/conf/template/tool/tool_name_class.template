@@ -80,6 +80,11 @@ class ${TOOL_CLASS}(CfgCLI):
         base_info = '{0}{1}'.format(current_dir, ${TOOL_CLASS}.CONFIG)
         CfgCLI.__init__(self, base_info, verbose=verbose)
         verbose_message(${TOOL_CLASS}.TOOL_VERBOSE, verbose, 'init tool info')
+        self.logger = ATSLogger(
+            ${TOOL_CLASS}.TOOL_VERBOSE.lower(),
+            '{0}{1}'.format(current_dir, ${TOOL_CLASS}.LOG),
+            verbose=verbose
+        )
         if self.tool_operational:
             self.add_new_option(
                 ${TOOL_CLASS}.OPS[0], ${TOOL_CLASS}.OPS[1],

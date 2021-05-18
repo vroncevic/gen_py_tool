@@ -189,13 +189,15 @@ class GenPro(FileChecking, ProConfig, ProName, ProType):
                         if all([bool(schema), bool(status)]):
                             deployer = product_container.get_deployer()
                             modules = deployer.deploy_modules()
+                            deployer.create_package_structure()
                             status = writer.write(
                                 element_loader.element, modules,
                                 verbose=verbose
                             )
                         else:
                             error_message(
-                                GenPro.GEN_VERBOSE, 'failed to prepare project schema'
+                                GenPro.GEN_VERBOSE,
+                                'failed to prepare project schema'
                             )
                     else:
                         error_message(

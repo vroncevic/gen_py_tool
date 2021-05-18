@@ -21,6 +21,7 @@
 '''
 
 import sys
+from os import getcwd, mkdir
 
 try:
     from gen_py_tool.pro.element.element_keys import ElementKeys
@@ -225,13 +226,17 @@ class ProExtractor(BaseExtractor):
 
             :exceptions: None
         '''
-        tool_name = self.extract_tool_name()
-        package = '{0}/{1}'.format(getcwd(), tool_name)
+        gen_name = self.extract_gen_name()
+        package = '{0}/{1}'.format(getcwd(), gen_name)
         mkdir(package)
+        pro = '{0}/{1}'.format(package, 'pro')
+        mkdir(pro)
         run = '{0}/{1}'.format(package, 'run')
         mkdir(run)
         conf = '{0}/{1}'.format(package, 'conf')
         mkdir(conf)
+        template = '{0}/{1}'.format(conf, 'template')
+        mkdir(template)
         log = '{0}/{1}'.format(package, 'log')
         mkdir(log)
 

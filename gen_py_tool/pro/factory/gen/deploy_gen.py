@@ -59,7 +59,7 @@ class DeployGen(ProExtractor, GenElements, ElementKeys):
                 | __str__ - dunder method for DeployGen.
     '''
 
-    GEN_VERBOSE = 'GEN_PY_TOOL::PRO::FACTORY::GEN::GEN_EXTRACTOR'
+    GEN_VERBOSE = 'GEN_PY_TOOL::PRO::FACTORY::GEN::DEPLOY_GEN'
 
     def __init__(self, element, schema, verbose=False):
         '''
@@ -95,20 +95,58 @@ class DeployGen(ProExtractor, GenElements, ElementKeys):
             :exceptions: None
         '''
         gen_modules = []
-        gen_modules.append(self.extract_gen_name())
-        gen_modules.append(self.extract_gen_class())
-        gen_modules.append(self.extract_edit_config())
-        gen_modules.append(self.extract_gen_run())
-        gen_modules.append(self.extract_edit_config())
-        gen_modules.append(self.extract_gen_pro())
-        gen_modules.append(self.extract_read_template())
-        gen_modules.append(self.extract_write_template())
-        gen_modules.append(self.extract_edit_config())
-        gen_modules.append(self.extract_gen_conf())
-        gen_modules.append(self.extract_gen_conf_util())
-        gen_modules.append(self.extract_edit_config())
-        gen_modules.append(self.extract_gen_log())
-        gen_modules.append(self.extract_edit_config())
+        gen_name = self.extract_gen_name()
+        gen_modules.append(gen_name)
+        class_content, class_module = self.extract_gen_class()
+        gen_modules.append([
+            class_content, '{0}/{1}'.format(gen_name, class_module)
+        ])
+        edit_content, edit_module = self.extract_edit_config()
+        gen_modules.append([
+            edit_content, '{0}/{1}'.format(gen_name, edit_module)
+        ])
+        run_content, run_module = self.extract_gen_run()
+        gen_modules.append([
+            run_content, '{0}/run/{1}'.format(gen_name, run_module)
+        ])
+        gen_modules.append([
+            edit_content, '{0}/run/{1}'.format(gen_name, edit_module)
+        ])
+        pro_content, pro_module = self.extract_gen_pro()
+        gen_modules.append([
+            pro_content, '{0}/pro/{1}'.format(gen_name, pro_module)
+        ])
+        read_content, read_module = self.extract_read_template()
+        gen_modules.append([
+            read_content, '{0}/pro/{1}'.format(gen_name, read_module)
+        ])
+        write_content, write_module = self.extract_write_template()
+        gen_modules.append([
+            write_content, '{0}/pro/{1}'.format(gen_name, write_module)
+        ])
+        gen_modules.append([
+            edit_content, '{0}/pro/{1}'.format(gen_name, edit_module)
+        ])
+        conf_content, conf_module = self.extract_gen_conf()
+        gen_modules.append([
+            conf_content, '{0}/conf/{1}'.format(gen_name, conf_module)
+        ])
+        conf_util_content, conf_util_module = self.extract_gen_conf_util()
+        gen_modules.append([
+            conf_util_content, '{0}/conf/{1}'.format(
+                gen_name, conf_util_module
+            )
+        ])
+        gen_modules.append([
+            edit_content, '{0}/conf/{1}'.format(gen_name, edit_module)
+        ])
+        log_content, log_module = self.extract_gen_log()
+        gen_modules.append([
+            log_content, '{0}/log/{1}'.format(gen_name, log_module)
+        ])
+        gen_modules.append([
+            edit_content, '{0}/log/{1}'.format(gen_name, edit_module)
+        ])
         return gen_modules
 
     def __str__(self):
