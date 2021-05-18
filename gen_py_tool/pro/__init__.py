@@ -189,19 +189,26 @@ class GenPro(FileChecking, ProConfig, ProName, ProType):
                         if all([bool(schema), bool(status)]):
                             deployer = product_container.get_deployer()
                             modules = deployer.deploy_modules()
-                            import pdb;pdb.set_trace()
                             status = writer.write(
-                                element_loader.element, schema,
+                                element_loader.element, modules,
                                 verbose=verbose
                             )
                         else:
-                            error_message(GenPro.GEN_VERBOSE, 'failed to prepare project schema')
+                            error_message(
+                                GenPro.GEN_VERBOSE, 'failed to prepare project schema'
+                            )
                     else:
-                        error_message(GenPro.GEN_VERBOSE, 'failed to load templates')
+                        error_message(
+                            GenPro.GEN_VERBOSE, 'failed to load templates'
+                        )
                 else:
-                    error_message(GenPro.GEN_VERBOSE, 'configuration keys not ok')
+                    error_message(
+                        GenPro.GEN_VERBOSE, 'configuration keys not ok'
+                    )
         else:
-            error_message(GenPro.GEN_VERBOSE, 'configuration keys not ok')
+            error_message(
+                GenPro.GEN_VERBOSE, 'configuration keys not ok'
+            )
         return status
 
     def __str__(self):

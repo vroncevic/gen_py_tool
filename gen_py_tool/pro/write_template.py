@@ -25,10 +25,7 @@ from os import chmod, getcwd
 from string import Template
 
 try:
-    #from gen_py_tool.pro.element.element_keys import ElementKeys
-    #from gen_py_tool.pro.schema import SchemaLoader
-    #from gen_py_tool.pro.factory.tool.tool_extractor import ExtTool
-    #from gen_py_tool.pro.factory.gen.gen_extractor import ExtGen
+    from gen_py_tool.pro.element.element_keys import ElementKeys
     from ats_utilities.checker import ATSChecker
     from ats_utilities.config_io.base_check import FileChecking
     from ats_utilities.console_io.verbose import verbose_message
@@ -75,14 +72,14 @@ class WriteTemplate(FileChecking):
         FileChecking.__init__(self, verbose=verbose)
         verbose_message(WriteTemplate.GEN_VERBOSE, verbose, 'init writer')
 
-    def write(self, element, schema, verbose=False):
+    def write(self, element, modules, verbose=False):
         '''
             Write templates content with parameters to modules.
 
             :param element: processes element.
             :type element: <dict>
-            :param schema: schema for tool/generator.
-            :type schema: <dict>
+            :param modules: modules for tool/generator.
+            :type modules: <list>
             :param verbose: enable/disable verbose option.
             :type verbose: <bool>
             :return: boolean status, True (success) | False.
@@ -91,54 +88,54 @@ class WriteTemplate(FileChecking):
         '''
         checker, error, status = ATSChecker(), None, False
         error, status = checker.check_params([
-            ('dict:element', element), ('dict:schema', schema)
+            ('dict:element', element), ('list:modules', modules)
         ])
         if status == ATSChecker.TYPE_ERROR:
             raise ATSTypeError(error)
         if status == ATSChecker.VALUE_ERROR:
             raise ATSBadCallError(error)
-        modules, status, extractor = [], False, None
-#        schema_root_key = schema.keys()[0]
-#        if schema_root_key == SchemaLoader.TOOL_SCHEMA:
-#            extractor = ExtTool(element, schema, verbose=verbose)
-#            modules = extractor.deploy_tool()
-#        elif schema_root_key == SchemaLoader.GEN_SCHEMA:
-#            extractor = ExtGen(element, schema, verbose=verbose)
-#            modules = extractor.deploy_gen()
-#        if all([bool(extractor), bool(modules)]):
-            #extractor.create_package_structure()
-#            for template_content in modules[1:]:
-#                template = Template(template_content[0])
-#                module_content = template.substitute({
-#                    ElementKeys.TOOL_NAME_KEY: '{0}'.format(
-#                        element[ElementKeys.ROOT_KEY][0][
-#                            ElementKeys.TOOL_NAME_KEY
-#                        ]
-#                    ),
-#                    ElementKeys.TOOL_UPPER_KEY:'{0}'.format(
-#                        element[ElementKeys.ROOT_KEY][1][
-#                            ElementKeys.TOOL_UPPER_KEY
-#                        ]
-#                    ),
-#                    ElementKeys.TOOL_CLASS_KEY:'{0}'.format(
-#                        element[ElementKeys.ROOT_KEY][2][
-#                            ElementKeys.TOOL_CLASS_KEY
-#                        ]
-#                    ),
-#                    ElementKeys.TOOL_YEAR_KEY:'{0}'.format(
-#                        element[ElementKeys.ROOT_KEY][3][
-#                            ElementKeys.TOOL_YEAR_KEY
-#                        ]
-#                    )
-#                })
-#                import pdb;pdb.set_trace()
-#                module_path = '{0}/{1}.py'.format(
-#                    getcwd(), element['elements'][0]
-#                )
-#                with open(module_path, 'w') as module_file:
-#                    module_file.write(module_content)
-#                    chmod(module_path, 0o666)
-#                status = False
+        status, statuses, expected_num_modules = False, [], len(modules[1:])
+        for template_content in modules[1:]:
+            template = Template(template_content[0])
+            module_content = template.substitute({
+                ElementKeys.TOOL_NAME_KEY: '{0}'.format(
+                    element[ElementKeys.ROOT_KEY][0][
+                        ElementKeys.TOOL_NAME_KEY
+                    ]
+                ),
+                ElementKeys.TOOL_UPPER_KEY:'{0}'.format(
+                    element[ElementKeys.ROOT_KEY][1][
+                        ElementKeys.TOOL_UPPER_KEY
+                    ]
+                ),
+                ElementKeys.TOOL_CLASS_KEY:'{0}'.format(
+                    element[ElementKeys.ROOT_KEY][2][
+                        ElementKeys.TOOL_CLASS_KEY
+                    ]
+                ),
+                ElementKeys.TOOL_YEAR_KEY:'{0}'.format(
+                    element[ElementKeys.ROOT_KEY][3][
+                        ElementKeys.TOOL_YEAR_KEY
+                    ]
+                )
+            })
+            module_path = '{0}/{1}'.format(getcwd(), template_content[1])
+            module_extension = module_path.split('.')[1]
+            with open(module_path, 'w') as module_file:
+                module_file.write(module_content)
+                chmod(module_path, 0o666)
+                self.check_path(file_path=module_path, verbose=verbose)
+                self.check_mode(file_mode='w', verbose=verbose)
+                self.check_format(
+                    file_path=module_path, file_format=module_extension,
+                    verbose=verbose
+                )
+                if self.is_file_ok():
+                    statuses.append(True)
+                else:
+                    statuses.append(False)
+        if all([statuses, len(statuses) == expected_num_modules]):
+            status = True
         return status
 
     def __str__(self):
