@@ -60,7 +60,7 @@ class Factory:
                 | __str__ - dunder method for Factory.
     '''
 
-    GEN_VERBOSE = 'GEN_PY_TOOL::PRO::FACTORY::GEN_TOOL_FACTORY'
+    GEN_VERBOSE = 'GEN_PY_TOOL::PRO::FACTORY'
 
     def __init__(self, pro_types, verbose=False):
         '''
@@ -148,6 +148,11 @@ class Factory:
                 product_container = GenFactory(
                     pro_property, schema, template, element, verbose=verbose
                 )
+        else:
+            error_message(
+                Factory.GEN_VERBOSE, 'not supported project type',
+                pro_property['type']
+            )
         return product_container
 
     def __str__(self):

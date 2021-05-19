@@ -113,7 +113,9 @@ class ProCollectiner(BaseCollectiner):
             GenElements.RUN
         ][GenElements.MOD][0]['{0}_{1}.py'.format(
             self.pro_name, GenElements.RUN
-        )] = self.template[self.pro_type][2]['{0}_{1}'.format(GenElements.RUN, self.pro_type)]
+        )] = self.template[self.pro_type][2][
+            '{0}_{1}'.format(GenElements.RUN, self.pro_type)
+        ]
         self.schema[schema_root_key][self.pro_name][GenElements.MOD][2][
             GenElements.RUN
         ][GenElements.MOD][1][
@@ -129,9 +131,9 @@ class ProCollectiner(BaseCollectiner):
         schema_root_key = self.schema.keys()[0]
         self.schema[schema_root_key][self.pro_name][GenElements.MOD][3][
             GenElements.PRO
-        ][GenElements.MOD][0][GenElements.INIT] = self.template[self.pro_type][3][
-            '{0}_{1}'.format(self.pro_type, GenElements.IO_CLASS)
-        ]
+        ][GenElements.MOD][0][GenElements.INIT] = self.template[
+            self.pro_type
+        ][3]['{0}_{1}'.format(self.pro_type, GenElements.IO_CLASS)]
         self.schema[schema_root_key][self.pro_name][GenElements.MOD][3][
             GenElements.PRO
         ][GenElements.MOD][1]['{0}.py'.format(

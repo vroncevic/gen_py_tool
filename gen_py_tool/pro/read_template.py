@@ -143,6 +143,13 @@ class ReadTemplate(FileChecking):
             if len(modules_content) == expected_num_of_templates:
                 template[pro_type] = modules_content
                 status = True
+            else:
+                error_message(
+                    ReadTemplate.GEN_VERBOSE, 'failed to load all template',
+                    template_path
+                )
+        else:
+            error_message(ReadTemplate.GEN_VERBOSE, 'template dir is not ok')
         return template, status
 
     def __str__(self):

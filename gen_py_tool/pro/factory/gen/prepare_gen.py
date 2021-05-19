@@ -53,7 +53,6 @@ class PrepareGen(ProCollectiner):
                 | GEN_VERBOSE - console text indicator for process-phase.
             :methods:
                 | __init__ - initial constructor.
-
                 | export - export formatted project schema.
                 | __str__ - dunder method for PrepareGen.
     '''
@@ -112,6 +111,10 @@ class PrepareGen(ProCollectiner):
         self.update_gen_log()
         if bool(self.schema):
             status = True
+        else:
+            error_message(
+                PrepareGen.GEN_VERBOSE, 'schema object is not ok'
+            )
         verbose_message(PrepareGen.GEN_VERBOSE, verbose, self.schema)
         return self.schema, status
 

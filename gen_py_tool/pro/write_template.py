@@ -28,6 +28,7 @@ try:
     from gen_py_tool.pro.element.element_keys import ElementKeys
     from ats_utilities.checker import ATSChecker
     from ats_utilities.config_io.base_check import FileChecking
+    from ats_utilities.console_io.error import error_message
     from ats_utilities.console_io.verbose import verbose_message
     from ats_utilities.exceptions.ats_type_error import ATSTypeError
     from ats_utilities.exceptions.ats_bad_call_error import ATSBadCallError
@@ -134,8 +135,15 @@ class WriteTemplate(FileChecking):
                     statuses.append(True)
                 else:
                     statuses.append(False)
+                    error_message(
+                        WriteTemplate.GEN_VERBOSE, 'check module', module_path
+                    )
         if all([statuses, len(statuses) == expected_num_modules]):
             status = True
+        else:
+            error_message(
+                WriteTemplate.GEN_VERBOSE, 'failed to generate all modules'
+            )
         return status
 
     def __str__(self):

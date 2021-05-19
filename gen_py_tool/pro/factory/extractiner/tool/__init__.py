@@ -27,7 +27,6 @@ try:
     from gen_py_tool.pro.element.element_keys import ElementKeys
     from gen_py_tool.pro.factory.tool.tool_elements import ToolElements
     from gen_py_tool.pro.factory.extractiner.tool.base import BaseExtractor
-    #from gen_py_tool.pro.element.element_container import ElementContainer
 except ImportError as ats_error_message:
     MESSAGE = '\n{0}\n{1}\n'.format(__file__, ats_error_message)
     sys.exit(MESSAGE)  # Force close python ATS ##############################

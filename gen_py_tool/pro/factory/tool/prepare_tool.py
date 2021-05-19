@@ -25,6 +25,7 @@ import sys
 try:
     from gen_py_tool.pro.factory.collectiner.tool import ProCollectiner
     from ats_utilities.checker import ATSChecker
+    from ats_utilities.console_io.error import error_message
     from ats_utilities.console_io.verbose import verbose_message
     from ats_utilities.exceptions.ats_type_error import ATSTypeError
     from ats_utilities.exceptions.ats_bad_call_error import ATSBadCallError
@@ -106,6 +107,8 @@ class PrepareTool(ProCollectiner):
         self.update_tool_log()
         if bool(self.schema):
             status = True
+        else:
+            error_message(PrepareTool.GEN_VERBOSE, 'schema object is not ok')
         verbose_message(PrepareTool.GEN_VERBOSE, verbose, self.schema)
         return self.schema, status
 

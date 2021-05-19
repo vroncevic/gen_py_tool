@@ -122,5 +122,6 @@ class GenFactory:
             :exceptions: None
         '''
         return '{0} ({1}, {2})'.format(
-            self.__class__.__name__, str(self.prepare_gen), str(self.deploy_gen)
+            self.__class__.__name__, str(self.prepare_gen),
+            str(self.deploy_gen)
         )

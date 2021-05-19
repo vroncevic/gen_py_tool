@@ -29,6 +29,7 @@ try:
     from gen_py_tool.pro.element.element_keys import ElementKeys
     from ats_utilities.checker import ATSChecker
     from ats_utilities.config_io.base_check import FileChecking
+    from ats_utilities.console_io.error import error_message
     from ats_utilities.console_io.verbose import verbose_message
     from ats_utilities.config_io.yaml.yaml2object import Yaml2Object
     from ats_utilities.exceptions.ats_type_error import ATSTypeError
@@ -170,11 +171,30 @@ class ElementLoader(FileChecking, ElementContainer, ElementKeys):
                                 )
                             statuses.append(True)
                         else:
+                            error_message(
+                                ElementLoader.GEN_VERBOSE,
+                                'not expected key', key
+                            )
                             statuses.append(False)
                     else:
+                        error_message(
+                            ElementLoader.GEN_VERBOSE,
+                            'element propery expected in <dict> format'
+                        )
                         statuses.append(False)
                 if all(statuses):
                     status = True
+                else:
+                    error_message(
+                        ElementLoader.GEN_VERBOSE, 'failed to process element'
+                    )
+            else:
+                error_message(
+                    ElementLoader.GEN_VERBOSE,
+                    'elements expected in <list> format'
+                )
+        else:
+            error_message(ElementLoader.GEN_VERBOSE, 'element root key not ok')
         return status
 
     def __str__(self):

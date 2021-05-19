@@ -161,7 +161,6 @@ class GenPro(FileChecking, ProConfig, ProName, ProType):
             else:
                 error_message(GenPro.GEN_VERBOSE, 'project name not ok')
             if status:
-
                 status = all([
                     bool(schema_loader), bool(element_loader),
                     bool(template_loader)
