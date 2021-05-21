@@ -129,32 +129,54 @@ gen_py_tool/
 ├── log/
 │   └── gen_py_tool.log
 ├── pro/
+│   ├── config/
+│   │   ├── __init__.py
+│   │   ├── pro_name.py
+│   │   ├── pro_selector.py
+│   │   └── pro_type.py
 │   ├── element/
-│   │   ├── element_util.py
+│   │   ├── element_container.py
+│   │   ├── element_keys.py
 │   │   └── __init__.py
 │   ├── factory/
-│   │   ├── container/
-│   │   │   └── __init__.py
+│   │   ├── collectiner/
+│   │   │   ├── gen/
+│   │   │   │   ├── base.py
+│   │   │   │   └── __init__.py
+│   │   │   ├── __init__.py
+│   │   │   └── tool/
+│   │   │       ├── base.py
+│   │   │       └── __init__.py
+│   │   ├── extractiner/
+│   │   │   ├── gen/
+│   │   │   │   ├── base.py
+│   │   │   │   └── __init__.py
+│   │   │   ├── __init__.py
+│   │   │   └── tool/
+│   │   │       ├── base.py
+│   │   │       └── __init__.py
 │   │   ├── gen/
+│   │   │   ├── deploy_gen.py
 │   │   │   ├── gen_elements.py
-│   │   │   └── __init__.py
+│   │   │   ├── __init__.py
+│   │   │   └── prepare_gen.py
 │   │   ├── __init__.py
 │   │   └── tool/
+│   │       ├── deploy_tool.py
 │   │       ├── __init__.py
+│   │       ├── prepare_tool.py
 │   │       └── tool_elements.py
 │   ├── __init__.py
+│   ├── read_template.py
 │   ├── schema/
 │   │   ├── __init__.py
-│   │   └── schema_util.py
+│   │   ├── schema_container.py
+│   │   └── schema_keys.py
 │   ├── template/
 │   │   ├── __init__.py
-│   │   └── template_util.py
-│   └── utils/
-│       ├── __init__.py
-│       ├── pro_name.py
-│       ├── pro_selector.py
-│       ├── read_template.py
-│       └── write_template.py
+│   │   ├── template_container.py
+│   │   └── template_keys.py
+│   └── write_template.py
 └── run/
     └── gen_py_tool_run.py
 ```

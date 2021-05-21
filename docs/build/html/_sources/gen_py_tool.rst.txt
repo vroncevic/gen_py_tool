@@ -1,0 +1,17 @@
+gen\_py\_tool package
+=====================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    gen_py_tool.pro
+
+Module contents
+---------------
+
+.. automodule:: gen_py_tool
+    :members:
+    :undoc-members:
+    :show-inheritance:
