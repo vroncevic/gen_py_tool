@@ -117,6 +117,8 @@ setup(
         'gen_py_tool.pro.config',
         'gen_py_tool.pro.element',
         'gen_py_tool.pro.factory',
+        'gen_py_tool.pro.factory.tool',
+        'gen_py_tool.pro.factory.gen',
         'gen_py_tool.pro.factory.collectiner',
         'gen_py_tool.pro.factory.collectiner.gen',
         'gen_py_tool.pro.factory.collectiner.tool',
