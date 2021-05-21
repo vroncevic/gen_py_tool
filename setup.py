@@ -132,33 +132,32 @@ setup(
             'conf/gen_py_tool.cfg',
             'conf/gen_py_tool_util.cfg',
             'conf/project.yaml',
-            'conf/schema_tool.yaml',
-            'conf/schema_generator.yaml',
-            'conf/element/',
-            'conf/element/',
-            'conf/schema/',
-            'conf/schema/',
-            'conf/template/',
-            'conf/template/',
-            'conf/template/editorconfig.template',
-            'conf/template/run_module.template',
-            'conf/template/tool_configuration.template',
-            'conf/template/tool_configuration_util.template',
-            'conf/template/tool_process_class.template',
-            'conf/template/generator_configuration.template',
-            'conf/template/generator_configuration_util.template',
-            'conf/template/generator_process_class.template',
-            'conf/template/generator_read_template.template',
-            'conf/template/generator_write_template.template',
-            'conf/template/run_module.template',
+            'conf/element/substitute_generator.yaml',
+            'conf/element/substitute_tool.yaml',
+            'conf/schema/schema_tool.yaml',
+            'conf/schema/schema_generator.yaml',
+            'conf/template/template_generator.yaml',
+            'conf/template/template_tool.yaml',
+            'conf/template/tool/editorconfig.template',
+            'conf/template/tool/run_tool.template',
+            'conf/template/tool/tool_configuration.template',
+            'conf/template/tool/tool_configuration_util.template',
+            'conf/template/tool/tool_name_class.template',
+            'conf/template/generator/editorconfig.template',
+            'conf/template/generator/generator_configuration.template',
+            'conf/template/generator/generator_configuration_util.template',
+            'conf/template/generator/generator_io_class.template',
+            'conf/template/generator/generator_process_class.template',
+            'conf/template/generator/generator_read_template.template',
+            'conf/template/generator/generator_test.template',
+            'conf/template/generator/generator_write_template.template',
+            'conf/template/generator/run_generator.template',
             'log/gen_py_tool.log'
         ]
     },
-    data_files=[
-        (
-            '/usr/local/bin/', [
-                '{0}{1}'.format(TOOL_DIR, 'run/gen_py_tool_run.py')
-            ]
-        )
-    ]
+    data_files=[(
+        '/usr/local/bin/', [
+            '{0}{1}'.format(TOOL_DIR, 'run/gen_py_tool_run.py')
+        ]
+    )]
 )
