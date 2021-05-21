@@ -1,0 +1,22 @@
+schema_tool:
+    tool_name:
+        type: package
+        modules:
+            - __init__.py: null
+            - .editorconfig: null
+            - run:
+                type: dir
+                modules:
+                    - tool_name_run.py: null
+                    - .editorconfig: null
+            - conf:
+                type: dir
+                modules:
+                    - tool_name.cfg: null
+                    - tool_name_util.cfg: null
+                    - .editorconfig: null
+            - log:
+                type: dir
+                modules:
+                    - tool_name.log: null
+                    - .editorconfig: null

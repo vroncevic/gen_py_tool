@@ -6,7 +6,7 @@ Subpackages
 
 .. toctree::
 
-    gen_py_tool.tool
+    gen_py_tool.pro
 
 Module contents
 ---------------

@@ -1,0 +1,12 @@
+types:
+    - tool
+    - generator
+schemas:
+    - schema_tool.yaml
+    - schema_generator.yaml
+templates:
+    - template_tool.yaml
+    - template_generator.yaml
+elements:
+    - substitute_tool.yaml
+    - substitute_generator.yaml

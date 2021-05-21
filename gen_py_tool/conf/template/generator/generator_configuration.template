@@ -1,0 +1,4 @@
+ats_name = ${TOOL_NAME}
+ats_version = v1.0.0
+ats_build_date = ${YEAR}
+ats_licence = Vladimir Roncevic GPLv3

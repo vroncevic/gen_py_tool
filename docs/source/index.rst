@@ -50,13 +50,26 @@ To install **gen_py_tool** type the following:
 .. code-block:: bash
 
     tar xvzf gen_py_tool-x.y.z.tar.gz
-    cd gen_py_tool-x.y.z/
+    cd gen_py_tool-x.y.z
+    # python2
     pip install -r requirements.txt
     python setup.py install_lib
-    python setup.py install_egg_info
     python setup.py install_data
+    python setup.py install_egg_info
+    # python3
+    pip3 install -r requirements.txt
+    python3 setup.py install_lib
+    python3 setup.py install_data
+    python3 setup.py install_egg_info
 
-You can use Docker to create image/container.
+You can use Docker to create image/container, or You can use pip to install:
+
+.. code-block:: bash
+
+    # python2
+    pip install gen-py-tool
+    # python3
+    pip3 install gen-py-tool
 
 |GitHub docker checker|
 
@@ -88,27 +101,90 @@ Code structure:
 
 .. code-block:: bash
 
-    gen_py_tool
+    gen_py_tool/
     ├── conf/
+    │   ├── element/
+    │   │   ├── substitute_generator.yaml
+    │   │   └── substitute_tool.yaml
     │   ├── gen_py_tool.cfg
     │   ├── gen_py_tool_util.cfg
+    │   ├── project.yaml
+    │   ├── schema/
+    │   │   ├── schema_generator.yaml
+    │   │   └── schema_tool.yaml
     │   └── template/
-    │       ├── editorconfig.template
-    │       ├── main_module.template
-    │       ├── tool_configuration.template
-    │       └── tool_process_class.template
+    │       ├── generator/
+    │       │   ├── editorconfig.template
+    │       │   ├── generator_configuration.template
+    │       │   ├── generator_configuration_util.template
+    │       │   ├── generator_io_class.template
+    │       │   ├── generator_process_class.template
+    │       │   ├── generator_read_template.template
+    │       │   ├── generator_test.template
+    │       │   ├── generator_write_template.template
+    │       │   └── run_generator.template
+    │       ├── template_generator.yaml
+    │       ├── template_tool.yaml
+    │       └── tool/
+    │           ├── editorconfig.template
+    │           ├── run_tool.template
+    │           ├── tool_configuration.template
+    │           ├── tool_configuration_util.template
+    │           └── tool_name_class.template
     ├── __init__.py
     ├── log/
     │   └── gen_py_tool.log
-    ├── run/
-    │   └── gen_py_tool_run.py
-    └── tool/
-        ├── format_name.py
-        ├── gen_tool.py
-        ├── __init__.py
-        ├── read_template.py
-        ├── tool_structure.py
-        └── write_template.py
+    ├── pro/
+    │   ├── config/
+    │   │   ├── __init__.py
+    │   │   ├── pro_name.py
+    │   │   ├── pro_selector.py
+    │   │   └── pro_type.py
+    │   ├── element/
+    │   │   ├── element_container.py
+    │   │   ├── element_keys.py
+    │   │   └── __init__.py
+    │   ├── factory/
+    │   │   ├── collectiner/
+    │   │   │   ├── gen/
+    │   │   │   │   ├── base.py
+    │   │   │   │   └── __init__.py
+    │   │   │   ├── __init__.py
+    │   │   │   └── tool/
+    │   │   │       ├── base.py
+    │   │   │       └── __init__.py
+    │   │   ├── extractiner/
+    │   │   │   ├── gen/
+    │   │   │   │   ├── base.py
+    │   │   │   │   └── __init__.py
+    │   │   │   ├── __init__.py
+    │   │   │   └── tool/
+    │   │   │       ├── base.py
+    │   │   │       └── __init__.py
+    │   │   ├── gen/
+    │   │   │   ├── deploy_gen.py
+    │   │   │   ├── gen_elements.py
+    │   │   │   ├── __init__.py
+    │   │   │   └── prepare_gen.py
+    │   │   ├── __init__.py
+    │   │   └── tool/
+    │   │       ├── deploy_tool.py
+    │   │       ├── __init__.py
+    │   │       ├── prepare_tool.py
+    │   │       └── tool_elements.py
+    │   ├── __init__.py
+    │   ├── read_template.py
+    │   ├── schema/
+    │   │   ├── __init__.py
+    │   │   ├── schema_container.py
+    │   │   └── schema_keys.py
+    │   ├── template/
+    │   │   ├── __init__.py
+    │   │   ├── template_container.py
+    │   │   └── template_keys.py
+    │   └── write_template.py
+    └── run/
+        └── gen_py_tool_run.py
 
 Copyright and licence
 ----------------------
@@ -121,7 +197,7 @@ Copyright and licence
 .. |License: Apache 2.0| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
    :target: https://opensource.org/licenses/Apache-2.0
 
-Copyright (C) 2018 by `vroncevic.github.io/gen_py_tool <https://vroncevic.github.io/gen_py_tool>`_
+Copyright (C) 2017 by `vroncevic.github.io/gen_py_tool <https://vroncevic.github.io/gen_py_tool>`_
 
 **gen_py_tool** is free software; you can redistribute it and/or modify
 it under the same terms as Python itself, either Python version 2.x/3.x or,
