@@ -25,6 +25,7 @@ from os.path import exists
 
 try:
     from pathlib import Path
+    from ${TOOL_NAME}.pro import Gen${TOOL_CLASS}
     from ats_utilities.logging import ATSLogger
     from ats_utilities.cli.cfg_cli import CfgCLI
     from ats_utilities.cooperative import CooperativeMeta
@@ -130,10 +131,10 @@ class ${TOOL_CLASS}(CfgCLI):
                             'generating', getattr(args, 'gen')
                         )
                     )
-                    #
-                    # Code goes here
-                    #
-                    status = True
+                    generator = Gen${TOOL_CLASS}(verbose=verbose)
+                    status = generator.gen_setup(
+                        getattr(args, 'gen'), verbose
+                    )
                     if status:
                         success_message(${TOOL_CLASS}.GEN_VERBOSE, 'done\n')
                         self.logger.write_log(
@@ -151,17 +152,17 @@ class ${TOOL_CLASS}(CfgCLI):
                         )
                 else:
                     error_message(
-                        ${TOOL_CLASS}.GEN_VERBOSE, 'provide tool/gen name'
+                        ${TOOL_CLASS}.GEN_VERBOSE, 'provide project name'
                     )
                     self.logger.write_log(
-                        'provide tool/gen name', ATSLogger.ATS_ERROR
+                        'provide project name', ATSLogger.ATS_ERROR
                     )
             else:
                 error_message(
-                    ${TOOL_CLASS}.GEN_VERBOSE, 'tool/gen already exist'
+                    ${TOOL_CLASS}.GEN_VERBOSE, 'project already exist'
                 )
                 self.logger.write_log(
-                    'tool/gen already exist', ATSLogger.ATS_ERROR
+                    'project already exist', ATSLogger.ATS_ERROR
                 )
         else:
             error_message(

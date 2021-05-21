@@ -135,9 +135,6 @@ class WriteTemplate(FileChecking):
                     statuses.append(True)
                 else:
                     statuses.append(False)
-                    error_message(
-                        WriteTemplate.GEN_VERBOSE, 'check module', module_path
-                    )
         if all([statuses, len(statuses) == expected_num_modules]):
             status = True
         else:

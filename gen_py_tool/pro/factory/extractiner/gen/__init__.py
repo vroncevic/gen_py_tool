@@ -56,6 +56,7 @@ class ProExtractor(BaseExtractor):
                 | extract_gen_run - extract gen run for project.
                 | extract_gen_conf - extract gen conf for project.
                 | extract_gen_conf_util - extract gen conf util for project.
+                | extract_gen_conf_template - extract gen template for project.
                 | extract_gen_log - extract gen log for project.
                 | extract_edit_config - extract gen edit config for project.
                 | create_package_structure - create package structure.
@@ -189,6 +190,25 @@ class ProExtractor(BaseExtractor):
         return self.schema[schema_root_key][gen_name][GenElements.MOD][4][
             GenElements.CONF
         ][GenElements.MOD][1][module_name], module_name
+
+    def extract_gen_conf_template(self):
+        '''
+            Extraction gen conf template from project schema.
+
+            :return: ini configuraiton code | None.
+            :rtype: <str>, <str> | <NoneType>, <str>
+            :exceptions: None
+        '''
+        schema_root_key = self.schema.keys()[0]
+        gen_name = self.extract_gen_name()
+        module_name = '{0}.{1}'.format(
+            GenElements.TEST, GenElements.TEMPLATE
+        )
+        return self.schema[schema_root_key][gen_name][GenElements.MOD][4][
+            GenElements.CONF
+        ][GenElements.MOD][3][GenElements.TEMPLATE][GenElements.MOD][0][
+            module_name
+        ], module_name
 
     def extract_gen_log(self):
         '''

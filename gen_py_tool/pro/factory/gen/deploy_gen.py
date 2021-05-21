@@ -137,6 +137,12 @@ class DeployGen(ProExtractor, GenElements, ElementKeys):
                 gen_name, conf_util_module
             )
         ])
+        template_content, template_module = self.extract_gen_conf_template()
+        gen_modules.append([
+            template_content, '{0}/conf/template/{1}'.format(
+                gen_name, template_module
+            )
+        ])
         gen_modules.append([
             edit_content, '{0}/conf/{1}'.format(gen_name, edit_module)
         ])

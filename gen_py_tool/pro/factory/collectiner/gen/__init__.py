@@ -195,9 +195,8 @@ class ProCollectiner(BaseCollectiner):
         )]
         self.schema[schema_root_key][self.pro_name][GenElements.MOD][4][
             GenElements.CONF
-        ][GenElements.MOD][2][GenElements._EDIT] = self.template[self.pro_type][1][
-            GenElements.EDIT
-        ]
+        ][GenElements.MOD][2][GenElements._EDIT] = self.template[
+            self.pro_type][1][GenElements.EDIT]
         self.schema[schema_root_key][self.pro_name][GenElements.MOD][4][
             GenElements.CONF
         ][GenElements.MOD][3][GenElements.TEMPLATE][GenElements.MOD][0][
