@@ -121,7 +121,7 @@ class ToolFactory:
             :rtype: <str>
             :exceptions: None
         '''
-        return '{0} ({1}, {2}, {3})'.format(
-            self.__class__.__name__, ProCollectiner.__str__(self),
-            str(self.prepare_tool), str(self.deploy_tool)
+        return '{0} ({1}, {2})'.format(
+            self.__class__.__name__, str(self.prepare_tool),
+            str(self.deploy_tool)
         )
