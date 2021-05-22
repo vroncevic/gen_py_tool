@@ -49,7 +49,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright 2017, Free software to use and distributed it.'
 __credits__ = ['Vladimir Roncevic']
 __license__ = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
-__version__ = '1.2.0'
+__version__ = '1.2.1'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -94,9 +94,9 @@ class GenPro(FileChecking, ProConfig, ProName, ProType):
             raise ATSBadCallError(error)
         verbose_message(GenPro.GEN_VERBOSE, verbose, 'init generator')
         FileChecking.__init__(self, verbose=verbose)
-        ProConfig.__init__(self)
-        ProName.__init__(self)
-        ProType.__init__(self)
+        ProConfig.__init__(self, verbose=verbose)
+        ProName.__init__(self, verbose=verbose)
+        ProType.__init__(self, verbose=verbose)
         project_structure = '{0}{1}'.format(
             Path(__file__).parent, GenPro.PRO_STRUCTURE
         )
