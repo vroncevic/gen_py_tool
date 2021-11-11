@@ -24,6 +24,7 @@ import sys
 from os.path import exists
 
 try:
+    from six import add_metaclass
     from pathlib import Path
     from gen_py_tool.pro import GenPro
     from ats_utilities.logging import ATSLogger
@@ -40,12 +41,13 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright 2017, https://vroncevic.github.io/gen_py_tool'
 __credits__ = ['Vladimir Roncevic']
 __license__ = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
-__version__ = '1.2.2'
+__version__ = '1.2.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
+@add_metaclass(CooperativeMeta)
 class GenPyTool(CfgCLI):
     '''
         Defined class GenPyTool with attribute(s) and method(s).
@@ -53,7 +55,6 @@ class GenPyTool(CfgCLI):
         It defines:
 
             :attributes:
-                | __metaclass__ - setting cooperative metaclasses.
                 | GEN_VERBOSE - console text indicator for process-phase.
                 | CONFIG - tool info file path.
                 | LOG - tool log file path.
@@ -65,7 +66,6 @@ class GenPyTool(CfgCLI):
                 | __str__ - dunder method for GenPyTool.
     '''
 
-    __metaclass__ = CooperativeMeta
     GEN_VERBOSE = 'GEN_PY_TOOL'
     CONFIG = '/conf/gen_py_tool.cfg'
     LOG = '/log/gen_py_tool.log'
