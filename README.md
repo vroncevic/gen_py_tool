@@ -32,7 +32,7 @@ other information that should be provided before the modules are installed.
 
 ![Install Python2 Package](https://github.com/vroncevic/gen_py_tool/workflows/Install%20Python2%20Package%20gen_py_tool/badge.svg?branch=master) ![Install Python3 Package](https://github.com/vroncevic/gen_py_tool/workflows/Install%20Python3%20Package%20gen_py_tool/badge.svg?branch=master)
 
-Currently there are three ways to install tool:
+Currently there are three ways to install tool
 * Install process based on pip
 * Install process based on setup.py (setuptools)
 * Install process based on docker mechanism
@@ -53,7 +53,7 @@ pip3 install gen-py-tool
 
 Navigate to **[release page](https://github.com/vroncevic/gen_py_tool/releases)** download and extract release archive.
 
-To install modules, locate and run setup.py, type the following:
+To install modules, locate and run setup.py, type the following
 ```
 tar xvzf gen_py_tool-x.y.z.tar.gz
 cd gen_py_tool-x.y.z
@@ -77,18 +77,18 @@ You can use Dockerfile to create image/container.
 
 ### Dependencies
 
-**gen_py_tool** requires next modules and libraries:
+**gen_py_tool** requires next modules and libraries
 * [ats-utilities - Python App/Tool/Script Utilities](https://pypi.org/project/ats-utilities/)
 
 ### Generation flow of py tool
 
-Base flow of generation process:
+Base flow of generation process
 
 ![alt tag](https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/gen_py_tool_flow.png)
 
 ### Tool structure
 
-**gen_py_tool** is based on OOP:
+**gen_py_tool** is based on OOP
 
 ![alt tag](https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/gen_py_tool.png)
 
@@ -101,6 +101,7 @@ gen_py_tool/
 │   │   ├── substitute_generator.yaml
 │   │   └── substitute_tool.yaml
 │   ├── gen_py_tool.cfg
+│   ├── gen_py_tool.logo
 │   ├── gen_py_tool_util.cfg
 │   ├── project.yaml
 │   ├── schema/
@@ -185,7 +186,7 @@ gen_py_tool/
 
 [![Documentation Status](https://readthedocs.org/projects/gen_py_tool/badge/?version=latest)](https://gen_py_tool.readthedocs.io/projects/gen_py_tool/en/latest/?badge=latest)
 
-More documentation and info at:
+More documentation and info at
 * [gen_py_tool.readthedocs.io](https://gen_py_tool.readthedocs.io/en/latest/)
 * [www.python.org](https://www.python.org/)
 
