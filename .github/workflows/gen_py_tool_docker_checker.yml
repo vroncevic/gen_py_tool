@@ -2,8 +2,14 @@ name: gen_py_tool docker checker
 on:
   push:
     branches: [ master ]
+    paths:
+      - 'Dockerfile'
+      - 'setup.py'
   pull_request:
     branches: [ master ]
+    paths:
+      - 'Dockerfile'
+      - 'setup.py'
 jobs:
   build:
     runs-on: ubuntu-latest

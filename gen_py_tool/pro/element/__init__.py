@@ -22,9 +22,9 @@
 
 import sys
 from time import strftime
+from os.path import dirname, realpath
 
 try:
-    from pathlib import Path
     from gen_py_tool.pro.element.element_container import ElementContainer
     from gen_py_tool.pro.element.element_keys import ElementKeys
     from ats_utilities.checker import ATSChecker
@@ -91,7 +91,7 @@ class ElementLoader(FileChecking, ElementContainer, ElementKeys):
             ElementLoader.GEN_VERBOSE, verbose, 'init element loader'
         )
         element_path = '{0}{1}{2}'.format(
-            Path(__file__).parent, ElementLoader.CONF_DIR, element_file
+            dirname(realpath(__file__)), ElementLoader.CONF_DIR, element_file
         )
         self.check_path(file_path=element_path, verbose=verbose)
         self.check_mode(file_mode='r', verbose=verbose)

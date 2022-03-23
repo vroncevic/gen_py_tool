@@ -21,9 +21,9 @@
 '''
 
 import sys
+from os.path import dirname, realpath
 
 try:
-    from pathlib import Path
     from gen_py_tool.pro.template.template_container import TemplateContainer
     from gen_py_tool.pro.template.template_keys import TemplateKeys
     from ats_utilities.checker import ATSChecker
@@ -88,7 +88,7 @@ class TemplateLoader(FileChecking, TemplateContainer, TemplateKeys):
             TemplateLoader.GEN_VERBOSE, verbose, 'init template loader'
         )
         template_path = '{0}{1}{2}'.format(
-            Path(__file__).parent, TemplateLoader.CONF_DIR, template_file
+            dirname(realpath(__file__)), TemplateLoader.CONF_DIR, template_file
         )
         self.check_path(file_path=template_path, verbose=verbose)
         self.check_mode(file_mode='r', verbose=verbose)

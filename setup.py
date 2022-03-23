@@ -131,6 +131,7 @@ setup(
     install_requires=['ats-utilities'],
     package_data = {
         'gen_py_tool': [
+            'conf/gen_py_tool.logo',
             'conf/gen_py_tool.cfg',
             'conf/gen_py_tool_util.cfg',
             'conf/project.yaml',

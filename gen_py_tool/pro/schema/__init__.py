@@ -21,9 +21,9 @@
 '''
 
 import sys
+from os.path import dirname, realpath
 
 try:
-    from pathlib import Path
     from gen_py_tool.pro.schema.schema_container import SchemaContainer
     from gen_py_tool.pro.schema.schema_keys import SchemaKeys
     from ats_utilities.checker import ATSChecker
@@ -88,7 +88,7 @@ class SchemaLoader(FileChecking, SchemaContainer, SchemaKeys):
             SchemaLoader.GEN_VERBOSE, verbose, 'init schema loader'
         )
         schema_path = '{0}{1}{2}'.format(
-            Path(__file__).parent, SchemaLoader.CONF_DIR, schema_file
+            dirname(realpath(__file__)), SchemaLoader.CONF_DIR, schema_file
         )
         self.check_path(file_path=schema_path, verbose=verbose)
         self.check_mode(file_mode='r', verbose=verbose)

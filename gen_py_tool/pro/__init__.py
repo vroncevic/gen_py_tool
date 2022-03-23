@@ -21,9 +21,9 @@
 '''
 
 import sys
+from os.path import dirname, realpath
 
 try:
-    from pathlib import Path
     from gen_py_tool.pro.config import ProConfig
     from gen_py_tool.pro.config.pro_name import ProName
     from gen_py_tool.pro.config.pro_type import ProType
@@ -98,7 +98,7 @@ class GenPro(FileChecking, ProConfig, ProName, ProType):
         ProName.__init__(self, verbose=verbose)
         ProType.__init__(self, verbose=verbose)
         project_structure = '{0}{1}'.format(
-            Path(__file__).parent, GenPro.PRO_STRUCTURE
+            dirname(realpath(__file__)), GenPro.PRO_STRUCTURE
         )
         self.check_path(file_path=project_structure, verbose=verbose)
         self.check_mode(file_mode='r', verbose=verbose)
