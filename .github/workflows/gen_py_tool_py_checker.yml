@@ -2,8 +2,14 @@ name: gen_py_tool py checker
 on:
   push:
     branches: [ master ]
+    paths:
+      - 'gen_py_tool/**'
+      - 'setup.py'
   pull_request:
     branches: [ master ]
+    paths:
+      - 'gen_py_tool/**'
+      - 'setup.py'
 jobs:
   build:
     runs-on: ubuntu-latest

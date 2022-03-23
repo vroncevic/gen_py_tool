@@ -21,10 +21,9 @@
 '''
 
 import sys
-from os.path import isdir, exists
+from os.path import isdir, exists, dirname, realpath
 
 try:
-    from pathlib import Path
     from ats_utilities.checker import ATSChecker
     from ats_utilities.console_io.error import error_message
     from ats_utilities.config_io.base_check import FileChecking
@@ -76,7 +75,7 @@ class ReadTemplate(FileChecking):
         FileChecking.__init__(self, verbose=verbose)
         verbose_message(ReadTemplate.GEN_VERBOSE, verbose, 'init reader')
         template_dir = '{0}{1}'.format(
-             Path(__file__).parent, ReadTemplate.TEMPLATE_DIR
+             dirname(realpath(__file__)), ReadTemplate.TEMPLATE_DIR
         )
         check_template_dir = isdir(template_dir)
         if check_template_dir:

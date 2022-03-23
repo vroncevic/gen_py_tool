@@ -25,7 +25,7 @@ other information that should be provided before the modules are installed.
 
 .. toctree::
    :maxdepth: 4
-   :caption: Contents:
+   :caption: Contents
 
    self
    modules
@@ -45,7 +45,7 @@ Navigate to release `page`_ download and extract release archive.
 
 .. _page: https://github.com/vroncevic/gen_py_tool/releases
 
-To install **gen_py_tool** type the following:
+To install **gen_py_tool** type the following
 
 .. code-block:: bash
 
@@ -62,7 +62,7 @@ To install **gen_py_tool** type the following:
     python3 setup.py install_data
     python3 setup.py install_egg_info
 
-You can use Docker to create image/container, or You can use pip to install:
+You can use Docker to create image/container, or You can use pip to install
 
 .. code-block:: bash
 
@@ -79,25 +79,25 @@ You can use Docker to create image/container, or You can use pip to install:
 Dependencies
 -------------
 
-**gen_py_tool** requires next modules and libraries:
+**gen_py_tool** requires next modules and libraries
 
 * `ats-utilities - Python App/Tool/Script Utilities <https://pypi.org/project/ats-utilities/>`_
 
 Generation flow of py tool
 ---------------------------
 
-Base flow of generation process:
+Base flow of generation process
 
 .. image:: https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/gen_py_tool_flow.png
 
 Tool structure
 ---------------
 
-**gen_py_tool** is based on OOP:
+**gen_py_tool** is based on OOP
 
 .. image:: https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/gen_py_tool.png
 
-Code structure:
+Code structure
 
 .. code-block:: bash
 
@@ -107,6 +107,7 @@ Code structure:
     │   │   ├── substitute_generator.yaml
     │   │   └── substitute_tool.yaml
     │   ├── gen_py_tool.cfg
+    │   ├── gen_py_tool.logo
     │   ├── gen_py_tool_util.cfg
     │   ├── project.yaml
     │   ├── schema/
