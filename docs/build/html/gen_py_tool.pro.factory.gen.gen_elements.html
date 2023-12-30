@@ -1,261 +1,126 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>gen_py_tool.pro.factory.gen.gen_elements module &mdash; gen_py_tool https://github.com/vroncevic/gen_py_tool/releases documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-    <script src="_static/js/theme.js"></script>
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>gen_py_tool.pro.factory.gen.gen_elements module &#8212; gen_py_tool https://github.com/vroncevic/gen_py_tool/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="gen_py_tool.pro.factory.gen.prepare_gen module" href="gen_py_tool.pro.factory.gen.prepare_gen.html" />
     <link rel="prev" title="gen_py_tool.pro.factory.gen.deploy_gen module" href="gen_py_tool.pro.factory.gen.deploy_gen.html" /> 
-</head>
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gen_py_tool.pro.factory.gen.prepare_gen.html" title="gen_py_tool.pro.factory.gen.prepare_gen module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="gen_py_tool.pro.factory.gen.deploy_gen.html" title="gen_py_tool.pro.factory.gen.deploy_gen module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">gen_py_tool https://github.com/vroncevic/gen_py_tool/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >gen_py_tool</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="gen_py_tool.html" >gen_py_tool package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="gen_py_tool.pro.html" >gen_py_tool.pro package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="gen_py_tool.pro.factory.html" >gen_py_tool.pro.factory package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="gen_py_tool.pro.factory.gen.html" accesskey="U">gen_py_tool.pro.factory.gen package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">gen_py_tool.pro.factory.gen.gen_elements module</a></li> 
+      </ul>
+    </div>  
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> gen_py_tool
-          </a>
-              <div class="version">
-                1.2.3
-              </div>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="index.html">Generate Python Tool</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">gen_py_tool</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="gen_py_tool.html">gen_py_tool package</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="gen_py_tool.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l4 current"><a class="reference internal" href="gen_py_tool.pro.html">gen_py_tool.pro package</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gen_py_tool.html#module-gen_py_tool">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">gen_py_tool</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">gen_py_tool</a> &raquo;</li>
-          <li><a href="gen_py_tool.html">gen_py_tool package</a> &raquo;</li>
-          <li><a href="gen_py_tool.pro.html">gen_py_tool.pro package</a> &raquo;</li>
-          <li><a href="gen_py_tool.pro.factory.html">gen_py_tool.pro.factory package</a> &raquo;</li>
-          <li><a href="gen_py_tool.pro.factory.gen.html">gen_py_tool.pro.factory.gen package</a> &raquo;</li>
-      <li>gen_py_tool.pro.factory.gen.gen_elements module</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="_sources/gen_py_tool.pro.factory.gen.gen_elements.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="module-gen_py_tool.pro.factory.gen.gen_elements">
-<span id="gen-py-tool-pro-factory-gen-gen-elements-module"></span><h1>gen_py_tool.pro.factory.gen.gen_elements module<a class="headerlink" href="#module-gen_py_tool.pro.factory.gen.gen_elements" title="Permalink to this headline"></a></h1>
-<dl class="simple">
-<dt>Module</dt><dd><p>gen_elements.py</p>
-</dd>
-<dt>Copyright</dt><dd><p>Copyright (C) 2017 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
-gen_py_tool is free software: you can redistribute it and/or modify it
-under the terms of the GNU General Public License as published by the
-Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-gen_py_tool is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU General Public License for more details.
-You should have received a copy of the GNU General Public License along
-with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
-</dd>
-<dt>Info</dt><dd><p>Defined class GenElements with attribute(s).
-Created attributes for preparing project schema for generator.</p>
-</dd>
-</dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gen_py_tool.pro.factory.gen.gen_elements.</span></span><span class="sig-name descname"><span class="pre">GenElements</span></span><a class="reference internal" href="_modules/gen_py_tool/pro/factory/gen/gen_elements.html#GenElements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Defined class GenElements with attribute(s).
-Created attributes for preparing project schema for generator.
-It defines:</p>
-<blockquote>
-<div><dl class="field-list">
-<dt class="field-odd">attributes</dt>
-<dd class="field-odd"><div class="line-block">
-<div class="line">NAME - project type for generator.</div>
-<div class="line">MOD - project type for generator.</div>
-<div class="line">INIT - project type for generator.</div>
-<div class="line">RUN - project type for generator.</div>
-<div class="line">CLASS - project type for generator.</div>
-<div class="line">EDIT - project type for generator.</div>
-<div class="line">_EDIT - project type for generator.</div>
-<div class="line">CONF - project type for generator.</div>
-<div class="line">CFG - project type for generator.</div>
-<div class="line">CONFIG - project type for generator.</div>
-<div class="line">LOG - project type for generator.</div>
-<div class="line">UTIL - project type for generator.</div>
-</div>
-</dd>
-<dt class="field-even">methods</dt>
-<dd class="field-even"><div class="line-block">
-<div class="line">None.</div>
-</div>
-</dd>
-</dl>
-</div></blockquote>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements.CFG">
-<span class="sig-name descname"><span class="pre">CFG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'cfg'</span></em><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements.CFG" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements.CLASS">
-<span class="sig-name descname"><span class="pre">CLASS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'generator_process_class'</span></em><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements.CLASS" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements.CONF">
-<span class="sig-name descname"><span class="pre">CONF</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'conf'</span></em><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements.CONF" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements.CONFIG">
-<span class="sig-name descname"><span class="pre">CONFIG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'configuration'</span></em><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements.CONFIG" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements.EDIT">
-<span class="sig-name descname"><span class="pre">EDIT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'editorconfig'</span></em><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements.EDIT" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements.INIT">
-<span class="sig-name descname"><span class="pre">INIT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__init__.py'</span></em><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements.INIT" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements.IO_CLASS">
-<span class="sig-name descname"><span class="pre">IO_CLASS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'io_class'</span></em><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements.IO_CLASS" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements.LOG">
-<span class="sig-name descname"><span class="pre">LOG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'log'</span></em><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements.LOG" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements.MOD">
-<span class="sig-name descname"><span class="pre">MOD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'modules'</span></em><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements.MOD" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements.NAME">
-<span class="sig-name descname"><span class="pre">NAME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'generator_name'</span></em><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements.NAME" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements.PRO">
-<span class="sig-name descname"><span class="pre">PRO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'pro'</span></em><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements.PRO" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements.READ">
-<span class="sig-name descname"><span class="pre">READ</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'read_template'</span></em><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements.READ" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements.RUN">
-<span class="sig-name descname"><span class="pre">RUN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'run'</span></em><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements.RUN" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements.TEMPLATE">
-<span class="sig-name descname"><span class="pre">TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'template'</span></em><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements.TEMPLATE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements.TEST">
-<span class="sig-name descname"><span class="pre">TEST</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'generator_test'</span></em><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements.TEST" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements.UTIL">
-<span class="sig-name descname"><span class="pre">UTIL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'util'</span></em><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements.UTIL" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="gen_py_tool.pro.factory.gen.gen_elements.GenElements.WRITE">
-<span class="sig-name descname"><span class="pre">WRITE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'write_template'</span></em><a class="headerlink" href="#gen_py_tool.pro.factory.gen.gen_elements.GenElements.WRITE" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="gen-py-tool-pro-factory-gen-gen-elements-module">
+<h1>gen_py_tool.pro.factory.gen.gen_elements module<a class="headerlink" href="#gen-py-tool-pro-factory-gen-gen-elements-module" title="Permalink to this heading">¶</a></h1>
 </section>
 
 
-           </div>
+            <div class="clearer"></div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="gen_py_tool.pro.factory.gen.deploy_gen.html" class="btn btn-neutral float-left" title="gen_py_tool.pro.factory.gen.deploy_gen module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="gen_py_tool.pro.factory.gen.prepare_gen.html" class="btn btn-neutral float-right" title="gen_py_tool.pro.factory.gen.prepare_gen module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2017, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
         </div>
       </div>
-    </section>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="gen_py_tool.pro.factory.gen.deploy_gen.html"
+                          title="previous chapter">gen_py_tool.pro.factory.gen.deploy_gen module</a></p>
   </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="gen_py_tool.pro.factory.gen.prepare_gen.html"
+                          title="next chapter">gen_py_tool.pro.factory.gen.prepare_gen module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/gen_py_tool.pro.factory.gen.gen_elements.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gen_py_tool.pro.factory.gen.prepare_gen.html" title="gen_py_tool.pro.factory.gen.prepare_gen module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="gen_py_tool.pro.factory.gen.deploy_gen.html" title="gen_py_tool.pro.factory.gen.deploy_gen module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">gen_py_tool https://github.com/vroncevic/gen_py_tool/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >gen_py_tool</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="gen_py_tool.html" >gen_py_tool package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="gen_py_tool.pro.html" >gen_py_tool.pro package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="gen_py_tool.pro.factory.html" >gen_py_tool.pro.factory package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="gen_py_tool.pro.factory.gen.html" >gen_py_tool.pro.factory.gen package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">gen_py_tool.pro.factory.gen.gen_elements module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
 </html>
