@@ -1,156 +1,168 @@
 # -*- coding: UTF-8 -*-
 
 '''
- Module
-     write_template.py
- Copyright
-     Copyright (C) 2017 Vladimir Roncevic <elektron.ronca@gmail.com>
-     gen_py_tool is free software: you can redistribute it and/or modify it
-     under the terms of the GNU General Public License as published by the
-     Free Software Foundation, either version 3 of the License, or
-     (at your option) any later version.
-     gen_py_tool is distributed in the hope that it will be useful, but
-     WITHOUT ANY WARRANTY; without even the implied warranty of
-     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-     See the GNU General Public License for more details.
-     You should have received a copy of the GNU General Public License along
-     with this program. If not, see <http://www.gnu.org/licenses/>.
- Info
-     Defined class WriteTemplate with attribute(s) and method(s).
-     Created API for writing a template content with parameters to a file.
+Module
+    write_template.py
+Copyright
+    Copyright (C) 2017 - 2024 Vladimir Roncevic <elektron.ronca@gmail.com>
+    gen_py_tool is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    gen_py_tool is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+    See the GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License along
+    with this program. If not, see <http://www.gnu.org/licenses/>.
+Info
+    Defines class WriteTemplate with attribute(s) and method(s).
+    Creates an API for writing source and build modules.
 '''
 
 import sys
-from os import chmod, getcwd
+from typing import List, Dict
+from datetime import date
+from os import getcwd, chmod, mkdir
+from os.path import exists
 from string import Template
 
 try:
-    from gen_py_tool.pro.element.element_keys import ElementKeys
-    from ats_utilities.checker import ATSChecker
-    from ats_utilities.config_io.base_check import FileChecking
-    from ats_utilities.console_io.error import error_message
+    from ats_utilities.config_io.file_check import FileCheck
     from ats_utilities.console_io.verbose import verbose_message
     from ats_utilities.exceptions.ats_type_error import ATSTypeError
-    from ats_utilities.exceptions.ats_bad_call_error import ATSBadCallError
+    from ats_utilities.exceptions.ats_value_error import ATSValueError
 except ImportError as ats_error_message:
-    MESSAGE = '\n{0}\n{1}\n'.format(__file__, ats_error_message)
-    sys.exit(MESSAGE)  # Force close python ATS ##############################
+    # Force close python ATS ##################################################
+    sys.exit(f'\n{__file__}\n{ats_error_message}\n')
 
 __author__ = 'Vladimir Roncevic'
-__copyright__ = 'Copyright 2017, https://vroncevic.github.io/gen_py_tool'
-__credits__ = ['Vladimir Roncevic']
+__copyright__ = '(C) 2024, https://vroncevic.github.io/gen_py_tool'
+__credits__: List[str] = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
-__version__ = '1.2.3'
+__version__ = '1.3.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class WriteTemplate(FileChecking):
+class WriteTemplate(FileCheck):
     '''
-        Defined class WriteTemplate with attribute(s) and method(s).
-        Created API for writing a template content with parameters to a file.
+        Defines class WriteTemplate with attribute(s) and method(s).
+        Creates an API for writing source and build modules.
+
         It defines:
 
             :attributes:
-                | GEN_VERBOSE - console text indicator for process-phase.
+                | _GEN_VERBOSE - Console text indicator for process-phase.
             :methods:
-                | __init__ - initial constructor.
-                | write - write templates content with parameters to modules.
-                | __str__ - dunder method for WriteTemplate.
+                | __init__ - Initials WriteTemplate constructor.
+                | write - Writes a templates with parameters.
     '''
 
-    GEN_VERBOSE = 'GEN_PY_TOOL::PRO::WRITE_TEMPLATE'
+    _GEN_VERBOSE: str = 'GEN_PY_TOOL::PRO::WRITE_TEMPLATE'
 
-    def __init__(self, verbose=False):
+    def __init__(self, verbose: bool = False) -> None:
         '''
-            Initial constructor.
+            Initials WriteTemplate constructor.
 
-            :param verbose: enable/disable verbose option.
+            :param verbose: Enable/Disable verbose option
             :type verbose: <bool>
             :exceptions: None
         '''
-        FileChecking.__init__(self, verbose=verbose)
-        verbose_message(WriteTemplate.GEN_VERBOSE, verbose, 'init writer')
+        super().__init__(verbose)
+        verbose_message(verbose, [f'{self._GEN_VERBOSE.lower()} init writer'])
 
-    def write(self, element, modules, verbose=False):
+    def write(
+        self,
+        templates: List[Dict[str, str]],
+        pro_name: str | None,
+        verbose: bool = False
+    ) -> bool:
         '''
-            Write templates content with parameters to modules.
+            Writes a templates with parameters.
 
-            :param element: processes element.
-            :type element: <dict>
-            :param modules: modules for tool/generator.
-            :type modules: <list>
-            :param verbose: enable/disable verbose option.
+            :param templates: Templates with params
+            :type templates: <List[Dict[str, str]]>
+            :param pro_name: Project name | None
+            :type pro_name: <str> | <NoneType>
+            :param verbose: Enable/Disable verbose option
             :type verbose: <bool>
-            :return: boolean status, True (success) | False.
+            :return: True (success operation) | False
             :rtype: <bool>
-            :exceptions: ATSTypeError | ATSBadCallError
+            :exceptions: ATSTypeError | ATSValueError
         '''
-        checker, error, status = ATSChecker(), None, False
-        error, status = checker.check_params([
-            ('dict:element', element), ('list:modules', modules)
+        error_msg: str | None = None
+        error_id: int | None = None
+        error_msg, error_id = self.check_params([
+            ('list:templates', templates), ('str:pro_name', pro_name)
         ])
-        if status == ATSChecker.TYPE_ERROR:
-            raise ATSTypeError(error)
-        if status == ATSChecker.VALUE_ERROR:
-            raise ATSBadCallError(error)
-        status, statuses, expected_num_modules = False, [], len(modules[1:])
-        for template_content in modules[1:]:
-            template = Template(template_content[0])
-            module_content = template.substitute({
-                ElementKeys.TOOL_NAME_KEY: '{0}'.format(
-                    element[ElementKeys.ROOT_KEY][0][
-                        ElementKeys.TOOL_NAME_KEY
-                    ]
-                ),
-                ElementKeys.TOOL_UPPER_KEY:'{0}'.format(
-                    element[ElementKeys.ROOT_KEY][1][
-                        ElementKeys.TOOL_UPPER_KEY
-                    ]
-                ),
-                ElementKeys.TOOL_CLASS_KEY:'{0}'.format(
-                    element[ElementKeys.ROOT_KEY][2][
-                        ElementKeys.TOOL_CLASS_KEY
-                    ]
-                ),
-                ElementKeys.TOOL_YEAR_KEY:'{0}'.format(
-                    element[ElementKeys.ROOT_KEY][3][
-                        ElementKeys.TOOL_YEAR_KEY
-                    ]
-                )
-            })
-            module_path = '{0}/{1}'.format(getcwd(), template_content[1])
-            module_extension = module_path.split('.')[1]
-            with open(module_path, 'w') as module_file:
+        if error_id == self.TYPE_ERROR:
+            raise ATSTypeError(error_msg)
+        if not bool(templates):
+            raise ATSValueError('missing templates')
+        all_stat: List[bool] = []
+        pro_dir: str = f'{getcwd()}/{pro_name}/'
+        conf_dir: str = f'{getcwd()}/{pro_name}/conf/'
+        tmp_dir: str = f'{getcwd()}/{pro_name}/conf/template/'
+        run_dir: str = f'{getcwd()}/{pro_name}/run/'
+        log_dir: str = f'{getcwd()}/{pro_name}/log/'
+        gen_dir: str = f'{getcwd()}/{pro_name}/pro/'
+        num_of_modules: int = len(templates)
+        if not exists(pro_dir):
+            mkdir(pro_dir)
+            mkdir(gen_dir)
+            mkdir(conf_dir)
+            mkdir(tmp_dir)
+            mkdir(run_dir)
+            mkdir(log_dir)
+        for template_content in templates:
+            module_name: str = list(template_content.keys())[0]
+            module_path: str = f'{pro_dir}{module_name}'
+            if 'cfg' in module_name:
+                module_path = f'{conf_dir}{module_name}'
+            if 'run' in module_name:
+                module_path = f'{run_dir}{module_name}'
+            if 'logo' in module_name:
+                module_path = f'{conf_dir}{module_name}'
+            if 'log' in module_name and 'logo' not in module_name:
+                module_path = f'{log_dir}{module_name}'
+            if 'test' in module_name:
+                module_path = f'{tmp_dir}{module_name}'
+            if 'pro' in module_name:
+                module_path = f'{gen_dir}__init__.py'
+            if 'project.yaml' in module_name:
+                module_path = f'{conf_dir}{module_name}'
+            if 'read_template' in module_name:
+                module_path = f'{gen_dir}{module_name}'
+            if 'write_template' in module_name:
+                module_path = f'{gen_dir}{module_name}'
+            template: Template = Template(template_content[module_name])
+            template_path: Template = Template(module_path)
+            module_path = template_path.substitute({'PRO_NAME': f'{pro_name}'})
+            if exists(module_path):
+                raise FileExistsError(f'{module_path} already exists')
+            with open(module_path, 'w', encoding='utf-8') as module_file:
+                module_content: str = template.substitute({
+                    'PRO_NAME': f'{pro_name}',
+                    'PRO_NAME_CLASS': f'{pro_name}'.format().capitalize(),
+                    'PRO_NAME_UPPER': f'{pro_name}'.format().upper(),
+                    'PRO_NAME_GEN': f'{pro_name}'.format().capitalize() + 'Gen',
+                    'PRO_NAME_GEN_UPPER': f'{pro_name}Gen'.format().upper(),
+                    'DATE': f'{str(date.today())}',
+                    'YEAR': f'{str(date.today().year)}'
+                })
                 module_file.write(module_content)
                 chmod(module_path, 0o666)
-                self.check_path(file_path=module_path, verbose=verbose)
-                self.check_mode(file_mode='w', verbose=verbose)
+                self.check_path(module_path, verbose)
+                self.check_mode('w', verbose)
                 self.check_format(
-                    file_path=module_path, file_format=module_extension,
-                    verbose=verbose
+                    module_path, module_path.split('.')[1], verbose
                 )
                 if self.is_file_ok():
-                    statuses.append(True)
+                    all_stat.append(True)
                 else:
-                    statuses.append(False)
-        if all([statuses, len(statuses) == expected_num_modules]):
-            status = True
-        else:
-            error_message(
-                WriteTemplate.GEN_VERBOSE, 'failed to generate all modules'
-            )
-        return status
-
-    def __str__(self):
-        '''
-            Dunder method for WriteTemplate.
-
-            :return: object in a human-readable format.
-            :rtype: <str>
-            :exceptions: None
-        '''
-        return '{0} ({1})'.format(
-            self.__class__.__name__, FileChecking.__str__(self)
-        )
+                    all_stat.append(False)
+        return all([
+            bool(all_stat), all(all_stat), len(all_stat) == num_of_modules
+        ])

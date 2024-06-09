@@ -1,12 +1,49 @@
-types:
-    - tool
-    - generator
-schemas:
-    - schema_tool.yaml
-    - schema_generator.yaml
 templates:
-    - template_tool.yaml
-    - template_generator.yaml
-elements:
-    - substitute_tool.yaml
-    - substitute_generator.yaml
+
+  - tool:
+      - editorconfig.template
+      - tool_class.template
+      - tool_run.template
+      - tool_config.template
+      - tool_config_util.template
+      - tool_logo.template
+      - tool_log.template
+
+  - gen:
+      - editorconfig.template
+      - gen_class.template
+      - gen_pro_class.template
+      - gen_read_template.template
+      - gen_write_template.template
+      - gen_run.template
+      - gen_config.template
+      - gen_config_util.template
+      - gen_logo.template
+      - gen_pro_yaml.template
+      - gen_log.template
+      - test.template
+
+modules:
+
+  - tool:
+      - .editorconfig
+      - __init__.py
+      - ${PRO_NAME}_run.py
+      - ${PRO_NAME}.cfg
+      - ${PRO_NAME}_util.cfg
+      - ${PRO_NAME}.logo
+      - ${PRO_NAME}.log
+
+  - gen:
+      - .editorconfig
+      - __init__.py
+      - __init__pro.py
+      - read_template.py
+      - write_template.py
+      - ${PRO_NAME}_run.py
+      - ${PRO_NAME}.cfg
+      - ${PRO_NAME}_util.cfg
+      - ${PRO_NAME}.logo
+      - project.yaml
+      - ${PRO_NAME}.log
+      - test.template
