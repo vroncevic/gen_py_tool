@@ -4,26 +4,26 @@
 Module
     __init__.py
 Copyright
-    Copyright (C) 2017 - 2024 Vladimir Roncevic <elektron.ronca@gmail.com>
-    gen_py_tool is free software: you can redistribute it and/or modify it
-    under the terms of the GNU General Public License as published by the
+    Copyright (C) 2024 Vladimir Roncevic <elektron.ronca@gmail.com>
+    mytool is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by the
     Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
-    gen_py_tool is distributed in the hope that it will be useful, but
+    mytool is distributed in the hope that it will be useful, but
     WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
     See the GNU General Public License for more details.
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Defines class GenPyTool with attribute(s) and method(s).
+    Defines class Mytool with attribute(s) and method(s).
     Loads a base info, creates a CLI interface and run operations.
 '''
 
 import sys
-from typing import Any, List, Dict
-from os.path import exists, dirname, realpath
+from typing import Any, Dict, List
 from os import getcwd
+from os.path import exists, dirname, realpath
 from argparse import Namespace
 
 try:
@@ -35,24 +35,23 @@ try:
     from ats_utilities.console_io.success import success_message
     from ats_utilities.exceptions.ats_type_error import ATSTypeError
     from ats_utilities.exceptions.ats_value_error import ATSValueError
-    from gen_py_tool.pro import GenPro
 except ImportError as ats_error_message:
     # Force close python ATS ##################################################
     sys.exit(f'\n{__file__}\n{ats_error_message}\n')
 
 __author__ = 'Vladimir Roncevic'
-__copyright__ = 'Copyright 2024, https://vroncevic.github.io/gen_py_tool'
+__copyright__ = '(C) 2024, https://vroncevic.github.io/mytool'
 __credits__: List[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__ = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
-__version__ = '1.3.3'
+__license__ = 'https://github.com/vroncevic/mytool/blob/dev/LICENSE'
+__version__ = '1.0.0'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class GenPyTool(CfgCLI):
+class Mytool(CfgCLI):
     '''
-        Defines class GenPyTool with attribute(s) and method(s).
+        Defines class Mytool with attribute(s) and method(s).
         Loads a base info, creates a CLI interface and run operations.
 
         It defines:
@@ -65,33 +64,33 @@ class GenPyTool(CfgCLI):
                 | _OPS - List of tool options.
                 | _logger - Logger object API.
             :methods:
-                | __init__ - Initials GenPyTool constructor.
-                | process - Processes and runs operations.
+                | __init__ - Initials Mytool constructor.
+                | process - Processes and runs tool operation.
     '''
 
-    _GEN_VERBOSE: str = 'GEN_PY_TOOL'
-    _CONFIG: str = '/conf/gen_py_tool.cfg'
-    _LOG: str = '/log/gen_py_tool.log'
-    _LOGO: str = '/conf/gen_py_tool.logo'
-    _OPS: List[str] = ['-n', '--name', '-t', '--type', '-v', '--verbose']
+    _GEN_VERBOSE: str = 'MYTOOL'
+    _CONFIG: str = '/conf/mytool.cfg'
+    _LOG: str = '/log/mytool.log'
+    _LOGO: str = '/conf/mytool.logo'
+    _OPS: List[str] = ['-o', '--opt', '-v', '--verbose', '--version']
 
     def __init__(self, verbose: bool = False) -> None:
         '''
-            Initials GenPyTool constructor.
+            Initials Mytool constructor.
 
             :param verbose: Enable/Disable verbose option
             :type verbose: <bool>
             :exceptions: None
         '''
         current_dir: str = dirname(realpath(__file__))
-        gen_py_tool_property: Dict[str, str | bool] = {
+        mytool_property: Dict[str, str | bool] = {
             'ats_organization': 'vroncevic',
             'ats_repository': f'{self._GEN_VERBOSE.lower()}',
             'ats_name': f'{self._GEN_VERBOSE.lower()}',
             'ats_logo_path': f'{current_dir}{self._LOGO}',
             'ats_use_github_infrastructure': True
         }
-        Splash(gen_py_tool_property, verbose)
+        Splash(mytool_property, verbose)
         base_info: str = f'{current_dir}{self._CONFIG}'
         super().__init__(base_info, verbose)
         verbose_message(
@@ -102,22 +101,20 @@ class GenPyTool(CfgCLI):
         )
         if self.tool_operational:
             self.add_new_option(
-                self._OPS[0], self._OPS[1], dest='name',
-                help='generate project (provide name)'
+                self._OPS[0], self._OPS[1], dest='opt',
+                help='option'
             )
             self.add_new_option(
-                self._OPS[2], self._OPS[3], dest='type',
-                help='set type of project (tool | gen)'
+                self._OPS[2], self._OPS[3], action='store_true',
+                default=False, help='activate verbose mode for tool'
             )
             self.add_new_option(
-                self._OPS[4], self._OPS[5],
-                action='store_true', default=False,
-                help='activate verbose mode for generation'
+                self._OPS[4], action='version', version=__version__
             )
 
     def process(self, verbose: bool = False) -> bool:
         '''
-            Processes and runs operations.
+            Processes and runs tool operation.
 
             :param verbose: Enable/Disable verbose option
             :type verbose: <bool>
@@ -127,52 +124,40 @@ class GenPyTool(CfgCLI):
         '''
         status: bool = False
         if self.tool_operational:
-            args: Any | Namespace = self.parse_args(sys.argv)
-            if not bool(getattr(args, 'name')):
-                error_message(
-                    [f'{self._GEN_VERBOSE.lower()} missing name argument']
-                )
-                return status
-            if not bool(getattr(args, 'type')):
-                error_message(
-                    [f'{self._GEN_VERBOSE.lower()} missing type argument']
-                )
-                return status
-            if exists(f'{getcwd()}/{str(getattr(args, "name"))}'):
-                error_message([
-                    f'{self._GEN_VERBOSE.lower()}',
-                    f'project with name [{getattr(args, "name")}] exists'
-                ])
-                return status
-            generator: GenPro = GenPro(getattr(args, 'verbose') or verbose)
-            try:
-                print(
-                    " ".join([
-                        f'[{self._GEN_VERBOSE.lower()}]',
-                        'generate tool/generator project skeleton',
-                        str(getattr(args, 'name')),
-                        str(getattr(args, 'type'))
-                    ])
-                )
-                status: bool = generator.gen_pro(
-                    str(getattr(args, 'name')),
-                    str(getattr(args, 'type')),
-                    getattr(args, 'verbose') or verbose
-                )
-            except (ATSTypeError, ATSValueError) as e:
-                error_message([f'{self._GEN_VERBOSE.lower()} {str(e)}'])
-                self._logger.write_log(f'{str(e)}', self._logger.ATS_ERROR)
-            if status:
-                success_message([f'{self._GEN_VERBOSE.lower()} done\n'])
-                self._logger.write_log(
-                    f'generation project {getattr(args, "name")} done',
-                    self._logger.ATS_INFO
-                )
+            if len(sys.argv) >= 3:
+                options: List[str] = [
+                    arg for i, arg in enumerate(sys.argv) if i % 2 != 0
+                ]
+                if any(arg not in self._OPS for arg in options[1:]):
+                    error_message(
+                        [
+                            f'{self._GEN_VERBOSE.lower()}',
+                            'provide option (-o option)'
+                        ]
+                    )
+                    self._logger.write_log(
+                        'missing option', self._logger.ATS_ERROR
+                    )
+                    return status
             else:
-                error_message([f'{self._GEN_VERBOSE.lower()} failed'])
-                self._logger.write_log(
-                    'generation failed', self._logger.ATS_ERROR
+                error_message(
+                    [
+                        f'{self._GEN_VERBOSE.lower()}',
+                        'provide option (-o option)'
+                    ]
                 )
+                self._logger.write_log(
+                    'missing option', self._logger.ATS_ERROR
+                )
+                return status
+            args: Any | Namespace = self.parse_args(sys.argv[1:])
+            success_message(
+                [f'{self._GEN_VERBOSE.lower()} {str(getattr(args, "opt"))}\n']
+            )
+            self._logger.write_log(
+                f'process option {getattr(args, "opt")} done',
+                self._logger.ATS_INFO
+            )
         else:
             error_message(
                 [f'{self._GEN_VERBOSE.lower()} tool is not operational']
