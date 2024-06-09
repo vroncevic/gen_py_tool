@@ -102,106 +102,52 @@ You can use Dockerfile to create image/container.
 
 * [ats-utilities - Python App/Tool/Script Utilities](https://pypi.org/project/ats-utilities/)
 
-### Generation flow of py tool
-
-Base flow of generation process
-
-![alt tag](https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/gen_py_tool_flow.png)
-
 ### Tool structure
 
 **gen_py_tool** is based on OOP
 
-![alt tag](https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/gen_py_tool.png)
+Generator structure
 
-Generator structure:
-
-```
-gen_py_tool/
-├── conf/
-│   ├── element/
-│   │   ├── substitute_generator.yaml
-│   │   └── substitute_tool.yaml
-│   ├── gen_py_tool.cfg
-│   ├── gen_py_tool.logo
-│   ├── gen_py_tool_util.cfg
-│   ├── project.yaml
-│   ├── schema/
-│   │   ├── schema_generator.yaml
-│   │   └── schema_tool.yaml
-│   └── template/
-│       ├── generator/
-│       │   ├── editorconfig.template
-│       │   ├── generator_configuration.template
-│       │   ├── generator_configuration_util.template
-│       │   ├── generator_io_class.template
-│       │   ├── generator_process_class.template
-│       │   ├── generator_read_template.template
-│       │   ├── generator_test.template
-│       │   ├── generator_write_template.template
-│       │   └── run_generator.template
-│       ├── template_generator.yaml
-│       ├── template_tool.yaml
-│       └── tool/
-│           ├── editorconfig.template
-│           ├── run_tool.template
-│           ├── tool_configuration.template
-│           ├── tool_configuration_util.template
-│           └── tool_name_class.template
-├── __init__.py
-├── log/
-│   └── gen_py_tool.log
-├── pro/
-│   ├── config/
-│   │   ├── __init__.py
-│   │   ├── pro_name.py
-│   │   ├── pro_selector.py
-│   │   └── pro_type.py
-│   ├── element/
-│   │   ├── element_container.py
-│   │   ├── element_keys.py
-│   │   └── __init__.py
-│   ├── factory/
-│   │   ├── collectiner/
-│   │   │   ├── gen/
-│   │   │   │   ├── base.py
-│   │   │   │   └── __init__.py
-│   │   │   ├── __init__.py
-│   │   │   └── tool/
-│   │   │       ├── base.py
-│   │   │       └── __init__.py
-│   │   ├── extractiner/
-│   │   │   ├── gen/
-│   │   │   │   ├── base.py
-│   │   │   │   └── __init__.py
-│   │   │   ├── __init__.py
-│   │   │   └── tool/
-│   │   │       ├── base.py
-│   │   │       └── __init__.py
-│   │   ├── gen/
-│   │   │   ├── deploy_gen.py
-│   │   │   ├── gen_elements.py
-│   │   │   ├── __init__.py
-│   │   │   └── prepare_gen.py
-│   │   ├── __init__.py
-│   │   └── tool/
-│   │       ├── deploy_tool.py
-│   │       ├── __init__.py
-│   │       ├── prepare_tool.py
-│   │       └── tool_elements.py
-│   ├── __init__.py
-│   ├── read_template.py
-│   ├── schema/
-│   │   ├── __init__.py
-│   │   ├── schema_container.py
-│   │   └── schema_keys.py
-│   ├── template/
-│   │   ├── __init__.py
-│   │   ├── template_container.py
-│   │   └── template_keys.py
-│   └── write_template.py
-└── run/
-    └── gen_py_tool_run.py
+```bash
+    gen_py_tool/
+       ├── conf/
+       │   ├── gen_py_tool.cfg
+       │   ├── gen_py_tool.logo
+       │   ├── gen_py_tool_util.cfg
+       │   ├── project.yaml
+       │   └── template/
+       │       ├── gen/
+       │       │   ├── editorconfig.template
+       │       │   ├── gen_class.template
+       │       │   ├── gen_config.template
+       │       │   ├── gen_config_util.template
+       │       │   ├── gen_logo.template
+       │       │   ├── gen_log.template
+       │       │   ├── gen_pro_class.template
+       │       │   ├── gen_project_yaml.template
+       │       │   ├── gen_pro_yaml.template
+       │       │   ├── gen_read_template.template
+       │       │   ├── gen_run.template
+       │       │   ├── gen_write_template.template
+       │       │   └── test.template
+       │       └── tool/
+       │           ├── editorconfig.template
+       │           ├── tool_class.template
+       │           ├── tool_config.template
+       │           ├── tool_config_util.template
+       │           ├── tool_logo.template
+       │           ├── tool_log.template
+       │           └── tool_run.template
+       ├── __init__.py
+       ├── log/
+       │   └── gen_py_tool.log
+       ├── pro/
+       │   ├── __init__.py
+       │   ├── read_template.py
+       │   └── write_template.py
+       ├── py.typed
+       └── run/
+           └── gen_py_tool_run.py
 ```
 
 ### Docs
