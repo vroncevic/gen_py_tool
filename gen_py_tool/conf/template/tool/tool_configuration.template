@@ -1,4 +1,0 @@
-ats_name = ${TOOL_NAME}
-ats_version = v1.0.0
-ats_build_date = ${YEAR}
-ats_licence = https://github.com/vroncevic/${TOOL_NAME}/blob/dev/LICENSE

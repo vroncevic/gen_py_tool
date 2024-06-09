@@ -9,19 +9,22 @@ The README is used to introduce the modules and provide instructions on
 how to install the modules, any machine dependencies it may have and any
 other information that should be provided before the modules are installed.
 
-|Python package| |GitHub issues| |Documentation Status| |GitHub contributors|
+|gen_py_tool python checker| |gen_py_tool python package| |github issues| |documentation status| |github contributors|
 
-.. |Python package| image:: https://github.com/vroncevic/gen_py_tool/workflows/Python%20package%20gen_py_tool/badge.svg
-   :target: https://github.com/vroncevic/gen_py_tool/workflows/Python%20package/badge.svg?branch=master
+.. |gen_py_tool python checker| image:: https://github.com/vroncevic/gen_py_tool/actions/workflows/gen_py_tool_python_checker.yml/badge.svg
+   :target: https://github.com/vroncevic/gen_py_tool/actions/workflows/gen_py_tool_python_checker.yml
 
-.. |GitHub issues| image:: https://img.shields.io/github/issues/vroncevic/gen_py_tool.svg
+.. |gen_py_tool python package| image:: https://github.com/vroncevic/gen_py_tool/actions/workflows/gen_py_tool_package_checker.yml/badge.svg
+   :target: https://github.com/vroncevic/gen_py_tool/actions/workflows/gen_py_tool_package.yml
+
+.. |github issues| image:: https://img.shields.io/github/issues/vroncevic/gen_py_tool.svg
    :target: https://github.com/vroncevic/gen_py_tool/issues
 
-.. |GitHub contributors| image:: https://img.shields.io/github/contributors/vroncevic/gen_py_tool.svg
+.. |github contributors| image:: https://img.shields.io/github/contributors/vroncevic/gen_py_tool.svg
    :target: https://github.com/vroncevic/gen_py_tool/graphs/contributors
 
-.. |Documentation Status| image:: https://readthedocs.org/projects/gen_py_tool/badge/?version=latest
-   :target: https://gen_py_tool.readthedocs.io/projects/gen_py_tool/en/latest/?badge=latest
+.. |documentation status| image:: https://readthedocs.org/projects/gen_py_tool/badge/?version=latest
+   :target: https://gen_py_tool.readthedocs.io/en/latest/?badge=latest
 
 .. toctree::
    :maxdepth: 4
@@ -33,13 +36,10 @@ other information that should be provided before the modules are installed.
 Installation
 -------------
 
-|Install Python2 Package| |Install Python3 Package|
+|gen_py_tool python3 build|
 
-.. |Install Python2 Package| image:: https://github.com/vroncevic/gen_py_tool/workflows/Install%20Python2%20Package%20gen_py_tool/badge.svg
-   :target: https://github.com/vroncevic/gen_py_tool/workflows/Install%20Python2%20Package%20gen_py_tool/badge.svg?branch=master
-
-.. |Install Python3 Package| image:: https://github.com/vroncevic/gen_py_tool/workflows/Install%20Python3%20Package%20gen_py_tool/badge.svg
-   :target: https://github.com/vroncevic/gen_py_tool/workflows/Install%20Python3%20Package%20gen_py_tool/badge.svg?branch=master
+.. |gen_py_tool python3 build| image:: https://github.com/vroncevic/gen_py_tool/actions/workflows/gen_py_tool_python3_build.yml/badge.svg
+   :target: https://github.com/vroncevic/gen_py_tool/actions/workflows/gen_py_tool_python3_build.yml
 
 Navigate to release `page`_ download and extract release archive.
 
@@ -50,31 +50,26 @@ To install **gen_py_tool** type the following
 .. code-block:: bash
 
     tar xvzf gen_py_tool-x.y.z.tar.gz
-    cd gen_py_tool-x.y.z
-    # python2
-    pip install -r requirements.txt
-    python setup.py install_lib
-    python setup.py install_data
-    python setup.py install_egg_info
+    cd gen_py_tool-x.y.z/
     # python3
+    wget https://bootstrap.pypa.io/get-pip.py
+    python3 get-pip.py 
+    python3 -m pip install --upgrade setuptools
+    python3 -m pip install --upgrade pip
+    python3 -m pip install --upgrade build
     pip3 install -r requirements.txt
-    python3 setup.py install_lib
-    python3 setup.py install_data
-    python3 setup.py install_egg_info
+    python3 -m build --no-isolation --wheel
+    pip3 install ./dist/gen_py_tool-*-py3-none-any.whl
+    rm -f get-pip.py
+    chmod 755 /usr/local/lib/python3.10/dist-packages/usr/local/bin/gen_py_tool_run.py
+    ln -s /usr/local/lib/python3.10/dist-packages/usr/local/bin/gen_py_tool_run.py /usr/local/bin/gen_py_tool_run.py
 
 You can use Docker to create image/container, or You can use pip to install
 
 .. code-block:: bash
 
-    # python2
-    pip install gen-py-tool
-    # python3
-    pip3 install gen-py-tool
-
-|GitHub docker checker|
-
-.. |GitHub docker checker| image:: https://github.com/vroncevic/gen_py_tool/workflows/gen_py_tool%20docker%20checker/badge.svg
-   :target: https://github.com/vroncevic/gen_py_tool/actions?query=workflow%3A%22gen_py_tool+docker+checker%22
+    # pyton3
+    pip3 install gen_py_tool
 
 Dependencies
 -------------
@@ -83,109 +78,56 @@ Dependencies
 
 * `ats-utilities - Python App/Tool/Script Utilities <https://pypi.org/project/ats-utilities/>`_
 
-Generation flow of py tool
----------------------------
-
-Base flow of generation process
-
-.. image:: https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/gen_py_tool_flow.png
-
 Tool structure
 ---------------
 
 **gen_py_tool** is based on OOP
-
-.. image:: https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/gen_py_tool.png
 
 Code structure
 
 .. code-block:: bash
 
     gen_py_tool/
-    ├── conf/
-    │   ├── element/
-    │   │   ├── substitute_generator.yaml
-    │   │   └── substitute_tool.yaml
-    │   ├── gen_py_tool.cfg
-    │   ├── gen_py_tool.logo
-    │   ├── gen_py_tool_util.cfg
-    │   ├── project.yaml
-    │   ├── schema/
-    │   │   ├── schema_generator.yaml
-    │   │   └── schema_tool.yaml
-    │   └── template/
-    │       ├── generator/
-    │       │   ├── editorconfig.template
-    │       │   ├── generator_configuration.template
-    │       │   ├── generator_configuration_util.template
-    │       │   ├── generator_io_class.template
-    │       │   ├── generator_process_class.template
-    │       │   ├── generator_read_template.template
-    │       │   ├── generator_test.template
-    │       │   ├── generator_write_template.template
-    │       │   └── run_generator.template
-    │       ├── template_generator.yaml
-    │       ├── template_tool.yaml
-    │       └── tool/
-    │           ├── editorconfig.template
-    │           ├── run_tool.template
-    │           ├── tool_configuration.template
-    │           ├── tool_configuration_util.template
-    │           └── tool_name_class.template
-    ├── __init__.py
-    ├── log/
-    │   └── gen_py_tool.log
-    ├── pro/
-    │   ├── config/
-    │   │   ├── __init__.py
-    │   │   ├── pro_name.py
-    │   │   ├── pro_selector.py
-    │   │   └── pro_type.py
-    │   ├── element/
-    │   │   ├── element_container.py
-    │   │   ├── element_keys.py
-    │   │   └── __init__.py
-    │   ├── factory/
-    │   │   ├── collectiner/
-    │   │   │   ├── gen/
-    │   │   │   │   ├── base.py
-    │   │   │   │   └── __init__.py
-    │   │   │   ├── __init__.py
-    │   │   │   └── tool/
-    │   │   │       ├── base.py
-    │   │   │       └── __init__.py
-    │   │   ├── extractiner/
-    │   │   │   ├── gen/
-    │   │   │   │   ├── base.py
-    │   │   │   │   └── __init__.py
-    │   │   │   ├── __init__.py
-    │   │   │   └── tool/
-    │   │   │       ├── base.py
-    │   │   │       └── __init__.py
-    │   │   ├── gen/
-    │   │   │   ├── deploy_gen.py
-    │   │   │   ├── gen_elements.py
-    │   │   │   ├── __init__.py
-    │   │   │   └── prepare_gen.py
-    │   │   ├── __init__.py
-    │   │   └── tool/
-    │   │       ├── deploy_tool.py
-    │   │       ├── __init__.py
-    │   │       ├── prepare_tool.py
-    │   │       └── tool_elements.py
-    │   ├── __init__.py
-    │   ├── read_template.py
-    │   ├── schema/
-    │   │   ├── __init__.py
-    │   │   ├── schema_container.py
-    │   │   └── schema_keys.py
-    │   ├── template/
-    │   │   ├── __init__.py
-    │   │   ├── template_container.py
-    │   │   └── template_keys.py
-    │   └── write_template.py
-    └── run/
-        └── gen_py_tool_run.py
+       ├── conf/
+       │   ├── gen_py_tool.cfg
+       │   ├── gen_py_tool.logo
+       │   ├── gen_py_tool_util.cfg
+       │   ├── project.yaml
+       │   └── template/
+       │       ├── gen/
+       │       │   ├── editorconfig.template
+       │       │   ├── gen_class.template
+       │       │   ├── gen_config.template
+       │       │   ├── gen_config_util.template
+       │       │   ├── gen_logo.template
+       │       │   ├── gen_log.template
+       │       │   ├── gen_pro_class.template
+       │       │   ├── gen_project_yaml.template
+       │       │   ├── gen_pro_yaml.template
+       │       │   ├── gen_read_template.template
+       │       │   ├── gen_run.template
+       │       │   ├── gen_write_template.template
+       │       │   └── test.template
+       │       └── tool/
+       │           ├── editorconfig.template
+       │           ├── tool_class.template
+       │           ├── tool_config.template
+       │           ├── tool_config_util.template
+       │           ├── tool_logo.template
+       │           ├── tool_log.template
+       │           └── tool_run.template
+       ├── __init__.py
+       ├── log/
+       │   └── gen_py_tool.log
+       ├── pro/
+       │   ├── __init__.py
+       │   ├── read_template.py
+       │   └── write_template.py
+       ├── py.typed
+       └── run/
+           └── gen_py_tool_run.py
+
+8 directories, 31 files
 
 Copyright and licence
 ----------------------
@@ -198,10 +140,10 @@ Copyright and licence
 .. |License: Apache 2.0| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
    :target: https://opensource.org/licenses/Apache-2.0
 
-Copyright (C) 2017 by `vroncevic.github.io/gen_py_tool <https://vroncevic.github.io/gen_py_tool>`_
+Copyright (C) 2017 - 2024 by `vroncevic.github.io/gen_py_tool <https://vroncevic.github.io/gen_py_tool>`_
 
 **gen_py_tool** is free software; you can redistribute it and/or modify
-it under the same terms as Python itself, either Python version 2.x/3.x or,
+it under the same terms as Python itself, either Python version 3.x or,
 at your option, any later version of Python 3 you may have available.
 
 Lets help and support PSF.

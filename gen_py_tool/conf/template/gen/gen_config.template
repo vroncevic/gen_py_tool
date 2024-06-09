@@ -1,0 +1,4 @@
+ats_name = ${PRO_NAME}
+ats_version = v1.0.0
+ats_build_date = ${DATE}
+ats_licence = https://github.com/vroncevic/${PRO_NAME}/blob/dev/LICENSE
