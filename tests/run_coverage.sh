@@ -7,6 +7,7 @@
 # @author  Vladimir Roncevic <elektron.ronca@gmail.com>
 #
 
+rm -rf mytool mygen
 python3 -m coverage run -m --source=../gen_py_tool unittest discover -s ./ -p '*_test.py' -vvv
 python3 -m coverage html
 
