@@ -23,8 +23,9 @@ other information that should be provided before the modules are installed.
 .. |github contributors| image:: https://img.shields.io/github/contributors/vroncevic/gen_py_tool.svg
    :target: https://github.com/vroncevic/gen_py_tool/graphs/contributors
 
-.. |documentation status| image:: https://readthedocs.org/projects/gen_py_tool/badge/?version=latest
-   :target: https://gen_py_tool.readthedocs.io/en/latest/?badge=latest
+.. |documentation status| image:: https://readthedocs.org/projects/gen-py-tool/badge/?version=latest
+    :target: https://gen-py-tool.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
 
 .. toctree::
    :maxdepth: 4
