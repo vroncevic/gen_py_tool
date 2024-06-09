@@ -152,11 +152,11 @@ Generator structure
 
 ### Docs
 
-[![Documentation Status](https://readthedocs.org/projects/gen_py_tool/badge/?version=latest)](https://gen_py_tool.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/gen-py-tool/badge/?version=latest)](https://gen-py-tool.readthedocs.io/en/latest/?badge=latest)
 
 More documentation and info at
 
-* [gen_py_tool.readthedocs.io](https://gen_py_tool.readthedocs.io)
+* [gen_py_tool.readthedocs.io](https://gen-py-tool.readthedocs.io)
 * [www.python.org](https://www.python.org/)
 
 ### Contributing
