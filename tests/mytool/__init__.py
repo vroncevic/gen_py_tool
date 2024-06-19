@@ -21,9 +21,9 @@ Info
 '''
 
 import sys
-from typing import Any, Dict, List
-from os import getcwd
+from typing import Any, List, Dict
 from os.path import exists, dirname, realpath
+from os import getcwd
 from argparse import Namespace
 
 try:
@@ -72,7 +72,7 @@ class Mytool(CfgCLI):
     _CONFIG: str = '/conf/mytool.cfg'
     _LOG: str = '/log/mytool.log'
     _LOGO: str = '/conf/mytool.logo'
-    _OPS: List[str] = ['-o', '--opt', '-v', '--verbose', '--version']
+    _OPS: List[str] = ['-o', '--opt', '-v', '--verbose']
 
     def __init__(self, verbose: bool = False) -> None:
         '''
@@ -102,14 +102,11 @@ class Mytool(CfgCLI):
         if self.tool_operational:
             self.add_new_option(
                 self._OPS[0], self._OPS[1], dest='opt',
-                help='option'
+                help='Custom tool option'
             )
             self.add_new_option(
                 self._OPS[2], self._OPS[3], action='store_true',
-                default=False, help='activate verbose mode for tool'
-            )
-            self.add_new_option(
-                self._OPS[4], action='version', version=__version__
+                default=False, help='Activate verbose mode for tool'
             )
 
     def process(self, verbose: bool = False) -> bool:
@@ -124,40 +121,24 @@ class Mytool(CfgCLI):
         '''
         status: bool = False
         if self.tool_operational:
-            if len(sys.argv) >= 3:
-                options: List[str] = [
-                    arg for i, arg in enumerate(sys.argv) if i % 2 != 0
-                ]
-                if any(arg not in self._OPS for arg in options[1:]):
+            try:
+                args: Any | Namespace = self.parse_args(sys.argv)
+                if not bool(getattr(args, 'opt')):
                     error_message(
-                        [
-                            f'{self._GEN_VERBOSE.lower()}',
-                            'provide option (-o option)'
-                        ]
-                    )
-                    self._logger.write_log(
-                        'missing option', self._logger.ATS_ERROR
+                        [f'{self._GEN_VERBOSE.lower()} missing opt argument']
                     )
                     return status
-            else:
-                error_message(
-                    [
-                        f'{self._GEN_VERBOSE.lower()}',
-                        'provide option (-o option)'
-                    ]
-                )
+                success_message([f'{self._GEN_VERBOSE.lower()} done\n'])
                 self._logger.write_log(
-                    'missing option', self._logger.ATS_ERROR
+                    f'running option {getattr(args, "opt")} done',
+                    self._logger.ATS_INFO
+                )
+                status = True
+            except SystemExit:
+                error_message(
+                    [f'{self._GEN_VERBOSE.lower()} expected argument -o']
                 )
                 return status
-            args: Any | Namespace = self.parse_args(sys.argv[1:])
-            success_message(
-                [f'{self._GEN_VERBOSE.lower()} {str(getattr(args, "opt"))}\n']
-            )
-            self._logger.write_log(
-                f'process option {getattr(args, "opt")} done',
-                self._logger.ATS_INFO
-            )
         else:
             error_message(
                 [f'{self._GEN_VERBOSE.lower()} tool is not operational']

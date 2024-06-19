@@ -1,5 +1,5 @@
 templates:
-  test.template
+  - test.template
 
 modules:
-  test.py
+  - test.py
