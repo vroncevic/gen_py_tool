@@ -40,7 +40,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2024, https://vroncevic.github.io/gen_py_tool'
 __credits__: List[str] = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
-__version__ = '1.3.4'
+__version__ = '1.3.5'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -143,11 +143,12 @@ class WriteTemplate(FileCheck):
             if exists(module_path):
                 raise FileExistsError(f'{module_path} already exists')
             with open(module_path, 'w', encoding='utf-8') as module_file:
+                capital_pro_name: str = f'{pro_name}'.format().capitalize()
                 module_content: str = template.substitute({
                     'PRO_NAME': f'{pro_name}',
-                    'PRO_NAME_CLASS': f'{pro_name}'.format().capitalize(),
+                    'PRO_NAME_CLASS': capital_pro_name,
                     'PRO_NAME_UPPER': f'{pro_name}'.format().upper(),
-                    'PRO_NAME_GEN': f'{pro_name}'.format().capitalize() + 'Gen',
+                    'PRO_NAME_GEN': capital_pro_name + 'Gen',
                     'PRO_NAME_GEN_UPPER': f'{pro_name}Gen'.format().upper(),
                     'DATE': f'{str(date.today())}',
                     'YEAR': f'{str(date.today().year)}'

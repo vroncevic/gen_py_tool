@@ -21,8 +21,9 @@ Info
 '''
 
 import sys
-from typing import Any, Dict, List
-from os.path import dirname, realpath
+from typing import Any, List, Dict
+from os.path import exists, dirname, realpath
+from os import getcwd
 from argparse import Namespace
 
 try:
@@ -32,6 +33,8 @@ try:
     from ats_utilities.console_io.error import error_message
     from ats_utilities.console_io.verbose import verbose_message
     from ats_utilities.console_io.success import success_message
+    from ats_utilities.exceptions.ats_type_error import ATSTypeError
+    from ats_utilities.exceptions.ats_value_error import ATSValueError
     from mygen.pro import MygenGen
 except ImportError as ats_error_message:
     # Force close python ATS ##################################################
@@ -70,7 +73,7 @@ class Mygen(CfgCLI):
     _CONFIG: str = '/conf/mygen.cfg'
     _LOG: str = '/log/mygen.log'
     _LOGO: str = '/conf/mygen.logo'
-    _OPS: List[str] = ['-o', '--opt', '-v', '--verbose', '--version']
+    _OPS: List[str] = ['-n', '--name', '-v', '--verbose']
 
     def __init__(self, verbose: bool = False) -> None:
         '''
@@ -99,15 +102,12 @@ class Mygen(CfgCLI):
         )
         if self.tool_operational:
             self.add_new_option(
-                self._OPS[0], self._OPS[1], dest='opt',
-                help='option'
+                self._OPS[0], self._OPS[1], dest='name',
+                help='Generate project skeleton (provide project name)'
             )
             self.add_new_option(
                 self._OPS[2], self._OPS[3], action='store_true',
-                default=False, help='activate verbose mode for tool'
-            )
-            self.add_new_option(
-                self._OPS[4], action='version', version=__version__
+                default=False, help='Activate verbose mode for gen'
             )
 
     def process(self, verbose: bool = False) -> bool:
@@ -122,44 +122,48 @@ class Mygen(CfgCLI):
         '''
         status: bool = False
         if self.tool_operational:
-            if len(sys.argv) >= 3:
-                options: List[str] = [
-                    arg for i, arg in enumerate(sys.argv) if i % 2 != 0
-                ]
-                if any(arg not in self._OPS for arg in options[1:]):
+            try:
+                args: Any | Namespace = self.parse_args(sys.argv)
+                if not bool(getattr(args, 'name')):
                     error_message(
-                        [
-                            f'{self._GEN_VERBOSE.lower()}',
-                            'provide option (-o option)'
-                        ]
-                    )
-                    self._logger.write_log(
-                        'missing option', self._logger.ATS_ERROR
+                        [f'{self._GEN_VERBOSE.lower()} missing name argument']
                     )
                     return status
-            else:
-                error_message(
-                    [
+                if exists(f'{getcwd()}/{str(getattr(args, "name"))}'):
+                    error_message([
                         f'{self._GEN_VERBOSE.lower()}',
-                        'provide option (-o option)'
-                    ]
-                )
-                self._logger.write_log(
-                    'missing option', self._logger.ATS_ERROR
-                )
-                return status
-            args: Any | Namespace = self.parse_args(sys.argv[1:])
-            generator: MygenGen = MygenGen(verbose=verbose)
-            if generator:
-                if generator.gen_pro(f'{str(getattr(args, "opt"))}'):
-                    status = True
-                    success_message(
-                        [f'{self._GEN_VERBOSE.lower()} done\n']
+                        f'project with name [{getattr(args, "name")}] exists'
+                    ])
+                    return status
+                gen: MygenGen = MygenGen(verbose=verbose)
+                try:
+                    print(
+                        " ".join([
+                            f'[{self._GEN_VERBOSE.lower()}]',
+                            'generate project skeleton',
+                            str(getattr(args, 'name'))
+                        ])
                     )
+                    status = gen.gen_pro(f'{str(getattr(args, "name"))}')
+                except (ATSTypeError, ATSValueError) as e:
+                    error_message([f'{self._GEN_VERBOSE.lower()} {str(e)}'])
+                    self._logger.write_log(f'{str(e)}', self._logger.ATS_ERROR)
+                if status:
+                    success_message([f'{self._GEN_VERBOSE.lower()} done\n'])
                     self._logger.write_log(
-                        f'process option {getattr(args, "opt")} done',
+                        f'generation project {getattr(args, "name")} done',
                         self._logger.ATS_INFO
                     )
+                else:
+                    error_message([f'{self._GEN_VERBOSE.lower()} failed'])
+                    self._logger.write_log(
+                        'generation failed', self._logger.ATS_ERROR
+                    )
+            except SystemExit:
+                error_message(
+                    [f'{self._GEN_VERBOSE.lower()} expected argument -n']
+                )
+                return status
         else:
             error_message(
                 [f'{self._GEN_VERBOSE.lower()} tool is not operational']

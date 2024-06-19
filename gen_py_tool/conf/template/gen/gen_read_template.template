@@ -17,7 +17,7 @@ Copyright
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
     Defines class ReadTemplate with attribute(s) and method(s).
-    Creates an API for operation read a template file.
+    Creates an API for operation read a templates.
 '''
 
 import sys
@@ -48,7 +48,7 @@ __status__ = 'Updated'
 class ReadTemplate(FileCheck, TemplateDir):
     '''
         Defines class ReadTemplate with attribute(s) and method(s).
-        Creates an API for operation read a template file.
+        Creates an API for operation read a templates.
 
         It defines:
 

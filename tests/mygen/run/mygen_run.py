@@ -17,7 +17,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Main entry point of tool mygen.
+    Main entry point of generator mygen.
 '''
 
 import sys
