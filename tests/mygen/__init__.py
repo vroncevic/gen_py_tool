@@ -137,7 +137,7 @@ class Mygen(CfgCLI):
                     return status
                 gen: MygenGen = MygenGen(verbose=verbose)
                 try:
-                   print(
+                    print(
                         " ".join([
                             f'[{self._GEN_VERBOSE.lower()}]',
                             'generate project skeleton',

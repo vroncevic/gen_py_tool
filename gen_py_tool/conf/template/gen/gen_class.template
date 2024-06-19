@@ -137,7 +137,7 @@ class ${PRO_NAME_CLASS}(CfgCLI):
                     return status
                 gen: ${PRO_NAME_GEN} = ${PRO_NAME_GEN}(verbose=verbose)
                 try:
-                   print(
+                    print(
                         " ".join([
                             f'[{self._GEN_VERBOSE.lower()}]',
                             'generate project skeleton',
