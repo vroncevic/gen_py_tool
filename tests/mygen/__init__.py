@@ -29,7 +29,7 @@ from argparse import Namespace
 try:
     from ats_utilities.splash import Splash
     from ats_utilities.logging import ATSLogger
-    from ats_utilities.cli.cfg_cli import CfgCLI
+    from ats_utilities.cli import ATSCli
     from ats_utilities.console_io.error import error_message
     from ats_utilities.console_io.verbose import verbose_message
     from ats_utilities.console_io.success import success_message
@@ -50,7 +50,7 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class Mygen(CfgCLI):
+class Mygen(ATSCli):
     '''
         Defines class Mygen with attribute(s) and method(s).
         Loads a base info, creates a CLI interface and run operations.
@@ -98,9 +98,9 @@ class Mygen(CfgCLI):
             verbose, [f'{self._GEN_VERBOSE.lower()} init tool info']
         )
         self._logger: ATSLogger = ATSLogger(
-            self._GEN_VERBOSE.lower(), f'{current_dir}{self._LOG}', verbose
+            self._GEN_VERBOSE.lower(), True, None, True, verbose
         )
-        if self.tool_operational:
+        if self.is_operational():
             self.add_new_option(
                 self._OPS[0], self._OPS[1], dest='name',
                 help='Generate project skeleton (provide project name)'
@@ -121,7 +121,7 @@ class Mygen(CfgCLI):
             :exceptions: None
         '''
         status: bool = False
-        if self.tool_operational:
+        if self.is_operational():
             try:
                 args: Any | Namespace = self.parse_args(sys.argv)
                 if not bool(getattr(args, 'name')):

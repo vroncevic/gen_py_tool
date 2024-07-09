@@ -110,45 +110,57 @@ Generator structure
 
 ```bash
     gen_py_tool/
-       ├── conf/
-       │   ├── gen_py_tool.cfg
-       │   ├── gen_py_tool.logo
-       │   ├── gen_py_tool_util.cfg
-       │   ├── project.yaml
-       │   └── template/
-       │       ├── gen/
-       │       │   ├── editorconfig.template
-       │       │   ├── gen_class.template
-       │       │   ├── gen_config.template
-       │       │   ├── gen_config_util.template
-       │       │   ├── gen_logo.template
-       │       │   ├── gen_log.template
-       │       │   ├── gen_pro_class.template
-       │       │   ├── gen_project_yaml.template
-       │       │   ├── gen_pro_yaml.template
-       │       │   ├── gen_read_template.template
-       │       │   ├── gen_run.template
-       │       │   ├── gen_write_template.template
-       │       │   └── test.template
-       │       └── tool/
-       │           ├── editorconfig.template
-       │           ├── tool_class.template
-       │           ├── tool_config.template
-       │           ├── tool_config_util.template
-       │           ├── tool_logo.template
-       │           ├── tool_log.template
-       │           └── tool_run.template
-       ├── __init__.py
-       ├── log/
-       │   └── gen_py_tool.log
-       ├── pro/
-       │   ├── __init__.py
-       │   ├── read_template.py
-       │   └── write_template.py
-       ├── py.typed
-       └── run/
-           └── gen_py_tool_run.py
+         ├── conf/
+         │   ├── gen_py_tool.cfg
+         │   ├── gen_py_tool.logo
+         │   ├── gen_py_tool_util.cfg
+         │   ├── project.yaml
+         │   └── template/
+         │       ├── gen/
+         │       │   ├── editorconfig.template
+         │       │   ├── gen_class.template
+         │       │   ├── gen_config.template
+         │       │   ├── gen_config_util.template
+         │       │   ├── gen_logo.template
+         │       │   ├── gen_log.template
+         │       │   ├── gen_pro_class.template
+         │       │   ├── gen_project_yaml.template
+         │       │   ├── gen_pro_yaml.template
+         │       │   ├── gen_read_template.template
+         │       │   ├── gen_run.template
+         │       │   ├── gen_write_template.template
+         │       │   └── test.template
+         │       └── tool/
+         │           ├── editorconfig.template
+         │           ├── tool_class.template
+         │           ├── tool_config.template
+         │           ├── tool_config_util.template
+         │           ├── tool_logo.template
+         │           ├── tool_log.template
+         │           └── tool_run.template
+         ├── __init__.py
+         ├── log/
+         │   └── gen_py_tool.log
+         ├── pro/
+         │   ├── __init__.py
+         │   ├── read_template.py
+         │   └── write_template.py
+         ├── py.typed
+         └── run/
+             └── gen_py_tool_run.py
+
+    8 directories, 30 files
 ```
+
+### Code coverage
+
+| Name | Stmts | Miss | Cover |
+|------|-------|------|-------|
+| `gen_py_tool/__init__.py` | 75 | 14 | 81% |
+| `gen_py_tool/pro/__init__.py` | 61 | 7 | 89% |
+| `gen_py_tool/pro/read_template.py` | 57 | 4 | 93% |
+| `gen_py_tool/pro/write_template.py` | 87 | 6 | 93% |
+| **Total** | 280 | 31 | 89% |
 
 ### Docs
 
