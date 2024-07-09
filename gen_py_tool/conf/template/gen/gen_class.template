@@ -21,7 +21,7 @@ Info
 '''
 
 import sys
-from typing import Any, List, Dict
+from typing import List, Dict, Optional
 from os.path import exists, dirname, realpath
 from os import getcwd
 from argparse import Namespace
@@ -123,7 +123,7 @@ class ${PRO_NAME_CLASS}(ATSCli):
         status: bool = False
         if self.is_operational():
             try:
-                args: Any | Namespace = self.parse_args(sys.argv)
+                args: Optional[Namespace] = self.parse_args(sys.argv)
                 if not bool(getattr(args, 'name')):
                     error_message(
                         [f'{self._GEN_VERBOSE.lower()} missing name argument']
@@ -161,7 +161,7 @@ class ${PRO_NAME_CLASS}(ATSCli):
                     )
             except SystemExit:
                 error_message(
-                    [f'{self._GEN_VERBOSE.lower()} expected argument -n']
+                    [f'{self._GEN_VERBOSE.lower()} expected argument name']
                 )
                 return status
         else:

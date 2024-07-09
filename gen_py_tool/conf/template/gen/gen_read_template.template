@@ -21,7 +21,7 @@ Info
 '''
 
 import sys
-from typing import List, Dict, Any
+from typing import Any, List, Dict, Optional
 from os.path import isdir, dirname, realpath
 
 try:
@@ -101,7 +101,7 @@ class ReadTemplate(FileCheck, TemplateDir):
             :exceptions: ATSTypeError | ATSValueError
         '''
         error_msg: Optional[str] = None
-        error_id: int | None = None
+        error_id: Optional[int] = None
         error_msg, error_id = self.check_params([
             ('dict:config', config), ('str:pro_name', pro_name)
         ])

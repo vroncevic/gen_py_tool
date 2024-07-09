@@ -21,7 +21,7 @@ Info
 '''
 
 import sys
-from typing import List, Dict
+from typing import List, Dict, Optional
 from os import getcwd, chmod
 from string import Template
 from datetime import date
@@ -92,7 +92,7 @@ class WriteTemplate(FileCheck):
             :exceptions: ATSTypeError | ATSValueError
         '''
         error_msg: Optional[str] = None
-        error_id: int | None = None
+        error_id: Optional[int] = None
         error_msg, error_id = self.check_params([
             ('dict:templates', templates), ('str:pro_name', pro_name)
         ])

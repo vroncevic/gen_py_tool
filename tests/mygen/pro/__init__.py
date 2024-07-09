@@ -22,7 +22,7 @@ Info
 
 import sys
 from os.path import dirname, realpath
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 try:
     from ats_utilities.config_io.file_check import FileCheck
@@ -84,8 +84,8 @@ class MygenGen(FileCheck, ProConfig, ProName):
         verbose_message(
             verbose, [f'{self._GEN_VERBOSE.lower()} init generator']
         )
-        self._reader: ReadTemplate | None = ReadTemplate(verbose)
-        self._writer: WriteTemplate | None = WriteTemplate(verbose)
+        self._reader: Optional[ReadTemplate] = ReadTemplate(verbose)
+        self._writer: Optional[WriteTemplate] = WriteTemplate(verbose)
         current_dir: str = dirname(realpath(__file__))
         pro_structure: str = f'{current_dir}{self._PRO_STRUCTURE}'
         self.check_path(pro_structure, verbose)
@@ -95,22 +95,22 @@ class MygenGen(FileCheck, ProConfig, ProName):
             yml2obj = Yaml2Object(pro_structure)
             self.config = yml2obj.read_configuration()
 
-    def get_reader(self) -> ReadTemplate | None:
+    def get_reader(self) -> Optional[ReadTemplate]:
         '''
             Gets template reader.
 
             :return: Template reader object | None
-            :rtype: <ReadTemplate> | <NoneType>
+            :rtype: <Optional[ReadTemplate]>
             :exceptions: None
         '''
         return self._reader
 
-    def get_writer(self) -> WriteTemplate | None:
+    def get_writer(self) -> Optional[WriteTemplate]:
         '''
             Gets template writer.
 
             :return: Template writer object | none
-            :rtype: <WriteTemplate> | <NoneType
+            :rtype: <Optional[WriteTemplate]>
             :exceptions: None
         '''
         return self._writer
@@ -128,7 +128,7 @@ class MygenGen(FileCheck, ProConfig, ProName):
             :exceptions: ATSTypeError | ATSValueError
         '''
         error_msg: Optional[str] = None
-        error_id: int | None = None
+        error_id: Optional[int] = None
         error_msg, error_id = self.check_params([
             ('str:pro_name', pro_name)
         ])
