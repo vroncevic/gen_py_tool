@@ -75,7 +75,7 @@ class WriteTemplate(FileCheck):
     def write(
         self,
         templates: Dict[str, str],
-        pro_name: str | None,
+        pro_name: Optional[str],
         verbose: bool = False
     ) -> bool:
         '''
@@ -84,14 +84,14 @@ class WriteTemplate(FileCheck):
             :param templates: Templates with params
             :type templates: Dict[str, str]
             :param pro_name: Project name | None
-            :type pro_name: <str> | <NoneType>
+            :type pro_name: <Optional[str]>
             :param verbose: Enable/Disable verbose option
             :type verbose: <bool>
             :return: True (success operation) | False
             :rtype: <bool>
             :exceptions: ATSTypeError | ATSValueError
         '''
-        error_msg: str | None = None
+        error_msg: Optional[str] = None
         error_id: int | None = None
         error_msg, error_id = self.check_params([
             ('dict:templates', templates), ('str:pro_name', pro_name)

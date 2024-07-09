@@ -84,7 +84,7 @@ class ReadTemplate(FileCheck, TemplateDir):
     def read(
         self,
         config: Dict[Any, Any],
-        pro_name: str | None,
+        pro_name: Optional[str],
         verbose: bool = False
     ) -> Dict[str, str]:
         '''
@@ -93,14 +93,14 @@ class ReadTemplate(FileCheck, TemplateDir):
             :param config: Configuration for project
             :type config: <Dict[Any, Any]>
             :param pro_name: Project name | None
-            :type pro_name: <str> | <NoneType>
+            :type pro_name: <Optional[str]>
             :param verbose: Enable/Disable verbose option
             :type verbose: <bool>
             :return: Template content list
             :rtype: <Dict[str, str]>
             :exceptions: ATSTypeError | ATSValueError
         '''
-        error_msg: str | None = None
+        error_msg: Optional[str] = None
         error_id: int | None = None
         error_msg, error_id = self.check_params([
             ('dict:config', config), ('str:pro_name', pro_name)
@@ -112,7 +112,7 @@ class ReadTemplate(FileCheck, TemplateDir):
         template: str = config[ProConfig.TEMPLATES]
         module: str = config[ProConfig.MODULES]
         loaded_template: Dict[str, str] = {}
-        template_content: str | None = None
+        template_content: Optional[str] = None
         template_file_path: str = f'{self.template_dir}/{template}'
         self.check_path(template_file_path, verbose)
         self.check_mode('r', verbose)

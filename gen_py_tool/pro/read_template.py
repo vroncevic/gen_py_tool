@@ -21,7 +21,7 @@ Info
 '''
 
 import sys
-from typing import Any, List, Dict
+from typing import Any, List, Dict, Optional
 from os.path import isdir, dirname, realpath
 
 try:
@@ -39,7 +39,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2024, https://vroncevic.github.io/gen_py_tool'
 __credits__: List[str] = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
-__version__ = '1.3.5'
+__version__ = '1.3.6'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -82,7 +82,7 @@ class ReadTemplate(FileCheck, TemplateDir):
     def read(
         self,
         config: Dict[Any, Any],
-        pro_type: str | None,
+        pro_type: Optional[str],
         verbose: bool = False
     ) -> List[Dict[str, str]]:
         '''
@@ -91,15 +91,15 @@ class ReadTemplate(FileCheck, TemplateDir):
             :param config: Configuration for PICO project
             :type config: <Dict[Any, Any]>
             :param pro_type: Project type | None
-            :type pro_type: <str> | <NoneType>
+            :type pro_type: <Optional[str]>
             :param verbose: Enable/Disable verbose option
             :type verbose: <bool>
             :return: Template content list
             :rtype: <List[Dict[str, str]]>
             :exceptions: ATSTypeError | ATSValueError
         '''
-        error_msg: str | None = None
-        error_id: int | None = None
+        error_msg: Optional[str] = None
+        error_id: Optional[int] = None
         error_msg, error_id = self.check_params([
             ('dict:config', config), ('str:pro_type', pro_type)
         ])
@@ -114,7 +114,7 @@ class ReadTemplate(FileCheck, TemplateDir):
         modules: List[str] = config[ProConfig.MODULES][index][pro_type]
         loaded_templates: List[Dict[str, str]] = []
         for template_file, module_file in zip(templates, modules):
-            template_content: str | None = None
+            template_content: Optional[str] = None
             type_dir: str = f'{self.template_dir}{pro_type}/'
             template_file_path: str = f'{type_dir}/{template_file}'
             self.check_path(template_file_path, verbose)

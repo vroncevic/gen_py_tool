@@ -36,7 +36,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2024, https://vroncevic.github.io/gen_py_tool'
 __credits__: List[str] = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
-__version__ = '1.3.5'
+__version__ = '1.3.6'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -58,7 +58,6 @@ class TestGenPyTool(TestCase):
                 | test_default_create - Default on create (not None).
                 | test_missing_args - Test missing args.
                 | test_missing_type - Test missing type.
-                | test_tool_not_operational - Test for tool not operational.
                 | test_process_tool - Test generation of tool structure.
                 | test_process_gen - Test generation of generator structure.
     '''
@@ -85,17 +84,6 @@ class TestGenPyTool(TestCase):
         sys.argv.insert(0, '-n')
         sys.argv.insert(1, 'mytool')
         generator: GenPyTool = GenPyTool()
-        self.assertFalse(generator.process())
-
-    def test_tool_not_operational(self) -> None:
-        '''Test for tool not operational'''
-        sys.argv.clear()
-        sys.argv.insert(0, '-n')
-        sys.argv.insert(1, 'mytool')
-        sys.argv.insert(2, '-t')
-        sys.argv.insert(3, 'tool')
-        generator: GenPyTool = GenPyTool()
-        generator.tool_operational = False
         self.assertFalse(generator.process())
 
     def test_process_tool(self) -> None:

@@ -21,7 +21,7 @@ Info
 '''
 
 import sys
-from typing import Any, List, Dict
+from typing import List, Dict, Optional
 from os.path import exists, dirname, realpath
 from os import getcwd
 from argparse import Namespace
@@ -29,7 +29,7 @@ from argparse import Namespace
 try:
     from ats_utilities.splash import Splash
     from ats_utilities.logging import ATSLogger
-    from ats_utilities.cli.cfg_cli import CfgCLI
+    from ats_utilities.cli import ATSCli
     from ats_utilities.console_io.error import error_message
     from ats_utilities.console_io.verbose import verbose_message
     from ats_utilities.console_io.success import success_message
@@ -44,13 +44,13 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = 'Copyright 2024, https://vroncevic.github.io/gen_py_tool'
 __credits__: List[str] = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
-__version__ = '1.3.5'
+__version__ = '1.3.6'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class GenPyTool(CfgCLI):
+class GenPyTool(ATSCli):
     '''
         Defines class GenPyTool with attribute(s) and method(s).
         Loads a base info, creates a CLI interface and run operations.
@@ -98,9 +98,9 @@ class GenPyTool(CfgCLI):
             verbose, [f'{self._GEN_VERBOSE.lower()} init tool info']
         )
         self._logger: ATSLogger = ATSLogger(
-            self._GEN_VERBOSE.lower(), f'{current_dir}{self._LOG}', verbose
+            self._GEN_VERBOSE.lower(), True, None, True, verbose
         )
-        if self.tool_operational:
+        if self.is_operational():
             self.add_new_option(
                 self._OPS[0], self._OPS[1], dest='name',
                 help='generate project (provide name)'
@@ -126,53 +126,62 @@ class GenPyTool(CfgCLI):
             :exceptions: None
         '''
         status: bool = False
-        if self.tool_operational:
-            args: Any | Namespace = self.parse_args(sys.argv)
-            if not bool(getattr(args, 'name')):
-                error_message(
-                    [f'{self._GEN_VERBOSE.lower()} missing name argument']
-                )
-                return status
-            if not bool(getattr(args, 'type')):
-                error_message(
-                    [f'{self._GEN_VERBOSE.lower()} missing type argument']
-                )
-                return status
-            if exists(f'{getcwd()}/{str(getattr(args, "name"))}'):
-                error_message([
-                    f'{self._GEN_VERBOSE.lower()}',
-                    f'project with name [{getattr(args, "name")}] exists'
-                ])
-                return status
-            generator: GenPro = GenPro(getattr(args, 'verbose') or verbose)
+        if self.is_operational():
             try:
-                print(
-                    " ".join([
-                        f'[{self._GEN_VERBOSE.lower()}]',
-                        'generate tool/generator project skeleton',
-                        str(getattr(args, 'name')),
-                        str(getattr(args, 'type'))
+                args: Optional[Namespace] = self.parse_args(sys.argv)
+                if not bool(getattr(args, 'name')):
+                    error_message(
+                        [f'{self._GEN_VERBOSE.lower()} missing name argument']
+                    )
+                    return status
+                if not bool(getattr(args, 'type')):
+                    error_message(
+                        [f'{self._GEN_VERBOSE.lower()} missing type argument']
+                    )
+                    return status
+                if exists(f'{getcwd()}/{str(getattr(args, "name"))}'):
+                    error_message([
+                        f'{self._GEN_VERBOSE.lower()}',
+                        f'project with name [{getattr(args, "name")}] exists'
                     ])
+                    return status
+                generator: GenPro = GenPro(getattr(args, 'verbose') or verbose)
+                try:
+                    print(
+                        " ".join([
+                            f'[{self._GEN_VERBOSE.lower()}]',
+                            'generate tool/generator project skeleton',
+                            str(getattr(args, 'name')),
+                            str(getattr(args, 'type'))
+                        ])
+                    )
+                    status: bool = generator.gen_pro(
+                        str(getattr(args, 'name')),
+                        str(getattr(args, 'type')),
+                        getattr(args, 'verbose') or verbose
+                    )
+                except (ATSTypeError, ATSValueError) as e:
+                    error_message([f'{self._GEN_VERBOSE.lower()} {str(e)}'])
+                    self._logger.write_log(f'{str(e)}', self._logger.ATS_ERROR)
+                if status:
+                    success_message([f'{self._GEN_VERBOSE.lower()} done\n'])
+                    self._logger.write_log(
+                        f'generation project {getattr(args, "name")} done',
+                        self._logger.ATS_INFO
+                    )
+                else:
+                    error_message([f'{self._GEN_VERBOSE.lower()} failed'])
+                    self._logger.write_log(
+                        'generation failed', self._logger.ATS_ERROR
+                    )
+            except SystemExit:
+                error_message(
+                    [
+                        f'{self._GEN_VERBOSE.lower()}',
+                        'expected arguments name and type'
+                    ]
                 )
-                status: bool = generator.gen_pro(
-                    str(getattr(args, 'name')),
-                    str(getattr(args, 'type')),
-                    getattr(args, 'verbose') or verbose
-                )
-            except (ATSTypeError, ATSValueError) as e:
-                error_message([f'{self._GEN_VERBOSE.lower()} {str(e)}'])
-                self._logger.write_log(f'{str(e)}', self._logger.ATS_ERROR)
-            if status:
-                success_message([f'{self._GEN_VERBOSE.lower()} done\n'])
-                self._logger.write_log(
-                    f'generation project {getattr(args, "name")} done',
-                    self._logger.ATS_INFO
-                )
-            else:
-                error_message([f'{self._GEN_VERBOSE.lower()} failed'])
-                self._logger.write_log(
-                    'generation failed', self._logger.ATS_ERROR
-                )
+                return status
         else:
             error_message(
                 [f'{self._GEN_VERBOSE.lower()} tool is not operational']
