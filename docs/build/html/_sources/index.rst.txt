@@ -141,7 +141,7 @@ Copyright and licence
 .. |License: Apache 2.0| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
    :target: https://opensource.org/licenses/Apache-2.0
 
-Copyright (C) 2017 - 2024 by `vroncevic.github.io/gen_py_tool <https://vroncevic.github.io/gen_py_tool>`_
+Copyright (C) 2017 - 2026 by `vroncevic.github.io/gen_py_tool <https://vroncevic.github.io/gen_py_tool>`_
 
 **gen_py_tool** is free software; you can redistribute it and/or modify
 it under the same terms as Python itself, either Python version 3.x or,
