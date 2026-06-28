@@ -1,5 +1,0 @@
-templates:
-  - test.template
-
-modules:
-  - test.py

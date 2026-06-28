@@ -2,7 +2,7 @@
 
 '''
 Module
-    __init__.py
+    iservice.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     gen_py_tool is free software: you can redistribute it and/or modify it
@@ -16,8 +16,11 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Initialization module for the gen_py_tool.
+    Defines abstract interface for tool services.
 '''
+
+from abc import ABC, abstractmethod
+from typing import Any
 
 __author__: str = 'Vladimir Roncevic'
 __copyright__: str = '(C) 2026, https://vroncevic.github.io/gen_py_tool'
@@ -27,3 +30,38 @@ __version__: str = '1.4.0'
 __maintainer__: str = 'Vladimir Roncevic'
 __email__: str = 'elektron.ronca@gmail.com'
 __status__: str = 'Development'
+
+
+class IService(ABC):
+    '''
+        Abstract interface for tool service.
+
+        It defines:
+
+            :attributes: None.
+            :methods:
+                | execute - Executes a tool.
+                | is_initialized - Checks if the service is initialized.
+    '''
+
+    @abstractmethod
+    def execute(self, params: dict[str, Any]) -> None:
+        '''
+            Executes a tool.
+
+            :param params: Parameters for tool execution.
+            :type params: <dict[str, Any]>
+            :exceptions: None.
+        '''
+        pass
+
+    @abstractmethod
+    def is_initialized(self) -> bool:
+        '''
+            Checks if the service is initialized.
+
+            :return: True if the service is initialized, False otherwise.
+            :rtype: <bool>
+            :exceptions: None.
+        '''
+        pass

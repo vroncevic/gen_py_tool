@@ -2,7 +2,7 @@
 
 '''
 Module
-    __init__.py
+    main.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     gen_py_tool is free software: you can redistribute it and/or modify it
@@ -16,8 +16,10 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Initialization module for the gen_py_tool.
+    Main entry point for Task Code Generator CLI.
 '''
+
+from gen_py_tool.engine import GenPyTool
 
 __author__: str = 'Vladimir Roncevic'
 __copyright__: str = '(C) 2026, https://vroncevic.github.io/gen_py_tool'
@@ -27,3 +29,17 @@ __version__: str = '1.4.0'
 __maintainer__: str = 'Vladimir Roncevic'
 __email__: str = 'elektron.ronca@gmail.com'
 __status__: str = 'Development'
+
+
+def main() -> None:
+    '''
+        Bootstraps and runs the CLI application with required adapters.
+
+        :exceptions: None
+    '''
+    gen_py_tool = GenPyTool()
+    gen_py_tool.process()
+
+
+if __name__ == "__main__":
+    main()
