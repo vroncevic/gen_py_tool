@@ -5,3 +5,4 @@ gen_py_tool
    :maxdepth: 4
 
    gen_py_tool
+   main

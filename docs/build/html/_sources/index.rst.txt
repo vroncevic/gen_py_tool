@@ -89,46 +89,34 @@ Code structure
 .. code-block:: bash
 
     gen_py_tool/
-       ├── conf/
-       │   ├── gen_py_tool.cfg
-       │   ├── gen_py_tool.logo
-       │   ├── gen_py_tool_util.cfg
-       │   ├── project.yaml
-       │   └── template/
-       │       ├── gen/
-       │       │   ├── editorconfig.template
-       │       │   ├── gen_class.template
-       │       │   ├── gen_config.template
-       │       │   ├── gen_config_util.template
-       │       │   ├── gen_logo.template
-       │       │   ├── gen_log.template
-       │       │   ├── gen_pro_class.template
-       │       │   ├── gen_project_yaml.template
-       │       │   ├── gen_pro_yaml.template
-       │       │   ├── gen_read_template.template
-       │       │   ├── gen_run.template
-       │       │   ├── gen_write_template.template
-       │       │   └── test.template
-       │       └── tool/
-       │           ├── editorconfig.template
-       │           ├── tool_class.template
-       │           ├── tool_config.template
-       │           ├── tool_config_util.template
-       │           ├── tool_logo.template
-       │           ├── tool_log.template
-       │           └── tool_run.template
-       ├── __init__.py
-       ├── log/
-       │   └── gen_py_tool.log
-       ├── pro/
-       │   ├── __init__.py
-       │   ├── read_template.py
-       │   └── write_template.py
-       ├── py.typed
-       └── run/
-           └── gen_py_tool_run.py
+         ├── application/
+         │   ├── __init__.py
+         │   └── service.py
+         ├── domain/
+         │   ├── __init__.py
+         │   ├── models.py
+         │   └── ports/
+         │       ├── __init__.py
+         │       ├── iservice.py
+         │       └── isubprocessor.py
+         ├── engine.py
+         ├── gen_py_tool_bundle.py
+         ├── infrastructure/
+         │   ├── cli.py
+         │   ├── cli_bundle.py
+         │   ├── config/
+         │   │   ├── gen_py_tool.cfg
+         │   │   ├── gen_py_tool.logo
+         │   │   ├── scheme.json
+         │   │   └── templates.tgz
+         │   ├── create_command.py
+         │   ├── icli.py
+         │   ├── icli_command.py
+         │   ├── __init__.py
+         │   └── subprocessor.py
+         └── __init__.py
 
-8 directories, 31 files
+     6 directories, 21 files
 
 Copyright and licence
 ----------------------
