@@ -20,7 +20,7 @@ Info
 '''
 
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, call
 from gen_py_tool.engine import GenPyTool
 from gen_py_tool.gen_py_tool_bundle import GenPyToolBundle
 from gen_py_tool.domain.ports.isubprocessor import ISubProcessor
@@ -56,6 +56,7 @@ class TestEngine(unittest.TestCase):
                 | test_process_success - Tests that process() executes CLI if initialized.
                 | test_process_failure - Tests that process() prints error and does not execute if uninitialized.
                 | test_process_failure_with_unexpected_exception - Tests that process() prints error and does not execute if unexpected exception.
+                | test_process_with_cli_error - Tests that process() handles CLI execution failure.
     '''
 
     def test_default_init(self) -> None:
@@ -112,7 +113,7 @@ class TestEngine(unittest.TestCase):
             with patch('builtins.print') as mock_print:
                 engine: GenPyTool = GenPyTool()
                 self.assertFalse(engine._is_initialized)
-                mock_print.assert_called_with(f'\x1b[31mgen_py_tool: {error_message}\x1b[0m')
+                mock_print.assert_called_with(f'\x1b[31m❌ gen_py_tool: {error_message}\x1b[0m')
 
     def test_process_failure_with_unexpected_exception(self) -> None:
         '''
@@ -124,7 +125,7 @@ class TestEngine(unittest.TestCase):
             with patch('builtins.print') as mock_print:
                 engine: GenPyTool = GenPyTool()
                 engine.process()
-                mock_print.assert_any_call(f'\x1b[31mgen_py_tool unexpected exception: unexpected error.\x1b[0m')
+                mock_print.assert_any_call(f'\x1b[31m❌ gen_py_tool unexpected exception: unexpected error.\x1b[0m')
 
     def test_process_success(self) -> None:
         '''
@@ -133,6 +134,7 @@ class TestEngine(unittest.TestCase):
             :exceptions: None.
         '''
         mock_cli: MagicMock = MagicMock(spec=ICLI)
+        mock_cli.run.return_value = {"returncode": 0, "stdout": "ok", "stderr": ""}
         bundle: GenPyToolBundle = GenPyToolBundle(cli=mock_cli)
 
         engine: GenPyTool = GenPyTool(bundle)
@@ -140,6 +142,24 @@ class TestEngine(unittest.TestCase):
 
         engine.process()
         mock_cli.run.assert_called_once()
+
+    def test_process_with_cli_error(self) -> None:
+        '''
+            Tests that process() handles CLI execution failure.
+
+            :exceptions: None.
+        '''
+        mock_cli: MagicMock = MagicMock(spec=ICLI)
+        mock_cli.run.return_value = {"returncode": 1, "stdout": "", "stderr": "CLI error"}
+        bundle: GenPyToolBundle = GenPyToolBundle(cli=mock_cli)
+
+        engine: GenPyTool = GenPyTool(bundle)
+        self.assertTrue(engine._is_initialized)
+
+        with patch('builtins.print') as mock_print:
+            engine.process()
+            mock_print.assert_any_call('\x1b[31m❌ gen_py_tool: CLI error\x1b[0m')
+            mock_print.assert_any_call('\x1b[31m❌ gen_py_tool: exiting with error.\x1b[0m')
 
     def test_process_failure(self) -> None:
         '''
@@ -153,7 +173,10 @@ class TestEngine(unittest.TestCase):
                 self.assertFalse(engine._is_initialized)
 
                 engine.process()
-                mock_print.assert_called_with('\x1b[31mgen_py_tool: Service initialization failed\x1b[0m')
+                mock_print.assert_has_calls([
+                    call('\x1b[31m❌ gen_py_tool: Service initialization failed\x1b[0m'),
+                    call('\x1b[31m❌ gen_py_tool: engine not initialized.\x1b[0m')
+                ])
 
     def test_gen_py_tool_bundle_helpers(self) -> None:
         '''

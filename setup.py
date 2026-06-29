@@ -21,6 +21,7 @@ Info
 '''
 
 from __future__ import print_function
+import os
 from typing import List, Optional
 from os.path import abspath, dirname, join
 from setuptools import setup, find_packages
@@ -48,6 +49,30 @@ SUPPORTED_PY_VERSIONS: List[str] = [
     f'{PROGRAMMING_LANG} {VERSION}' for VERSION in VERSIONS
 ]
 PYP_CLASSIFIERS: List[str] = SUPPORTED_PY_VERSIONS
+
+
+def find_package_data(package_name: str) -> list[str]:
+    '''
+        Finds all files in package to include in package_data.
+
+        :param package_name: Package folder name.
+        :type package_name: <str>
+        :return: List of package files relative to the package folder.
+        :rtype: <list[str]>
+        :exceptions: None.
+    '''
+    package_data = []
+    for root, dirs, files in os.walk(package_name):
+        dirs[:] = [d for d in dirs if d != '__pycache__']
+        for file in files:
+            if file.endswith('.pyc') or file == '.editorconfig':
+                continue
+            full_path = os.path.join(root, file)
+            rel_path = os.path.relpath(full_path, package_name)
+            package_data.append(rel_path)
+    return package_data
+
+
 setup(
     name='gen_py_tool',
     version='1.4.0',
@@ -64,8 +89,6 @@ setup(
     packages=find_packages(exclude=['tests', 'tests.*']),
     install_requires=['ats-utilities'],
     package_data={
-        'gen_py_tool': [
-            'py.typed'
-        ]
+        'gen_py_tool': find_package_data('gen_py_tool')
     }
 )

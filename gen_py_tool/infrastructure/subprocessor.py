@@ -26,6 +26,9 @@ from ats_utilities.generator.igenerator import IGenerator
 from ats_utilities.generator.generator_bundle import GeneratorBundle
 from ats_utilities.exceptions.ats_value_error import ATSValueError
 from ats_utilities.factory_class import format_instance_to_string
+from ats_utilities.checker.ichecker import IChecker
+from ats_utilities.reporter.ireporter import IReporter
+from ats_utilities.factory_context_bundle import factory_context_bundle
 from gen_py_tool.domain.ports.isubprocessor import ISubProcessor
 
 __author__: str = 'Vladimir Roncevic'
@@ -48,6 +51,9 @@ class SubProcessor(ISubProcessor):
                 | _scheme - Path to the scheme json file.
                 | _templates - Path to the templates tgz file.
                 | _generator - Generator adapter used to generate code from templates.
+                | _checker - Injected parameters checker (default Checker).
+                | _reporter - Injected reporter for messaging (default Reporter).
+                | _verbose - Injected Enable/Disable verbose option (default False).
             :methods:
                 | run - Executes a sub-process.
                 | is_initialized - Checks if the subprocessor is initialized.
@@ -56,6 +62,10 @@ class SubProcessor(ISubProcessor):
 
     _scheme: str = 'config/scheme.json'
     _templates: str = 'config/templates.tgz'
+
+    _checker: IChecker
+    _reporter: IReporter
+    _verbose: bool
 
     def __init__(self, generator: IGenerator) -> None:
         '''
@@ -69,7 +79,8 @@ class SubProcessor(ISubProcessor):
         if not generator:
             raise ATSValueError('generator must be provided.')
 
-        self._generator = generator
+        self._generator: IGenerator = generator
+        factory_context_bundle(self, self._generator.get_shared_context())
 
     @override
     def run(self, params: dict[str, Any]) -> dict[str, Any]:
@@ -98,19 +109,19 @@ class SubProcessor(ISubProcessor):
         )
 
         if success:
-            print("Generated files:")
+            self._reporter.success(["    Generated files:"])
             for root, dirs, files in walk(output_dir):
                 for file in files:
                     rel_dir = relpath(root, output_dir)
                     if rel_dir == '.':
-                        print(f"  {file}")
+                        self._reporter.success([f"      {file}"])
                     else:
-                        print(f"  {rel_dir}/{file}")
+                        self._reporter.success([f"      {rel_dir}/{file}"])
 
         return {
             "returncode": 0 if success else 1,
-            "stdout": 'successfully generated.' if success else '',
-            "stderr": 'failed to generate.' if not success else ''
+            "stdout": f'project {project_name} successfully generated.' if success else '',
+            "stderr": f'failed to generate {project_name} project.' if not success else ''
         }
 
     @override

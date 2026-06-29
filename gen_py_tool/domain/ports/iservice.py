@@ -45,12 +45,14 @@ class IService(ABC):
     '''
 
     @abstractmethod
-    def execute(self, params: dict[str, Any]) -> None:
+    def execute(self, params: dict[str, Any]) -> dict[str, Any]:
         '''
             Executes a tool.
 
             :param params: Parameters for tool execution.
             :type params: <dict[str, Any]>
+            :return: The result of the tool execution.
+            :rtype: <dict[str, Any]>
             :exceptions: None.
         '''
         pass

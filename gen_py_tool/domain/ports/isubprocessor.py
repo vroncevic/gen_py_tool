@@ -52,6 +52,8 @@ class ISubProcessor(ABC):
 
             :param command: The command to execute.
             :type command: <dict[str, Any]>
+            :return: The result of the sub-process execution.
+            :rtype: <dict[str, Any]>
             :exceptions: None.   
         '''
         pass

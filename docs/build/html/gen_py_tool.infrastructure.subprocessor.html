@@ -79,6 +79,9 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <div class="line">_scheme - Path to the scheme json file.</div>
 <div class="line">_templates - Path to the templates tgz file.</div>
 <div class="line">_generator - Generator adapter used to generate code from templates.</div>
+<div class="line">_checker - Injected parameters checker (default Checker).</div>
+<div class="line">_reporter - Injected reporter for messaging (default Reporter).</div>
+<div class="line">_verbose - Injected Enable/Disable verbose option (default False).</div>
 </div>
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
@@ -96,6 +99,16 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="gen_py_tool.infrastructure.subprocessor.SubProcessor._checker">
+<span class="sig-name descname"><span class="pre">_checker</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">IChecker</span></em><a class="headerlink" href="#gen_py_tool.infrastructure.subprocessor.SubProcessor._checker" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_py_tool.infrastructure.subprocessor.SubProcessor._reporter">
+<span class="sig-name descname"><span class="pre">_reporter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">IReporter</span></em><a class="headerlink" href="#gen_py_tool.infrastructure.subprocessor.SubProcessor._reporter" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="gen_py_tool.infrastructure.subprocessor.SubProcessor._scheme">
 <span class="sig-name descname"><span class="pre">_scheme</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'config/scheme.json'</span></em><a class="headerlink" href="#gen_py_tool.infrastructure.subprocessor.SubProcessor._scheme" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -103,6 +116,11 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gen_py_tool.infrastructure.subprocessor.SubProcessor._templates">
 <span class="sig-name descname"><span class="pre">_templates</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'config/templates.tgz'</span></em><a class="headerlink" href="#gen_py_tool.infrastructure.subprocessor.SubProcessor._templates" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gen_py_tool.infrastructure.subprocessor.SubProcessor._verbose">
+<span class="sig-name descname"><span class="pre">_verbose</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#gen_py_tool.infrastructure.subprocessor.SubProcessor._verbose" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -153,8 +171,11 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#">gen_py_tool.infrastructure.subprocessor module</a><ul>
 <li><a class="reference internal" href="#gen_py_tool.infrastructure.subprocessor.SubProcessor"><code class="docutils literal notranslate"><span class="pre">SubProcessor</span></code></a><ul>
 <li><a class="reference internal" href="#gen_py_tool.infrastructure.subprocessor.SubProcessor._abc_impl"><code class="docutils literal notranslate"><span class="pre">SubProcessor._abc_impl</span></code></a></li>
+<li><a class="reference internal" href="#gen_py_tool.infrastructure.subprocessor.SubProcessor._checker"><code class="docutils literal notranslate"><span class="pre">SubProcessor._checker</span></code></a></li>
+<li><a class="reference internal" href="#gen_py_tool.infrastructure.subprocessor.SubProcessor._reporter"><code class="docutils literal notranslate"><span class="pre">SubProcessor._reporter</span></code></a></li>
 <li><a class="reference internal" href="#gen_py_tool.infrastructure.subprocessor.SubProcessor._scheme"><code class="docutils literal notranslate"><span class="pre">SubProcessor._scheme</span></code></a></li>
 <li><a class="reference internal" href="#gen_py_tool.infrastructure.subprocessor.SubProcessor._templates"><code class="docutils literal notranslate"><span class="pre">SubProcessor._templates</span></code></a></li>
+<li><a class="reference internal" href="#gen_py_tool.infrastructure.subprocessor.SubProcessor._verbose"><code class="docutils literal notranslate"><span class="pre">SubProcessor._verbose</span></code></a></li>
 <li><a class="reference internal" href="#gen_py_tool.infrastructure.subprocessor.SubProcessor.is_initialized"><code class="docutils literal notranslate"><span class="pre">SubProcessor.is_initialized()</span></code></a></li>
 <li><a class="reference internal" href="#gen_py_tool.infrastructure.subprocessor.SubProcessor.run"><code class="docutils literal notranslate"><span class="pre">SubProcessor.run()</span></code></a></li>
 </ul>

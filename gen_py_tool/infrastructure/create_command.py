@@ -124,7 +124,7 @@ class CreateCommand(ICLICommand):
         param_mapping: dict[str, str] = {
             "tool": "tool_standalone",
             "tool_ats": "tool_with_ats_utilities",
-            "gen": "generator_standalone",
+            "gen": "gen_standalone",
             "gen_ats": "gen_with_ats_utilities"
         }
         new_cli_params: dict[str, Any] = {}
@@ -138,7 +138,7 @@ class CreateCommand(ICLICommand):
         return new_cli_params
 
     @override
-    def execute(self, params: dict[str, Any], service: IService) -> None:
+    def execute(self, params: dict[str, Any], service: IService) -> dict[str, Any]:
         '''
             Executes the subcommand.
 
@@ -146,11 +146,11 @@ class CreateCommand(ICLICommand):
             :type params: <dict[str, Any]>
             :param service: Command orchestrator service instance.
             :type service: <IService>
+            :return: The result of the subcommand execution.
+            :rtype: <dict[str, Any]>
             :exceptions: None.
         '''
-        print(f"🔥 Executing {self.name} command...")
-        service.execute(params=self.to_tool_args(params))
-        print(f"✅ Executed {self.name} command.")
+        return service.execute(params=self.to_tool_args(params))
 
     @override
     def __str__(self) -> str:

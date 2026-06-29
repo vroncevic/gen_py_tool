@@ -20,6 +20,7 @@ Info
 '''
 
 from typing import Any, override
+from ats_utilities.exceptions.ats_value_error import ATSValueError
 from ats_utilities.factory_class import format_instance_to_string
 from gen_py_tool.domain.ports.iservice import IService
 from gen_py_tool.domain.ports.isubprocessor import ISubProcessor
@@ -55,35 +56,34 @@ class Service(IService):
             :param subprocessor: Subprocessor adapter.
             :type subprocessor: <ISubProcessor>
             :exceptions:
-                | ValueError - Subprocessor must be provided.
+                | ATSValueError: Subprocessor must be provided.
         '''
         if subprocessor is None:
-            raise ValueError("subprocessor must be provided.")
+            raise ATSValueError("subprocessor must be provided.")
 
         self._subprocessor: ISubProcessor = subprocessor
 
     @override
-    def execute(self, params: dict[str, Any]) -> None:
+    def execute(self, params: dict[str, Any]) -> dict[str, Any]:
         '''
             Executes a tool using the subprocessor adapter.
 
             :param params: Parameters for tool execution.
             :type params: <dict[str, Any]>
+            :return: The result of the tool execution.
+            :rtype: <dict[str, Any]>
             :exceptions:
-                | ValueError - Params dict must be provided.
+                | ATSValueError: Params dict must be provided.
         '''
         if not params:
-            raise ValueError("params dict must be provided.")
+            raise ATSValueError("params dict must be provided.")
 
         tool: Tool = Tool.from_params(params=params)
 
         if tool:
-            result = self._subprocessor.run(tool.params)
+            return self._subprocessor.run(tool.params)
 
-            if result.get("returncode") != 0:
-                print(result.get("stderr"))
-            else:
-                print(result.get("stdout"))
+        return {}
 
     @override
     def is_initialized(self) -> bool:

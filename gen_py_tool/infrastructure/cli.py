@@ -19,7 +19,7 @@ Info
     Defines CLI class implementing inbound CLI port.
 '''
 
-from typing import override
+from typing import Any, override
 from ats_utilities.option.ioption_parser import IOptionManager
 from ats_utilities.factory_class import format_instance_to_string
 from ats_utilities.exceptions.ats_value_error import ATSValueError
@@ -74,10 +74,12 @@ class CLI(ICLI):
         self._parser.register_commands(component_bundle.commands)
 
     @override
-    def run(self) -> None:
+    def run(self) -> dict[str, Any]:
         '''
             Parses command line arguments and runs selected command strategy.
 
+            :return: The status message of the last execution | None.
+            :rtype: <str | None>
             :exceptions:
                 | SystemExit: Parser exits after successful argument parsing or on error.
                 | OSError: OS-related errors during command execution.
@@ -85,8 +87,7 @@ class CLI(ICLI):
         command_name, params = self._parser.parse_command()
         cmd: ICLICommand = self._commands.get(command_name)
 
-        if cmd:
-            cmd.execute(params, self._service)
+        return cmd.execute(params, self._service) if cmd else None
 
     @override
     def is_initialized(self) -> bool:
@@ -97,7 +98,7 @@ class CLI(ICLI):
             :rtype: <bool>
             :exceptions: None.
         '''
-        return True
+        return all([self._parser.is_initialized(), self._service.is_initialized()])
 
     @override
     def __str__(self) -> str:

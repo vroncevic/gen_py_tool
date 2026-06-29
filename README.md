@@ -24,6 +24,7 @@ other information that should be provided before the modules are installed.
 - [Dependencies](#dependencies)
 - [Tool structure](#tool-structure)
 - [Code coverage](#code-coverage)
+- [Usage](#usage)
 - [Docs](#docs)
 - [Contributing](#contributing)
 - [Copyright and licence](#copyright-and-licence)
@@ -139,9 +140,10 @@ Generator structure
          │   ├── icli_command.py
          │   ├── __init__.py
          │   └── subprocessor.py
-         └── __init__.py
+         ├── __init__.py
+         └── py.typed
 
-     6 directories, 21 files
+     6 directories, 22 files
 ```
 </details>
 
@@ -154,24 +156,67 @@ Generator structure
 |------|-------|------|-------|
 | `gen_py_tool/__init__.py` | 8 | 0 | 100%|
 | `gen_py_tool/application/__init__.py` | 8 | 0 | 100%|
-| `gen_py_tool/application/service.py` | 34 | 0 | 100%|
+| `gen_py_tool/application/service.py` | 33 | 0 | 100%|
 | `gen_py_tool/domain/__init__.py` | 8 | 0 | 100%|
 | `gen_py_tool/domain/models.py` | 19 | 0 | 100%|
 | `gen_py_tool/domain/ports/__init__.py` | 8 | 0 | 100%|
 | `gen_py_tool/domain/ports/iservice.py` | 11 | 0 | 100%|
 | `gen_py_tool/domain/ports/isubprocessor.py` | 11 | 0 | 100%|
-| `gen_py_tool/engine.py` | 51 | 0 | 100%|
+| `gen_py_tool/engine.py` | 63 | 0 | 100%|
 | `gen_py_tool/gen_py_tool_bundle.py` | 41 | 0 | 100%|
 | `gen_py_tool/infrastructure/__init__.py` | 8 | 0 | 100%|
-| `gen_py_tool/infrastructure/cli.py` | 37 | 0 | 100%|
+| `gen_py_tool/infrastructure/cli.py` | 36 | 0 | 100%|
 | `gen_py_tool/infrastructure/cli_bundle.py` | 33 | 0 | 100%|
-| `gen_py_tool/infrastructure/create_command.py` | 45 | 0 | 100%|
-| `gen_py_tool/infrastructure/icli.py` | 10 | 0 | 100%|
-| `gen_py_tool/infrastructure/icli_command.py` | 13 | 0 | 100%|
-| `gen_py_tool/infrastructure/subprocessor.py` | 47 | 0 | 100%|
-| **Total** | 392 | 0 | 100% |
+| `gen_py_tool/infrastructure/create_command.py` | 43 | 0 | 100%|
+| `gen_py_tool/infrastructure/icli.py` | 11 | 0 | 100%|
+| `gen_py_tool/infrastructure/icli_command.py` | 14 | 0 | 100%|
+| `gen_py_tool/infrastructure/subprocessor.py` | 54 | 0 | 100%|
+| **Total** | 409 | 0 | 100% |
 
 </details>
+
+### Usage
+
+Install package
+
+```bash
+pip3 install gen_py_tool
+```
+
+Prepare main entry point by downloading [main.py](https://raw.githubusercontent.com/vroncevic/gen_py_tool/master/main.py) or create your own.
+
+
+```bash
+wget -O main.py https://raw.githubusercontent.com/vroncevic/gen_py_tool/master/main.py
+```
+
+Running tool for creating new py tool
+
+```bash
+mkdir -p demo/mytool/
+python3 main.py create --name mytool --type tool --output ./demo/mytool/
+```
+
+Running tool for creating new py tool with ats (ats-utilities) support
+
+```bash
+mkdir -p demo/mytoolwithats/
+python3 main.py create --name mytoolwithats --type tool_ats --output ./demo/mytoolwithats/
+```
+
+Running tool for creating new py generator
+
+```bash
+mkdir -p demo/mygenerator/
+python3 main.py create --name mygenerator --type gen --output ./demo/mygenerator/
+```
+
+Running tool for creating new py generator with ats (ats-utilities) support
+
+```bash
+mkdir -p demo/mygeneratorwithats/
+python3 main.py create --name mygeneratorwithats --type gen_ats --output ./demo/mygeneratorwithats/
+```
 
 ### Docs
 

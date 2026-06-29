@@ -92,6 +92,7 @@ class TestService(unittest.TestCase):
                 | test_execute_raises_exception - Tests that Service raises exception when subprocessor raises exception.
                 | test_execute_missing_args - Tests execution fails when arguments are missing.
                 | test_execute_with_non_zero_return_code - Tests execution fails when subprocessor returns non-zero return code.
+                | test_execute_with_falsy_tool - Tests execution returns empty dict when tool model is falsy.
     '''
 
     def test_init_success(self) -> None:
@@ -105,9 +106,8 @@ class TestService(unittest.TestCase):
         self.assertIsNotNone(service)
 
         params: dict[str, Any] = {'name': 'test', 'tool': 'tool_standalone', 'output': './'}
-        with patch('builtins.print') as mock_print:
-            service.execute(params)
-            mock_print.assert_called_with("hello")
+        res = service.execute(params)
+        self.assertEqual(res, {"stdout": "hello", "stderr": "", "returncode": 0})
 
         self.assertEqual(mock_subprocessor.called_with[0]["command"], {'name': 'test', 'tool': 'tool_standalone', 'output': './'})
 
@@ -161,6 +161,20 @@ class TestService(unittest.TestCase):
         service: Service = Service(subprocessor=mock_processor)
 
         params: dict[str, Any] = {'name': 'test', 'tool': 'tool_standalone', 'output': './'}
-        with patch('builtins.print') as mock_print:
-            service.execute(params)
-            mock_print.assert_called_with("Error!")
+        res = service.execute(params)
+        self.assertEqual(res, {"stdout": "", "stderr": "Error!", "returncode": 1})
+
+    @patch('gen_py_tool.application.service.Tool')
+    def test_execute_with_falsy_tool(self, mock_tool_class: MagicMock) -> None:
+        '''
+            Tests execution returns empty dict when tool model is falsy.
+
+            :raises None.
+        '''
+        mock_tool_class.from_params.return_value = None
+        mock_processor: MockSubProcessor = MockSubProcessor()
+        service: Service = Service(subprocessor=mock_processor)
+
+        params: dict[str, Any] = {'name': 'test', 'tool': 'tool_standalone', 'output': './'}
+        res = service.execute(params)
+        self.assertEqual(res, {})
