@@ -20,6 +20,8 @@ Info
 '''
 
 import unittest
+from typing import Any
+from ats_utilities.exceptions.ats_value_error import ATSValueError
 from gen_py_tool.domain.models import Tool
 
 __author__: str = 'Vladimir Roncevic'
@@ -50,21 +52,21 @@ class TestDomain(unittest.TestCase):
 
             :exceptions: None.
         '''
-        params: list[str] = ["echo", "Hello, {name}!"]
+        params: dict[str, Any] = {'name': 'test', 'tool': 'tool_standalone', 'output': './'}
         tool: Tool = Tool.from_params(params=params)
 
         self.assertIsNotNone(tool.params)
-        self.assertTrue(len(tool.params) == 2)
-        self.assertTrue(tool.params[0] == "echo")
-        self.assertTrue(tool.params[1] == "Hello, {name}!")
+        self.assertEqual(tool.params['name'], 'test')
+        self.assertEqual(tool.params['tool'], 'tool_standalone')
+        self.assertEqual(tool.params['output'], './')
 
     def test_from_params_missing_arguments(self) -> None:
         '''
-            Tests that missing arguments raises ValueError.
+            Tests that missing arguments raises ATSValueError.
 
             :exceptions: None.
         '''
-        params: list[str] = None
+        params: dict[str, Any] = None
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ATSValueError):
             Tool.from_params(params=params)

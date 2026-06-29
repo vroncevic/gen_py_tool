@@ -49,9 +49,11 @@ if __name__ == "__main__":
     cov.stop()
     cov.save()
 
-    # Generate report
+    # Generate reports
     print("\n--- Coverage Report ---")
     cov.report()
+    cov.json_report(outfile='gen_py_tool.json')
+    cov.xml_report(outfile='gen_py_tool.xml')
     
     # Generate HTML report
     cov.html_report(directory='htmlcov')

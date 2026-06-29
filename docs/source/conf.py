@@ -29,7 +29,7 @@ sys.path.insert(0, os.path.abspath('../../'))
 project: str = 'gen_py_tool'
 project_copyright: str = '2026, Vladimir Roncevic <elektron.ronca@gmail.com>'
 author: str = 'Vladimir Roncevic <elektron.ronca@gmail.com>'
-version: str = '1.3.9'
+version: str = '1.4.0'
 release: str = 'https://github.com/vroncevic/gen_py_tool/releases'
 extensions: List[str] = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
 templates_path: List[str] = ['_templates']

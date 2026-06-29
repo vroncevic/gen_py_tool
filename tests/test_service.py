@@ -60,20 +60,15 @@ class MockSubProcessor(ISubProcessor):
         }
         self.called_with: list[dict[str, Any]] = []
 
-    def run(self, command: list[str], capture_output: bool = False, text: bool = True) -> dict[str, Any]:
+    def run(self, command: dict[str, Any]) -> dict[str, Any]:
         '''
             Runs a command.
 
             :param command: The command to run.
-            :param capture_output: Whether to capture the output.
-            :param text: Whether to decode the output as text.
+            :type command: <dict[str, Any]>
             :raises None.
         '''
-        self.called_with.append({
-            "command": command,
-            "capture_output": capture_output,
-            "text": text
-        })
+        self.called_with.append({"command": command})
         return self.return_value
 
     def is_initialized(self) -> bool:
@@ -109,13 +104,12 @@ class TestService(unittest.TestCase):
         service: Service = Service(subprocessor=mock_subprocessor)
         self.assertIsNotNone(service)
 
+        params: dict[str, Any] = {'name': 'test', 'tool': 'tool_standalone', 'output': './'}
         with patch('builtins.print') as mock_print:
-            service.execute(["echo", "hello"])
+            service.execute(params)
             mock_print.assert_called_with("hello")
 
-        self.assertEqual(mock_subprocessor.called_with[0]["command"], ["echo", "hello"])
-        self.assertTrue(mock_subprocessor.called_with[0]["capture_output"])
-        self.assertTrue(mock_subprocessor.called_with[0]["text"])
+        self.assertEqual(mock_subprocessor.called_with[0]["command"], {'name': 'test', 'tool': 'tool_standalone', 'output': './'})
 
         self.assertTrue(isinstance(str(service), str))
         self.assertNotEqual(str(service), "")
@@ -141,7 +135,7 @@ class TestService(unittest.TestCase):
         service: Service = Service(subprocessor=mock_processor)
 
         with self.assertRaises(Exception):
-            service.execute(["echo", "hello"])
+            service.execute({'name': 'test', 'tool': 'tool_standalone', 'output': './'})
 
     def test_execute_missing_args(self) -> None:
         '''
@@ -166,6 +160,7 @@ class TestService(unittest.TestCase):
         mock_processor: MockSubProcessor = MockSubProcessor(return_value=mock_response)
         service: Service = Service(subprocessor=mock_processor)
 
+        params: dict[str, Any] = {'name': 'test', 'tool': 'tool_standalone', 'output': './'}
         with patch('builtins.print') as mock_print:
-            service.execute(["echo", "hello"])
+            service.execute(params)
             mock_print.assert_called_with("Error!")

@@ -45,7 +45,7 @@ class SubProcessor(ISubProcessor):
         It defines:
 
             :attributes:
-                | _schema - Path to the schema file.
+                | _scheme - Path to the scheme json file.
                 | _templates - Path to the templates tgz file.
                 | _generator - Generator adapter used to generate code from templates.
             :methods:
@@ -81,21 +81,27 @@ class SubProcessor(ISubProcessor):
             :exceptions: None.
         '''
         current_dir: str = dirname(realpath(__file__))
+        output_dir: str = params.get('output')
+        template_key: str = params.get('type')
+        project_name: str = params.get('name')
+        scheme: str = f'{current_dir}/{self._scheme}'
+        templates: str = f'{current_dir}/{self._templates}'
+
         success = self._generator.generate(
             GeneratorBundle(
-                archive_path=f'{current_dir}/{self._templates}',
-                target_dir=params.get('output'),
-                template_key=params.get('type'),
-                scheme=f'{current_dir}/{self._scheme}',
-                template_values={'project_name': params.get('name')}
+                archive_path=templates,
+                target_dir=output_dir,
+                template_key=template_key,
+                scheme=scheme,
+                template_values={'project_name': project_name}
             )
         )
 
         if success:
             print("Generated files:")
-            for root, dirs, files in walk(params.get('output')):
+            for root, dirs, files in walk(output_dir):
                 for file in files:
-                    rel_dir = relpath(root, params.get('output'))
+                    rel_dir = relpath(root, output_dir)
                     if rel_dir == '.':
                         print(f"  {file}")
                     else:

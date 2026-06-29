@@ -27,6 +27,7 @@ from gen_py_tool.domain.ports.isubprocessor import ISubProcessor
 from gen_py_tool.domain.ports.iservice import IService
 from ats_utilities.option.ioption_parser import IOptionManager
 from ats_utilities.exceptions.ats_value_error import ATSValueError
+from ats_utilities.generator.igenerator import IGenerator
 from gen_py_tool.infrastructure.icli import ICLI
 
 __author__: str = 'Vladimir Roncevic'
@@ -160,6 +161,7 @@ class TestEngine(unittest.TestCase):
 
             :exceptions: None.
         '''
+        generator1: MagicMock = MagicMock(spec=IGenerator)
         subprocessor1: MagicMock = MagicMock(spec=ISubProcessor)
         service1: MagicMock = MagicMock(spec=IService)
         parser1: MagicMock = MagicMock(spec=IOptionManager)
@@ -175,37 +177,49 @@ class TestEngine(unittest.TestCase):
         d = bundle1.to_dict()
         self.assertEqual(d["subprocessor"], subprocessor1)
 
+        # Missing generator (generator=None)
         bundle3: GenPyToolBundle = GenPyToolBundle(
-            subprocessor=None, service=service1, parser=parser1, cli=cli1
+            generator=None, subprocessor=subprocessor1, service=service1, parser=parser1, cli=cli1
         )
-
-        with self.assertRaises(ATSValueError):
+        with self.assertRaises(ATSValueError) as ctx:
             bundle3.validate()
+        self.assertEqual(str(ctx.exception), 'generator must be provided.')
 
+        # Missing subprocessor (subprocessor=None)
         bundle4: GenPyToolBundle = GenPyToolBundle(
-            subprocessor=None, service=service1, parser=parser1, cli=cli1
+            generator=generator1, subprocessor=None, service=service1, parser=parser1, cli=cli1
         )
-
-        with self.assertRaises(ATSValueError):
+        with self.assertRaises(ATSValueError) as ctx:
             bundle4.validate()
+        self.assertEqual(str(ctx.exception), 'subprocessor must be provided.')
 
+        # Missing service (service=None)
         bundle5: GenPyToolBundle = GenPyToolBundle(
-            subprocessor=subprocessor1, service=service1, parser=None, cli=cli1
+            generator=generator1, subprocessor=subprocessor1, service=None, parser=parser1, cli=cli1
         )
-
-        with self.assertRaises(ATSValueError):
+        with self.assertRaises(ATSValueError) as ctx:
             bundle5.validate()
+        self.assertEqual(str(ctx.exception), 'service must be provided.')
 
+        # Missing parser (parser=None)
         bundle6: GenPyToolBundle = GenPyToolBundle(
-            subprocessor=subprocessor1, service=None, parser=parser1, cli=cli1
+            generator=generator1, subprocessor=subprocessor1, service=service1, parser=None, cli=cli1
         )
-
-        with self.assertRaises(ATSValueError):
+        with self.assertRaises(ATSValueError) as ctx:
             bundle6.validate()
+        self.assertEqual(str(ctx.exception), 'parser must be provided.')
 
+        # Missing cli (cli=None)
         bundle7: GenPyToolBundle = GenPyToolBundle(
-            subprocessor=subprocessor1, service=service1, parser=parser1, cli=None
+            generator=generator1, subprocessor=subprocessor1, service=service1, parser=parser1, cli=None
         )
-
-        with self.assertRaises(ATSValueError):
+        with self.assertRaises(ATSValueError) as ctx:
             bundle7.validate()
+        self.assertEqual(str(ctx.exception), 'cli must be provided.')
+
+        # All valid
+        bundle8: GenPyToolBundle = GenPyToolBundle(
+            generator=generator1, subprocessor=subprocessor1, service=service1, parser=parser1, cli=cli1
+        )
+        # Should not raise any exception
+        bundle8.validate()

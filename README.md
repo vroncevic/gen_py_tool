@@ -109,59 +109,69 @@ You can use Dockerfile to create image/container.
 
 Generator structure
 
+<details>
+<summary><b>Click to expand framework structure</b></summary>
+
 ```bash
     gen_py_tool/
-         ├── conf/
-         │   ├── gen_py_tool.cfg
-         │   ├── gen_py_tool.logo
-         │   ├── gen_py_tool_util.cfg
-         │   ├── project.yaml
-         │   └── template/
-         │       ├── gen/
-         │       │   ├── editorconfig.template
-         │       │   ├── gen_class.template
-         │       │   ├── gen_config.template
-         │       │   ├── gen_config_util.template
-         │       │   ├── gen_logo.template
-         │       │   ├── gen_log.template
-         │       │   ├── gen_pro_class.template
-         │       │   ├── gen_project_yaml.template
-         │       │   ├── gen_pro_yaml.template
-         │       │   ├── gen_read_template.template
-         │       │   ├── gen_run.template
-         │       │   ├── gen_write_template.template
-         │       │   └── test.template
-         │       └── tool/
-         │           ├── editorconfig.template
-         │           ├── tool_class.template
-         │           ├── tool_config.template
-         │           ├── tool_config_util.template
-         │           ├── tool_logo.template
-         │           ├── tool_log.template
-         │           └── tool_run.template
-         ├── __init__.py
-         ├── log/
-         │   └── gen_py_tool.log
-         ├── pro/
+         ├── application/
          │   ├── __init__.py
-         │   ├── read_template.py
-         │   └── write_template.py
-         ├── py.typed
-         └── run/
-             └── gen_py_tool_run.py
+         │   └── service.py
+         ├── domain/
+         │   ├── __init__.py
+         │   ├── models.py
+         │   └── ports/
+         │       ├── __init__.py
+         │       ├── iservice.py
+         │       └── isubprocessor.py
+         ├── engine.py
+         ├── gen_py_tool_bundle.py
+         ├── infrastructure/
+         │   ├── cli.py
+         │   ├── cli_bundle.py
+         │   ├── config/
+         │   │   ├── gen_py_tool.cfg
+         │   │   ├── gen_py_tool.logo
+         │   │   ├── scheme.json
+         │   │   └── templates.tgz
+         │   ├── create_command.py
+         │   ├── icli.py
+         │   ├── icli_command.py
+         │   ├── __init__.py
+         │   └── subprocessor.py
+         └── __init__.py
 
-    8 directories, 30 files
+     6 directories, 21 files
 ```
+</details>
 
 ### Code coverage
 
+<details>
+<summary><b>Click to expand code coverage</b></summary>
+
 | Name | Stmts | Miss | Cover |
 |------|-------|------|-------|
-| `gen_py_tool/__init__.py` | 73 | 12 | 84%|
-| `gen_py_tool/pro/__init__.py` | 59 | 5 | 92%|
-| `gen_py_tool/pro/read_template.py` | 55 | 2 | 96%|
-| `gen_py_tool/pro/write_template.py` | 85 | 4 | 95%|
-| **Total** | 272 | 23 | 92% |
+| `gen_py_tool/__init__.py` | 8 | 0 | 100%|
+| `gen_py_tool/application/__init__.py` | 8 | 0 | 100%|
+| `gen_py_tool/application/service.py` | 34 | 0 | 100%|
+| `gen_py_tool/domain/__init__.py` | 8 | 0 | 100%|
+| `gen_py_tool/domain/models.py` | 19 | 0 | 100%|
+| `gen_py_tool/domain/ports/__init__.py` | 8 | 0 | 100%|
+| `gen_py_tool/domain/ports/iservice.py` | 11 | 0 | 100%|
+| `gen_py_tool/domain/ports/isubprocessor.py` | 11 | 0 | 100%|
+| `gen_py_tool/engine.py` | 51 | 0 | 100%|
+| `gen_py_tool/gen_py_tool_bundle.py` | 41 | 0 | 100%|
+| `gen_py_tool/infrastructure/__init__.py` | 8 | 0 | 100%|
+| `gen_py_tool/infrastructure/cli.py` | 37 | 0 | 100%|
+| `gen_py_tool/infrastructure/cli_bundle.py` | 33 | 0 | 100%|
+| `gen_py_tool/infrastructure/create_command.py` | 45 | 0 | 100%|
+| `gen_py_tool/infrastructure/icli.py` | 10 | 0 | 100%|
+| `gen_py_tool/infrastructure/icli_command.py` | 13 | 0 | 100%|
+| `gen_py_tool/infrastructure/subprocessor.py` | 47 | 0 | 100%|
+| **Total** | 392 | 0 | 100% |
+
+</details>
 
 ### Docs
 

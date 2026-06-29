@@ -29,6 +29,7 @@ from ats_utilities.checker.engine import Checker
 from ats_utilities.reporter.engine import Reporter
 from ats_utilities.option.command_option import CommandOption
 from ats_utilities.option.ioption_parser import IOptionManager
+from ats_utilities.exceptions.ats_value_error import ATSValueError
 from gen_py_tool.infrastructure.icli_command import ICLICommand
 from gen_py_tool.infrastructure.cli_bundle import CLIBundle
 from gen_py_tool.infrastructure.cli import CLI
@@ -36,7 +37,7 @@ from gen_py_tool.infrastructure.create_command import CreateCommand
 from gen_py_tool.domain.ports.iservice import IService
 from gen_py_tool.domain.ports.isubprocessor import ISubProcessor
 from gen_py_tool.infrastructure.subprocessor import SubProcessor
-from subprocess import CompletedProcess
+from ats_utilities.generator.igenerator import IGenerator
 
 __author__: str = 'Vladimir Roncevic'
 __copyright__: str = '(C) 2026, https://vroncevic.github.io/gen_py_tool'
@@ -224,9 +225,9 @@ class TestInfrastructure(unittest.TestCase):
             :exceptions: None.
         '''
         cmd: CreateCommand = CreateCommand()
-        self.assertEqual(cmd.name, "ping")
-        self.assertEqual(cmd.help_text, "Ping destination host")
-        self.assertEqual(len(cmd.options), 2)
+        self.assertEqual(cmd.name, "create")
+        self.assertEqual(cmd.help_text, "Generate Python Tool/Generator project")
+        self.assertEqual(len(cmd.options), 3)
         self.assertIsNotNone(str(cmd))
         self.assertIsNotNone(repr(cmd))
         self.assertIsInstance(str(cmd), str)
@@ -235,10 +236,12 @@ class TestInfrastructure(unittest.TestCase):
         self.assertNotEqual(repr(cmd), "")
 
         mock_service: MagicMock = MagicMock(spec=IService)
-        params: dict[str, str] = {"ping": "google.com"}
+        params: dict[str, str] = {"name": "test", "type": "tool", "output": "./"}
         cmd.execute(params, mock_service)
 
-        mock_service.execute.assert_called_once_with(params=["ping"])
+        mock_service.execute.assert_called_once_with(
+            params={"name": "test", "type": "tool_standalone", "output": "./"}
+        )
 
     def test_cli_bundle_helpers(self) -> None:
         '''
@@ -306,86 +309,70 @@ class TestSubProcessor(unittest.TestCase):
 
         It defines:
             :methods:
-                | test_run_default_parameters - Tests execution with default parameters.
-                | test_run_with_captured_output - Tests execution when capturing output.
-                | test_run_with_error_returncode - Tests handling of failing sub-processes.
+                | test_run_success - Tests execution with successful generation.
+                | test_run_failure - Tests execution with failing generation.
+                | test_subprocessor_init_none - Tests initialization with None generator.
+                | test_subprocessor_is_initialized - Tests is_initialized method.
+                | test_subprocessor_str - Tests SubProcessor string representation.
     '''
 
-    @patch('gen_py_tool.infrastructure.subprocessor.run')
-    def test_run_default_parameters(self, mock_run: MagicMock) -> None:
+    def test_run_success(self) -> None:
         '''
-            Tests successful sub-process execution with default parameters.
+            Tests execution when generation succeeds.
         '''
-        mock_completed_process: CompletedProcess = CompletedProcess(
-            args=["echo", "hello"],
-            returncode=0,
-            stdout=None,
-            stderr=None
-        )
-        mock_run.return_value = mock_completed_process
-
-        subprocessor: ISubProcessor = SubProcessor()
-        params: list[str] = ["echo", "hello"]
+        mock_generator: MagicMock = MagicMock(spec=IGenerator)
+        mock_generator.generate.return_value = True
+        
+        subprocessor: ISubProcessor = SubProcessor(generator=mock_generator)
+        params: dict[str, Any] = {'name': 'test', 'type': 'tool', 'output': './'}
         
         res: dict[str, Any] = subprocessor.run(params)
 
-        mock_run.assert_called_once_with(params, capture_output=False, text=True)
-        
         self.assertEqual(res["returncode"], 0)
-        self.assertIsNone(res["stdout"])
-        self.assertIsNone(res["stderr"])
-
-    @patch('gen_py_tool.infrastructure.subprocessor.run')
-    def test_run_with_captured_output(self, mock_run: MagicMock) -> None:
-        '''
-            Tests sub-process execution when output capture is requested.
-        '''
-        mock_completed_process: CompletedProcess = CompletedProcess(
-            args=["ls", "-la"],
-            returncode=0,
-            stdout="total 0\ndrwxr-xr-x",
-            stderr=""
-        )
-        mock_run.return_value = mock_completed_process
-
-        subprocessor: ISubProcessor = SubProcessor()
-        params: list[str] = ["ls", "-la"]
-        
-        res: dict[str, Any] = subprocessor.run(params, capture_output=True, text=True)
-
-        mock_run.assert_called_once_with(params, capture_output=True, text=True)
-        self.assertEqual(res["returncode"], 0)
-        self.assertEqual(res["stdout"], "total 0\ndrwxr-xr-x")
+        self.assertEqual(res["stdout"], "successfully generated.")
         self.assertEqual(res["stderr"], "")
+        mock_generator.generate.assert_called_once()
 
-    @patch('gen_py_tool.infrastructure.subprocessor.run')
-    def test_run_with_error_returncode(self, mock_run: MagicMock) -> None:
+    def test_run_failure(self) -> None:
         '''
-            Tests sub-process execution that finishes with a non-zero exit code.
+            Tests execution when generation fails.
         '''
-        mock_completed_process: CompletedProcess = CompletedProcess(
-            args=["false"],
-            returncode=1,
-            stdout="",
-            stderr="Error: command failed"
-        )
-        mock_run.return_value = mock_completed_process
-
-        subprocessor: ISubProcessor = SubProcessor()
-        params: list[str] = ["false"]
+        mock_generator: MagicMock = MagicMock(spec=IGenerator)
+        mock_generator.generate.return_value = False
         
-        res: dict[str, Any] = subprocessor.run(params, capture_output=True, text=False)
+        subprocessor: ISubProcessor = SubProcessor(generator=mock_generator)
+        params: dict[str, Any] = {'name': 'test', 'type': 'tool', 'output': './'}
+        
+        res: dict[str, Any] = subprocessor.run(params)
 
-        mock_run.assert_called_once_with(params, capture_output=True, text=False)
         self.assertEqual(res["returncode"], 1)
         self.assertEqual(res["stdout"], "")
-        self.assertEqual(res["stderr"], "Error: command failed")
+        self.assertEqual(res["stderr"], "failed to generate.")
+        mock_generator.generate.assert_called_once()
+
+    def test_subprocessor_init_none(self) -> None:
+        '''
+            Tests that SubProcessor raises ATSValueError when generator is None.
+        '''
+        with self.assertRaises(ATSValueError):
+            SubProcessor(None)
+
+    def test_subprocessor_is_initialized(self) -> None:
+        '''
+            Tests is_initialized method delegates to generator.
+        '''
+        mock_generator: MagicMock = MagicMock(spec=IGenerator)
+        mock_generator.is_initialized.return_value = True
+        subprocessor: ISubProcessor = SubProcessor(generator=mock_generator)
+        self.assertTrue(subprocessor.is_initialized())
+        mock_generator.is_initialized.assert_called_once()
 
     def test_subprocessor_str(self) -> None:
         """
             Tests SubProcessor string representation.
         """
-        subprocessor: ISubProcessor = SubProcessor()
+        mock_generator: MagicMock = MagicMock(spec=IGenerator)
+        subprocessor: ISubProcessor = SubProcessor(generator=mock_generator)
         self.assertIsNotNone(str(subprocessor))
         self.assertIsInstance(str(subprocessor), str)
         self.assertNotEqual(str(subprocessor), "")
@@ -397,50 +384,28 @@ class TestPingCommand(unittest.TestCase):
 
     def test_to_tool_args_with_none(self) -> None:
         """Cover branch where params is None."""
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ATSValueError):
             self.command.to_tool_args(None)
 
     def test_to_tool_args_with_empty_dict(self) -> None:
         """Cover branch where params is an empty dict."""
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ATSValueError):
             self.command.to_tool_args({})
-
-    def test_to_tool_args_hostname(self) -> None:
-        """Cover branch where flag is None."""
-        result: list[str] = self.command.to_tool_args({
-            "hostname": "google.com"
-        })
-
-        self.assertEqual(result, ["ping", "google.com"])
-
-    def test_to_tool_args_count(self) -> None:
-        """Cover branch where flag exists."""
-        result: list[str] = self.command.to_tool_args({
-            "count": 5
-        })
-
-        self.assertEqual(
-            result,
-            ["ping", "-c", "5"]
-        )
 
     def test_to_tool_args_ignores_unknown_param(self) -> None:
         """Cover branch where key not in mapping."""
-        result: list[str] = self.command.to_tool_args({
+        result: dict[str, Any] = self.command.to_tool_args({
             "unknown": "value"
         })
 
-        self.assertEqual(result, ["ping"])
+        self.assertEqual(result, {"unknown": "value"})
 
     def test_to_tool_args_all_params(self) -> None:
-        result: list[str] = self.command.to_tool_args({
-            "hostname": "google.com",
-            "count": 3
-        })
+        result: dict[str, Any] = self.command.to_tool_args({'name': 'test', 'type': 'tool', 'output': './'})
 
         self.assertEqual(
             result,
-            ["ping", "google.com", "-c", "3"]
+            {'name': 'test', 'type': 'tool_standalone', 'output': './'}
         )
 
     @patch("builtins.print")
@@ -448,20 +413,17 @@ class TestPingCommand(unittest.TestCase):
         service: MagicMock = MagicMock(spec=IService)
 
         self.command.execute(
-            {
-                "hostname": "google.com",
-                "count": 3
-            },
+            {'name': 'test', 'type': 'tool', 'output': './'},
             service
         )
 
         service.execute.assert_called_once_with(
-            params=["ping", "google.com", "-c", "3"]
+            params={'name': 'test', 'type': 'tool_standalone', 'output': './'}
         )
 
         mock_print.assert_has_calls([
-            call("🔥 Executing ping command..."),
-            call("✅ Executed ping command.")
+            call("🔥 Executing create command..."),
+            call("✅ Executed create command.")
         ])
 
     @patch.object(CreateCommand, "to_tool_args")
@@ -471,24 +433,20 @@ class TestPingCommand(unittest.TestCase):
         mock_print,
         mock_to_tool_args
     ) -> None:
-        mock_to_tool_args.return_value = [
-            "ping",
-            "localhost",
-            "-c",
-            "1"
-        ]
+        mock_to_tool_args.return_value = {
+            'name': 'test',
+            'type': 'tool_standalone',
+            'output': './'
+        }
 
         service: MagicMock = MagicMock(spec=IService)
 
-        params: dict[str, Any] = {
-            "hostname": "localhost",
-            "count": 1
-        }
+        params: dict[str, Any] = {'name': 'test', 'type': 'tool', 'output': './'}
 
         self.command.execute(params, service)
 
         mock_to_tool_args.assert_called_once_with(params)
 
         service.execute.assert_called_once_with(
-            params=["ping", "localhost", "-c", "1"]
+            params={'name': 'test', 'type': 'tool_standalone', 'output': './'}
         )
