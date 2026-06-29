@@ -23,7 +23,7 @@ Info
 from __future__ import print_function
 from typing import List, Optional
 from os.path import abspath, dirname, join
-from setuptools import setup
+from setuptools import setup, find_packages
 
 __author__: str = 'Vladimir Roncevic'
 __copyright__: str = '(C) 2026, https://vroncevic.github.io/gen_py_tool'
@@ -61,41 +61,11 @@ setup(
     keywords='setup, python, install, tool, generator',
     platforms='any',
     classifiers=PYP_CLASSIFIERS,
-    packages=['gen_py_tool', 'gen_py_tool.pro'],
+    packages=find_packages(exclude=['tests', 'tests.*']),
     install_requires=['ats-utilities'],
     package_data={
         'gen_py_tool': [
-            'py.typed',
-            f'{CONF}/gen_py_tool.logo',
-            f'{CONF}/gen_py_tool.cfg',
-            f'{CONF}/gen_py_tool_util.cfg',
-            f'{CONF}/project.yaml',
-            f'{TEMPLATE}/tool/editorconfig.template',
-            f'{TEMPLATE}/tool/tool_class.template',
-            f'{TEMPLATE}/tool/tool_config_util.template',
-            f'{TEMPLATE}/tool/tool_config.template',
-            f'{TEMPLATE}/tool/tool_log.template',
-            f'{TEMPLATE}/tool/tool_logo.template',
-            f'{TEMPLATE}/tool/tool_run.template',
-            f'{TEMPLATE}/gen/editorconfig.template',
-            f'{TEMPLATE}/gen/gen_class.template',
-            f'{TEMPLATE}/gen/gen_config_util.template',
-            f'{TEMPLATE}/gen/gen_config.template',
-            f'{TEMPLATE}/gen/gen_log.template',
-            f'{TEMPLATE}/gen/gen_logo.template',
-            f'{TEMPLATE}/gen/gen_pro_class.template',
-            f'{TEMPLATE}/gen/gen_pro_yaml.template',
-            f'{TEMPLATE}/gen/gen_project_yaml.template',
-            f'{TEMPLATE}/gen/gen_read_template.template',
-            f'{TEMPLATE}/gen/gen_run.template',
-            f'{TEMPLATE}/gen/gen_write_template.template',
-            f'{TEMPLATE}/gen/test.template',
-            f'{LOG}/gen_py_tool.log'
+            'py.typed'
         ]
-    },
-    data_files=[(
-        '/usr/local/bin/', [
-            f'{TOOL_DIR}run/gen_py_tool_run.py'
-        ]
-    )]
+    }
 )
