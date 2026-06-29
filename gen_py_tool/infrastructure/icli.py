@@ -20,6 +20,7 @@ Info
 '''
 
 from abc import ABC, abstractmethod
+from typing import Any
 
 __author__: str = 'Vladimir Roncevic'
 __copyright__: str = '(C) 2026, https://vroncevic.github.io/gen_py_tool'
@@ -45,10 +46,12 @@ class ICLI(ABC):
     '''
 
     @abstractmethod
-    def run(self) -> None:
+    def run(self) -> dict[str, Any]:
         '''
             Parses command line arguments and runs selected command strategy.
 
+            :return: The result of the subcommand execution.
+            :rtype: <dict[str, Any]>
             :exceptions: None.
         '''
         pass

@@ -57,13 +57,15 @@
 <span class="sd">    Main engine orchestrator class for Task Code Generator CLI.</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">override</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">override</span>
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">realpath</span>
 <span class="kn">from</span> <span class="nn">ats_utilities.base.engine</span> <span class="kn">import</span> <span class="n">Base</span>
 <span class="kn">from</span> <span class="nn">ats_utilities.base.component_bundle</span> <span class="kn">import</span> <span class="n">BaseComponentBundle</span>
 <span class="kn">from</span> <span class="nn">ats_utilities.generator.igenerator</span> <span class="kn">import</span> <span class="n">IGenerator</span>
 <span class="kn">from</span> <span class="nn">ats_utilities.option.ioption_parser</span> <span class="kn">import</span> <span class="n">IOptionManager</span>
 <span class="kn">from</span> <span class="nn">ats_utilities.exceptions.ats_value_error</span> <span class="kn">import</span> <span class="n">ATSValueError</span>
+<span class="kn">from</span> <span class="nn">ats_utilities.exceptions.ats_type_error</span> <span class="kn">import</span> <span class="n">ATSTypeError</span>
+<span class="kn">from</span> <span class="nn">ats_utilities.exceptions.ats_generator_error</span> <span class="kn">import</span> <span class="n">ATSGeneratorError</span>
 <span class="kn">from</span> <span class="nn">gen_py_tool.gen_py_tool_bundle</span> <span class="kn">import</span> <span class="n">GenPyToolBundle</span>
 <span class="kn">from</span> <span class="nn">gen_py_tool.domain.ports.iservice</span> <span class="kn">import</span> <span class="n">IService</span>
 <span class="kn">from</span> <span class="nn">gen_py_tool.application.service</span> <span class="kn">import</span> <span class="n">Service</span>
@@ -155,11 +157,12 @@
                     <span class="n">generator</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">subprocessor</span><span class="p">,</span> <span class="n">service</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cli</span>
                 <span class="p">]</span> <span class="k">if</span> <span class="n">component</span>
             <span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">success</span><span class="p">([</span><span class="s1">&#39;✅ gen_py_tool: engine initialized successfully.&#39;</span><span class="p">])</span>
 
-        <span class="k">except</span> <span class="n">ATSValueError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">error</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;gen_py_tool: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">])</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">ATSValueError</span><span class="p">,</span> <span class="n">ATSTypeError</span><span class="p">,</span> <span class="n">ATSGeneratorError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">error</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;❌ gen_py_tool: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">])</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">error</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;gen_py_tool unexpected exception: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">error</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;❌ gen_py_tool unexpected exception: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">])</span>
 
 <div class="viewcode-block" id="GenPyTool.process">
 <a class="viewcode-back" href="../../gen_py_tool.engine.html#gen_py_tool.engine.GenPyTool.process">[docs]</a>
@@ -170,10 +173,22 @@
 
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_initialized</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cli</span><span class="o">.</span><span class="n">run</span><span class="p">()</span></div>
-</div>
+        <span class="n">result</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_initialized</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">success</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;🔥 Starting code generation...&quot;</span><span class="p">])</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cli</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">success</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;✅ Code generation finished!&quot;</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;returncode&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">error</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;❌ gen_py_tool: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;stderr&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">error</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;❌ gen_py_tool: exiting with error.&#39;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">success</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;✅ gen_py_tool: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;stdout&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">success</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;✅ gen_py_tool: exiting successfully.&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">error</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;❌ gen_py_tool: engine not initialized.&#39;</span><span class="p">])</span></div>
+</div>
 
 </pre></div>
 

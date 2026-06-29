@@ -58,6 +58,7 @@
 <span class="sd">&#39;&#39;&#39;</span>
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">override</span>
+<span class="kn">from</span> <span class="nn">ats_utilities.exceptions.ats_value_error</span> <span class="kn">import</span> <span class="n">ATSValueError</span>
 <span class="kn">from</span> <span class="nn">ats_utilities.factory_class</span> <span class="kn">import</span> <span class="n">format_instance_to_string</span>
 <span class="kn">from</span> <span class="nn">gen_py_tool.domain.ports.iservice</span> <span class="kn">import</span> <span class="n">IService</span>
 <span class="kn">from</span> <span class="nn">gen_py_tool.domain.ports.isubprocessor</span> <span class="kn">import</span> <span class="n">ISubProcessor</span>
@@ -95,37 +96,36 @@
 <span class="sd">            :param subprocessor: Subprocessor adapter.</span>
 <span class="sd">            :type subprocessor: &lt;ISubProcessor&gt;</span>
 <span class="sd">            :exceptions:</span>
-<span class="sd">                | ValueError - Subprocessor must be provided.</span>
+<span class="sd">                | ATSValueError: Subprocessor must be provided.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">subprocessor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;subprocessor must be provided.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">ATSValueError</span><span class="p">(</span><span class="s2">&quot;subprocessor must be provided.&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_subprocessor</span><span class="p">:</span> <span class="n">ISubProcessor</span> <span class="o">=</span> <span class="n">subprocessor</span>
 
 <div class="viewcode-block" id="Service.execute">
 <a class="viewcode-back" href="../../../gen_py_tool.application.service.html#gen_py_tool.application.service.Service.execute">[docs]</a>
     <span class="nd">@override</span>
-    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Executes a tool using the subprocessor adapter.</span>
 
 <span class="sd">            :param params: Parameters for tool execution.</span>
 <span class="sd">            :type params: &lt;dict[str, Any]&gt;</span>
+<span class="sd">            :return: The result of the tool execution.</span>
+<span class="sd">            :rtype: &lt;dict[str, Any]&gt;</span>
 <span class="sd">            :exceptions:</span>
-<span class="sd">                | ValueError - Params dict must be provided.</span>
+<span class="sd">                | ATSValueError: Params dict must be provided.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">params</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;params dict must be provided.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">ATSValueError</span><span class="p">(</span><span class="s2">&quot;params dict must be provided.&quot;</span><span class="p">)</span>
 
         <span class="n">tool</span><span class="p">:</span> <span class="n">Tool</span> <span class="o">=</span> <span class="n">Tool</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">tool</span><span class="p">:</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subprocessor</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subprocessor</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;returncode&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;stderr&quot;</span><span class="p">))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;stdout&quot;</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="p">{}</span></div>
 
 
 <div class="viewcode-block" id="Service.is_initialized">

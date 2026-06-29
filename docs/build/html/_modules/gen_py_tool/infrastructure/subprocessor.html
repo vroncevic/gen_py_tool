@@ -64,6 +64,9 @@
 <span class="kn">from</span> <span class="nn">ats_utilities.generator.generator_bundle</span> <span class="kn">import</span> <span class="n">GeneratorBundle</span>
 <span class="kn">from</span> <span class="nn">ats_utilities.exceptions.ats_value_error</span> <span class="kn">import</span> <span class="n">ATSValueError</span>
 <span class="kn">from</span> <span class="nn">ats_utilities.factory_class</span> <span class="kn">import</span> <span class="n">format_instance_to_string</span>
+<span class="kn">from</span> <span class="nn">ats_utilities.checker.ichecker</span> <span class="kn">import</span> <span class="n">IChecker</span>
+<span class="kn">from</span> <span class="nn">ats_utilities.reporter.ireporter</span> <span class="kn">import</span> <span class="n">IReporter</span>
+<span class="kn">from</span> <span class="nn">ats_utilities.factory_context_bundle</span> <span class="kn">import</span> <span class="n">factory_context_bundle</span>
 <span class="kn">from</span> <span class="nn">gen_py_tool.domain.ports.isubprocessor</span> <span class="kn">import</span> <span class="n">ISubProcessor</span>
 
 <span class="n">__author__</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
@@ -88,6 +91,9 @@
 <span class="sd">                | _scheme - Path to the scheme json file.</span>
 <span class="sd">                | _templates - Path to the templates tgz file.</span>
 <span class="sd">                | _generator - Generator adapter used to generate code from templates.</span>
+<span class="sd">                | _checker - Injected parameters checker (default Checker).</span>
+<span class="sd">                | _reporter - Injected reporter for messaging (default Reporter).</span>
+<span class="sd">                | _verbose - Injected Enable/Disable verbose option (default False).</span>
 <span class="sd">            :methods:</span>
 <span class="sd">                | run - Executes a sub-process.</span>
 <span class="sd">                | is_initialized - Checks if the subprocessor is initialized.</span>
@@ -96,6 +102,10 @@
 
     <span class="n">_scheme</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;config/scheme.json&#39;</span>
     <span class="n">_templates</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;config/templates.tgz&#39;</span>
+
+    <span class="n">_checker</span><span class="p">:</span> <span class="n">IChecker</span>
+    <span class="n">_reporter</span><span class="p">:</span> <span class="n">IReporter</span>
+    <span class="n">_verbose</span><span class="p">:</span> <span class="nb">bool</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">generator</span><span class="p">:</span> <span class="n">IGenerator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
@@ -109,7 +119,8 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">generator</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ATSValueError</span><span class="p">(</span><span class="s1">&#39;generator must be provided.&#39;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_generator</span> <span class="o">=</span> <span class="n">generator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generator</span><span class="p">:</span> <span class="n">IGenerator</span> <span class="o">=</span> <span class="n">generator</span>
+        <span class="n">factory_context_bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generator</span><span class="o">.</span><span class="n">get_shared_context</span><span class="p">())</span>
 
 <div class="viewcode-block" id="SubProcessor.run">
 <a class="viewcode-back" href="../../../gen_py_tool.infrastructure.subprocessor.html#gen_py_tool.infrastructure.subprocessor.SubProcessor.run">[docs]</a>
@@ -140,19 +151,19 @@
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Generated files:&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">success</span><span class="p">([</span><span class="s2">&quot;    Generated files:&quot;</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">walk</span><span class="p">(</span><span class="n">output_dir</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
                     <span class="n">rel_dir</span> <span class="o">=</span> <span class="n">relpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">rel_dir</span> <span class="o">==</span> <span class="s1">&#39;.&#39;</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">success</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;      </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">rel_dir</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_reporter</span><span class="o">.</span><span class="n">success</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;      </span><span class="si">{</span><span class="n">rel_dir</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;returncode&quot;</span><span class="p">:</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">success</span> <span class="k">else</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;stdout&quot;</span><span class="p">:</span> <span class="s1">&#39;successfully generated.&#39;</span> <span class="k">if</span> <span class="n">success</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-            <span class="s2">&quot;stderr&quot;</span><span class="p">:</span> <span class="s1">&#39;failed to generate.&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">success</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+            <span class="s2">&quot;stdout&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;project </span><span class="si">{</span><span class="n">project_name</span><span class="si">}</span><span class="s1"> successfully generated.&#39;</span> <span class="k">if</span> <span class="n">success</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s2">&quot;stderr&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;failed to generate </span><span class="si">{</span><span class="n">project_name</span><span class="si">}</span><span class="s1"> project.&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">success</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
         <span class="p">}</span></div>
 
 

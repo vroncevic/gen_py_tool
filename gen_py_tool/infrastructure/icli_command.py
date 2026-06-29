@@ -20,6 +20,7 @@ Info
 '''
 
 from abc import abstractmethod
+from typing import Any
 from ats_utilities.option.ioption_command import IOptionCommand
 from ats_utilities.option.command_option import CommandOption
 from gen_py_tool.domain.ports.iservice import IService
@@ -86,7 +87,7 @@ class ICLICommand(IOptionCommand):
         pass
 
     @abstractmethod
-    def execute(self, params: dict, service: IService) -> None:
+    def execute(self, params: dict, service: IService) -> dict[str, Any]:
         '''
             Executes the tool logic for this command.
 
@@ -94,6 +95,8 @@ class ICLICommand(IOptionCommand):
             :type params: <dict>
             :param service: Tool service instance.
             :type service: <IService>
+            :return: The result of the subcommand execution.
+            :rtype: <dict[str, Any]>
             :exceptions: None.
         '''
         pass

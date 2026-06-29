@@ -329,7 +329,7 @@ class TestSubProcessor(unittest.TestCase):
         res: dict[str, Any] = subprocessor.run(params)
 
         self.assertEqual(res["returncode"], 0)
-        self.assertEqual(res["stdout"], "successfully generated.")
+        self.assertEqual(res["stdout"], "project test successfully generated.")
         self.assertEqual(res["stderr"], "")
         mock_generator.generate.assert_called_once()
 
@@ -347,7 +347,7 @@ class TestSubProcessor(unittest.TestCase):
 
         self.assertEqual(res["returncode"], 1)
         self.assertEqual(res["stdout"], "")
-        self.assertEqual(res["stderr"], "failed to generate.")
+        self.assertEqual(res["stderr"], "failed to generate test project.")
         mock_generator.generate.assert_called_once()
 
     def test_subprocessor_init_none(self) -> None:
@@ -408,8 +408,7 @@ class TestPingCommand(unittest.TestCase):
             {'name': 'test', 'type': 'tool_standalone', 'output': './'}
         )
 
-    @patch("builtins.print")
-    def test_execute(self, mock_print) -> None:
+    def test_execute(self) -> None:
         service: MagicMock = MagicMock(spec=IService)
 
         self.command.execute(
@@ -421,16 +420,9 @@ class TestPingCommand(unittest.TestCase):
             params={'name': 'test', 'type': 'tool_standalone', 'output': './'}
         )
 
-        mock_print.assert_has_calls([
-            call("🔥 Executing create command..."),
-            call("✅ Executed create command.")
-        ])
-
     @patch.object(CreateCommand, "to_tool_args")
-    @patch("builtins.print")
     def test_execute_calls_to_tool_args(
         self,
-        mock_print,
         mock_to_tool_args
     ) -> None:
         mock_to_tool_args.return_value = {

@@ -146,6 +146,37 @@ pip3<span class="w"> </span>install<span class="w"> </span>gen_py_tool
 </pre></div>
 </div>
 </section>
+<section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h1>
+<p>Install package</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3<span class="w"> </span>install<span class="w"> </span>gen_py_tool
+</pre></div>
+</div>
+<p>Prepare main entry point by downloading <a class="reference external" href="https://raw.githubusercontent.com/vroncevic/gen_py_tool/master/main.py">main.py</a> or create your own.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wget<span class="w"> </span>-O<span class="w"> </span>main.py<span class="w"> </span>https://raw.githubusercontent.com/vroncevic/gen_py_tool/master/main.py
+</pre></div>
+</div>
+<p>Running tool for creating new py tool</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>demo/mytool/
+python3<span class="w"> </span>main.py<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>mytool<span class="w"> </span>--type<span class="w"> </span>tool<span class="w"> </span>--output<span class="w"> </span>./demo/mytool/
+</pre></div>
+</div>
+<p>Running tool for creating new py tool with ats (ats-utilities) support</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>demo/mytoolwithats/
+python3<span class="w"> </span>main.py<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>mytoolwithats<span class="w"> </span>--type<span class="w"> </span>tool_ats<span class="w"> </span>--output<span class="w"> </span>./demo/mytoolwithats/
+</pre></div>
+</div>
+<p>Running tool for creating new py generator</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>demo/mygenerator/
+python3<span class="w"> </span>main.py<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>mygenerator<span class="w"> </span>--type<span class="w"> </span>gen<span class="w"> </span>--output<span class="w"> </span>./demo/mygenerator/
+</pre></div>
+</div>
+<p>Running tool for creating new py generator with ats (ats-utilities) support</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>demo/mygeneratorwithats/
+python3<span class="w"> </span>main.py<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>mygeneratorwithats<span class="w"> </span>--type<span class="w"> </span>gen_ats<span class="w"> </span>--output<span class="w"> </span>./demo/mygeneratorwithats/
+</pre></div>
+</div>
+</section>
 <section id="copyright-and-licence">
 <h1>Copyright and licence<a class="headerlink" href="#copyright-and-licence" title="Link to this heading">¶</a></h1>
 <p><a class="reference external" href="https://www.gnu.org/licenses/gpl-3.0"><img alt="License: GPL v3" src="https://img.shields.io/badge/License-GPLv3-blue.svg" /></a> <a class="reference external" href="https://opensource.org/licenses/Apache-2.0"><img alt="License: Apache 2.0" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a></p>
@@ -180,6 +211,7 @@ at your option, any later version of Python 3 you may have available.</p>
 <li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#dependencies">Dependencies</a></li>
 <li><a class="reference internal" href="#tool-structure">Tool structure</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
 <li><a class="reference internal" href="#copyright-and-licence">Copyright and licence</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>

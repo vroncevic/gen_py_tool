@@ -118,6 +118,49 @@ Code structure
 
      6 directories, 21 files
 
+Usage
+-----
+
+Install package
+
+.. code-block:: bash
+
+    pip3 install gen_py_tool
+
+Prepare main entry point by downloading `main.py <https://raw.githubusercontent.com/vroncevic/gen_py_tool/master/main.py>`_ or create your own.
+
+.. code-block:: bash
+
+    wget -O main.py https://raw.githubusercontent.com/vroncevic/gen_py_tool/master/main.py
+
+Running tool for creating new py tool
+
+.. code-block:: bash
+
+    mkdir -p demo/mytool/
+    python3 main.py create --name mytool --type tool --output ./demo/mytool/
+
+Running tool for creating new py tool with ats (ats-utilities) support
+
+.. code-block:: bash
+
+    mkdir -p demo/mytoolwithats/
+    python3 main.py create --name mytoolwithats --type tool_ats --output ./demo/mytoolwithats/
+
+Running tool for creating new py generator
+
+.. code-block:: bash
+
+    mkdir -p demo/mygenerator/
+    python3 main.py create --name mygenerator --type gen --output ./demo/mygenerator/
+
+Running tool for creating new py generator with ats (ats-utilities) support
+
+.. code-block:: bash
+
+    mkdir -p demo/mygeneratorwithats/
+    python3 main.py create --name mygeneratorwithats --type gen_ats --output ./demo/mygeneratorwithats/
+
 Copyright and licence
 ----------------------
 

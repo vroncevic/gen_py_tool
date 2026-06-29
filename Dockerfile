@@ -46,6 +46,7 @@ COPY README.md /
 COPY LICENSE /
 COPY MANIFEST.in /
 COPY pyproject.toml /
+COPY main.py /
 RUN mkdir /tests/
 COPY tests /tests/
 RUN python3 -m build --no-isolation --wheel
