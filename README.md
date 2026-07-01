@@ -156,13 +156,13 @@ Generator structure
 |------|-------|------|-------|
 | `gen_py_tool/__init__.py` | 8 | 0 | 100%|
 | `gen_py_tool/application/__init__.py` | 8 | 0 | 100%|
-| `gen_py_tool/application/service.py` | 33 | 0 | 100%|
+| `gen_py_tool/application/service.py` | 26 | 0 | 100%|
 | `gen_py_tool/domain/__init__.py` | 8 | 0 | 100%|
-| `gen_py_tool/domain/models.py` | 19 | 0 | 100%|
+| `gen_py_tool/domain/models.py` | 18 | 0 | 100%|
 | `gen_py_tool/domain/ports/__init__.py` | 8 | 0 | 100%|
 | `gen_py_tool/domain/ports/iservice.py` | 11 | 0 | 100%|
 | `gen_py_tool/domain/ports/isubprocessor.py` | 11 | 0 | 100%|
-| `gen_py_tool/engine.py` | 63 | 0 | 100%|
+| `gen_py_tool/engine.py` | 68 | 0 | 100%|
 | `gen_py_tool/gen_py_tool_bundle.py` | 41 | 0 | 100%|
 | `gen_py_tool/infrastructure/__init__.py` | 8 | 0 | 100%|
 | `gen_py_tool/infrastructure/cli.py` | 36 | 0 | 100%|
@@ -171,7 +171,7 @@ Generator structure
 | `gen_py_tool/infrastructure/icli.py` | 11 | 0 | 100%|
 | `gen_py_tool/infrastructure/icli_command.py` | 14 | 0 | 100%|
 | `gen_py_tool/infrastructure/subprocessor.py` | 54 | 0 | 100%|
-| **Total** | 409 | 0 | 100% |
+| **Total** | 406 | 0 | 100% |
 
 </details>
 

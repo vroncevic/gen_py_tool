@@ -21,14 +21,13 @@ Info
 
 import unittest
 from typing import Any
-from ats_utilities.exceptions.ats_value_error import ATSValueError
 from gen_py_tool.domain.models import Tool
 
 __author__: str = 'Vladimir Roncevic'
 __copyright__: str = '(C) 2026, https://vroncevic.github.io/gen_py_tool'
 __credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__: str = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
-__version__: str = '1.4.0'
+__version__: str = '1.4.1'
 __maintainer__: str = 'Vladimir Roncevic'
 __email__: str = 'elektron.ronca@gmail.com'
 __status__: str = 'Development'
@@ -68,5 +67,5 @@ class TestDomain(unittest.TestCase):
         '''
         params: dict[str, Any] = None
 
-        with self.assertRaises(ATSValueError):
+        with self.assertRaises(ValueError):
             Tool.from_params(params=params)
