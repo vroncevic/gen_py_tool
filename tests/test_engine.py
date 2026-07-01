@@ -34,7 +34,7 @@ __author__: str = 'Vladimir Roncevic'
 __copyright__: str = '(C) 2026, https://vroncevic.github.io/gen_py_tool'
 __credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__: str = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
-__version__: str = '1.4.0'
+__version__: str = '1.4.1'
 __maintainer__: str = 'Vladimir Roncevic'
 __email__: str = 'elektron.ronca@gmail.com'
 __status__: str = 'Development'
@@ -126,6 +126,36 @@ class TestEngine(unittest.TestCase):
                 engine: GenPyTool = GenPyTool()
                 engine.process()
                 mock_print.assert_any_call(f'\x1b[31m❌ gen_py_tool unexpected exception: unexpected error.\x1b[0m')
+
+    def test_process_unexpected_exception(self) -> None:
+        '''
+            Tests engine process catches unexpected exception.
+        '''
+        mock_cli: MagicMock = MagicMock(spec=ICLI)
+        mock_cli.is_initialized.return_value = True
+        mock_cli.run.side_effect = Exception("Unexpected error")
+
+        bundle: GenPyToolBundle = GenPyToolBundle(cli=mock_cli)
+        engine: GenPyTool = GenPyTool(bundle)
+        self.assertTrue(engine.is_initialized())
+
+        engine.process()
+        mock_cli.run.assert_called_once()
+
+    def test_process_expected_exception(self) -> None:
+        '''
+            Tests engine process catches expected exception.
+        '''
+        mock_cli: MagicMock = MagicMock(spec=ICLI)
+        mock_cli.is_initialized.return_value = True
+        mock_cli.run.side_effect = ATSValueError("Expected error")
+
+        bundle: GenPyToolBundle = GenPyToolBundle(cli=mock_cli)
+        engine: GenPyTool = GenPyTool(bundle)
+        self.assertTrue(engine.is_initialized())
+
+        engine.process()
+        mock_cli.run.assert_called_once()
 
     def test_process_success(self) -> None:
         '''

@@ -43,7 +43,7 @@ __author__: str = 'Vladimir Roncevic'
 __copyright__: str = '(C) 2026, https://vroncevic.github.io/gen_py_tool'
 __credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__: str = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
-__version__: str = '1.4.0'
+__version__: str = '1.4.1'
 __maintainer__: str = 'Vladimir Roncevic'
 __email__: str = 'elektron.ronca@gmail.com'
 __status__: str = 'Development'
@@ -60,7 +60,7 @@ class GenPyTool(Base):
                 | _cli - Adapter for command line user interface.
             :methods:
                 | __init__ - Initializes the GenPyTool engine with adapters and services.
-                | run - Starts the gen_py_tool.
+                | process - Processes the code generation for the new tool.
     '''
 
     _info_file: str = 'infrastructure/config/gen_py_tool.cfg'
@@ -119,7 +119,7 @@ class GenPyTool(Base):
             ])
             self._reporter.success(['✅ gen_py_tool: engine initialized successfully.'])
 
-        except (ATSValueError, ATSTypeError, ATSGeneratorError) as exc:
+        except (ATSValueError, ATSGeneratorError, ValueError) as exc:
             self._reporter.error([f'❌ gen_py_tool: {exc}'])
         except Exception as exc:
             self._reporter.error([f'❌ gen_py_tool unexpected exception: {exc}'])
@@ -127,22 +127,28 @@ class GenPyTool(Base):
     @override
     def process(self) -> None:
         '''
-            Runs the gen_py_tool.
+            Processes the code generation for the new tool.
 
             :exceptions: None.
         '''
         result: dict[str, Any] = {}
 
-        if self.is_initialized():
-            self._reporter.success([f"🔥 Starting code generation..."])
-            result = self._cli.run()
-            self._reporter.success([f"✅ Code generation finished!"])
+        try:
+            if self.is_initialized():
+                self._reporter.success([f"🔥 Starting code generation..."])
+                result = self._cli.run()
+                self._reporter.success([f"✅ Code generation finished!"])
 
-            if result.get("returncode") != 0:
-                self._reporter.error([f'❌ gen_py_tool: {result.get("stderr")}'])
-                self._reporter.error([f'❌ gen_py_tool: exiting with error.'])
+                if result.get("returncode") != 0:
+                    self._reporter.error([f'❌ gen_py_tool: {result.get("stderr")}'])
+                    self._reporter.error([f'❌ gen_py_tool: exiting with error.'])
+                else:
+                    self._reporter.success([f'✅ gen_py_tool: {result.get("stdout")}'])
+                    self._reporter.success([f'✅ gen_py_tool: exiting successfully.'])
             else:
-                self._reporter.success([f'✅ gen_py_tool: {result.get("stdout")}'])
-                self._reporter.success([f'✅ gen_py_tool: exiting successfully.'])
-        else:
-            self._reporter.error([f'❌ gen_py_tool: engine not initialized.'])
+                self._reporter.error([f'❌ gen_py_tool: engine not initialized.'])
+
+        except (ATSValueError, ATSGeneratorError, ValueError) as exc:
+            self._reporter.error([f'❌ gen_py_tool: {exc}'])
+        except Exception as exc:
+            self._reporter.error([f'❌ gen_py_tool unexpected exception: {exc}'])

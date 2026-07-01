@@ -20,8 +20,6 @@ Info
 '''
 
 from typing import Any, override
-from ats_utilities.exceptions.ats_value_error import ATSValueError
-from ats_utilities.factory_class import format_instance_to_string
 from gen_py_tool.domain.ports.iservice import IService
 from gen_py_tool.domain.ports.isubprocessor import ISubProcessor
 from gen_py_tool.domain.models import Tool
@@ -30,7 +28,7 @@ __author__: str = 'Vladimir Roncevic'
 __copyright__: str = '(C) 2026, https://vroncevic.github.io/gen_py_tool'
 __credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__: str = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
-__version__: str = '1.4.0'
+__version__: str = '1.4.1'
 __maintainer__: str = 'Vladimir Roncevic'
 __email__: str = 'elektron.ronca@gmail.com'
 __status__: str = 'Development'
@@ -56,10 +54,10 @@ class Service(IService):
             :param subprocessor: Subprocessor adapter.
             :type subprocessor: <ISubProcessor>
             :exceptions:
-                | ATSValueError: Subprocessor must be provided.
+                | ValueError: Subprocessor must be provided.
         '''
         if subprocessor is None:
-            raise ATSValueError("subprocessor must be provided.")
+            raise ValueError("subprocessor must be provided.")
 
         self._subprocessor: ISubProcessor = subprocessor
 
@@ -72,12 +70,8 @@ class Service(IService):
             :type params: <dict[str, Any]>
             :return: The result of the tool execution.
             :rtype: <dict[str, Any]>
-            :exceptions:
-                | ATSValueError: Params dict must be provided.
+            :exceptions: None.
         '''
-        if not params:
-            raise ATSValueError("params dict must be provided.")
-
         tool: Tool = Tool.from_params(params=params)
 
         if tool:
@@ -95,14 +89,3 @@ class Service(IService):
             :exceptions: None.
         '''
         return self._subprocessor is not None
-
-    @override
-    def __str__(self) -> str:
-        '''
-            Returns the Service as string representation.
-
-            :return: The Service as string representation.
-            :rtype: <str>
-            :exceptions: None.
-        '''
-        return format_instance_to_string(self)

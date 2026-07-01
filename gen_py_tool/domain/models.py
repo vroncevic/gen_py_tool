@@ -21,13 +21,12 @@ Info
 
 from dataclasses import dataclass
 from typing import Any
-from ats_utilities.exceptions.ats_value_error import ATSValueError
 
 __author__: str = 'Vladimir Roncevic'
 __copyright__: str = '(C) 2026, https://vroncevic.github.io/gen_py_tool'
 __credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__: str = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
-__version__: str = '1.4.0'
+__version__: str = '1.4.1'
 __maintainer__: str = 'Vladimir Roncevic'
 __email__: str = 'elektron.ronca@gmail.com'
 __status__: str = 'Development'
@@ -58,9 +57,9 @@ class Tool:
             :return: The generated Tool domain model instance with tool parameters.
             :rtype: <Tool>
             :exceptions:
-                | ATSValueError: Tool parameters must be provided.
+                | ValueError: Tool parameters must be provided.
         '''
         if not params:
-            raise ATSValueError("tool parameters dict must be provided.")
+            raise ValueError("tool parameters dict must be provided.")
 
         return cls(params=params)
