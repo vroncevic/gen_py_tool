@@ -1,3 +1,23 @@
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Reports
+*.report
+*.xml
+*report*.json
+*coverage*.json
+/*.json
+.coverage
+.coverage.*
+htmlcov/
+.coverage.gen_py_tool
+
+# Build & Demo
+build/
+dist/
+*.egg-info/
+demo/
+
+# Internal Architecture Audits
+.issues/

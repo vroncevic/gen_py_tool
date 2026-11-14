@@ -4,7 +4,7 @@
 Module
     engine.py
 Copyright
-    Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
+    Copyright (C) 2021 - 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     gen_py_tool is free software: you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by the
     Free Software Foundation, either version 3 of the License, or
@@ -16,139 +16,116 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Main engine orchestrator class for Task Code Generator CLI.
+    Engine orchestrating the initialization and execution of gen_py_tool.
 '''
 
-from typing import Any, override
-from os.path import dirname, realpath
-from ats_utilities.base.engine import Base
-from ats_utilities.base.component_bundle import BaseComponentBundle
-from ats_utilities.generator.igenerator import IGenerator
-from ats_utilities.option.ioption_parser import IOptionManager
-from ats_utilities.exceptions.ats_value_error import ATSValueError
-from ats_utilities.exceptions.ats_type_error import ATSTypeError
-from ats_utilities.exceptions.ats_generator_error import ATSGeneratorError
-from gen_py_tool.gen_py_tool_bundle import GenPyToolBundle
-from gen_py_tool.domain.ports.iservice import IService
-from gen_py_tool.application.service import Service
-from gen_py_tool.domain.ports.isubprocessor import ISubProcessor
-from gen_py_tool.infrastructure.subprocessor import SubProcessor
-from gen_py_tool.infrastructure.icli_command import ICLICommand
-from gen_py_tool.infrastructure.create_command import CreateCommand
-from gen_py_tool.infrastructure.cli_bundle import CLIBundle
-from gen_py_tool.infrastructure.icli import ICLI
-from gen_py_tool.infrastructure.cli import CLI
+from __future__ import annotations
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/gen_py_tool'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
-__version__: str = '1.4.1'
-__maintainer__: str = 'Vladimir Roncevic'
-__email__: str = 'elektron.ronca@gmail.com'
-__status__: str = 'Development'
+from collections.abc import Mapping
+from logging import ERROR, INFO
+from sys import stdout
+
+from ats_utilities.base.engine import Base
+from ats_utilities.exceptions import ATSTypeError, ATSValueError
+from ats_utilities.logger.ilogger import ILogger
+
+from gen_py_tool.infrastructure.cli.icli import ICLI
+from gen_py_tool.setup.bundle import GenPyToolBundle
+from gen_py_tool.setup.validator import GenPyToolBundleValidator
+
+__author__ = 'Vladimir Roncevic'
+__copyright__ = 'Copyright (C) 2021 - 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
+__version__ = '1.4.2'
+__maintainer__ = 'Vladimir Roncevic'
+__email__ = 'elektron.ronca@gmail.com'
+__status__ = 'Updated'
 
 
 class GenPyTool(Base):
     '''
-        Engine orchestrating the initialization and execution of GenPyTool.
+        Engine orchestrating the initialization and execution of gen_py_tool.
 
         It defines:
 
             :attributes:
-                | _info_file - Path to the info file.
-                | _cli - Adapter for command line user interface.
+                | _is_initialized - Flag indicating whether the engine is initialized.
+                | _logger - Logger for operational messages during initialization and execution.
+                | _cli - Inbound adapter for the command line interface.
             :methods:
-                | __init__ - Initializes the GenPyTool engine with adapters and services.
-                | process - Processes the code generation for the new tool.
+                | __init__ - Initializes the GenPyTool engine with validated bundle.
+                | process - Processes the gen_py_tool commands.
     '''
 
-    _info_file: str = 'infrastructure/config/gen_py_tool.cfg'
+    _is_initialized: bool
+    _logger: ILogger
+    _cli: ICLI
 
-    def __init__(self, component_bundle: GenPyToolBundle | None = None) -> None:
+    def __init__(self, bundle: GenPyToolBundle) -> None:
         '''
-            Initializes the GenPyTool engine with adapters and services.
+            Initializes the GenPyTool engine with validated bundle.
 
-            :param component_bundle: GenPyTool bundle containing adapters and services | None.
-            :type component_bundle: <GenPyToolBundle | None>
+            :param bundle: GenPyTool bundle containing adapters and services.
             :exceptions: None.
         '''
-        current_dir: str = dirname(realpath(__file__))
-        super().__init__(BaseComponentBundle(info_file=f'{current_dir}/{self._info_file}', use_generator=True))
+        self._is_initialized = False
 
         try:
-            if not self._is_initialized:
-                raise ATSValueError(f'failed to initialize base engine with info file {current_dir}/{self._info_file}')
+            GenPyToolBundleValidator.validate(bundle)
+            super().__init__(bundle.base)
 
-            # Mark as not initialized (waiting for other components to be initialized)
             self._is_initialized = False
+            self._cli = bundle.cli
+            self._is_initialized = all(
+                component.is_initialized() for component in (
+                    bundle.base.option_manager,
+                    bundle.service,
+                    bundle.subprocessor,
+                    self._cli
+                ) if component
+            )
 
-            # Dependency injection: Dependency Inversion Principle
-            # Use provided component bundle or use default adapters
-            bundle: GenPyToolBundle = component_bundle or GenPyToolBundle()
+            self._logger = self.get_context().logger
+            self._logger.write_log(INFO, '✅ gen_py_tool: engine initialized successfully!')
 
-            # Initialization of primary adapter (Generator)
-            # Generator for generating project structure
-            # Force default implementation of generator if not provided by bundle
-            generator: IGenerator = bundle.generator or self._generator
+        except (ATSValueError, ATSTypeError) as exc:
+            stdout.write(f'❌ gen_py_tool: {exc}!\n')
 
-            # Initialization of option manager adapter (Adapter for options parsing)
-            parser: IOptionManager = bundle.parser or self._options_parser
-
-            # Initialization of secondary adapter (Service)
-            # Sub processor for execution of other tools/commands
-            # Force default implementation of sub processor if not provided by bundle
-            subprocessor: ISubProcessor = bundle.subprocessor or SubProcessor(generator=generator)
-
-            # Injecting adapter into the application service (Orchestration)
-            # Force default implementation of service if not provided by bundle
-            service: IService = bundle.service or Service(subprocessor=subprocessor)
-
-            # Setting up CLI command strategies
-            commands: list[ICLICommand] = [CreateCommand()]
-
-            # Setting up primary adapter (CLI interface)
-            cli_bundle: CLIBundle = CLIBundle(service=service, parser=parser, commands=commands)
-            self._cli: ICLI = bundle.cli or CLI(cli_bundle)
-
-            # Mark as initialized (all components initialized)
-            self._is_initialized = all([
-                component.is_initialized() for component in [
-                    generator, parser, subprocessor, service, self._cli
-                ] if component
-            ])
-            self._reporter.success(['✅ gen_py_tool: engine initialized successfully.'])
-
-        except (ATSValueError, ATSGeneratorError, ValueError) as exc:
-            self._reporter.error([f'❌ gen_py_tool: {exc}'])
         except Exception as exc:
-            self._reporter.error([f'❌ gen_py_tool unexpected exception: {exc}'])
+            stdout.write(f'❌ gen_py_tool unexpected exception: {exc}!\n')
 
-    @override
-    def process(self) -> None:
+    def process(self, verbose: bool = False) -> bool:
         '''
-            Processes the code generation for the new tool.
+            Processes the gen_py_tool commands.
 
+            :param verbose: Enable verbose output.
+            :return: True if successful, False otherwise.
             :exceptions: None.
         '''
-        result: dict[str, Any] = {}
+        _ = verbose
 
         try:
             if self.is_initialized():
-                self._reporter.success([f"🔥 Starting code generation..."])
-                result = self._cli.run()
-                self._reporter.success([f"✅ Code generation finished!"])
+                self._logger.write_log(INFO, '🔥 Starting execution command...')
+                result: Mapping[str, object] = self._cli.run()
+                self._logger.write_log(INFO, '✅ Execution finished!')
 
-                if result.get("returncode") != 0:
-                    self._reporter.error([f'❌ gen_py_tool: {result.get("stderr")}'])
-                    self._reporter.error([f'❌ gen_py_tool: exiting with error.'])
-                else:
-                    self._reporter.success([f'✅ gen_py_tool: {result.get("stdout")}'])
-                    self._reporter.success([f'✅ gen_py_tool: exiting successfully.'])
-            else:
-                self._reporter.error([f'❌ gen_py_tool: engine not initialized.'])
+                if result.get('returncode') != 0:
+                    self._logger.write_log(ERROR, f'❌ gen_py_tool: {result.get("stderr") or "failed!"}')
+                    return False
 
-        except (ATSValueError, ATSGeneratorError, ValueError) as exc:
-            self._reporter.error([f'❌ gen_py_tool: {exc}'])
+                self._logger.write_log(INFO, '✅ gen_py_tool: done!')
+                self._logger.write_log(INFO, '✅ gen_py_tool: exiting successfully!')
+                return True
+
+            stdout.write('❌ gen_py_tool: engine not initialized!\n')
+            return False
+
+        except (ATSValueError, ATSTypeError) as exc:
+            stdout.write(f'❌ gen_py_tool: {exc}!\n')
+            return False
+
         except Exception as exc:
-            self._reporter.error([f'❌ gen_py_tool unexpected exception: {exc}'])
+            stdout.write(f'❌ gen_py_tool unexpected exception: {exc}!\n')
+            return False

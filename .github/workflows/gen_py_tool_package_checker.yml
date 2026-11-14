@@ -1,21 +1,24 @@
 name: gen_py_tool_package_checker
 on:
   push:
-    branches: [ master ]
+    branches: [ master, main ]
     paths:
       - 'gen_py_tool/**'
       - 'setup.py'
   pull_request:
-    branches: [ master ]
+    branches: [ master, main ]
     paths:
       - 'gen_py_tool/**'
       - 'setup.py'
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.12', '3.14']
+        python-version: ['3.12', '3.13', '3.14']
     steps:
     - uses: actions/checkout@v4
     - name: set up python ${{ matrix.python-version }}
