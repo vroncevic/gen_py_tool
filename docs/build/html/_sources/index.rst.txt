@@ -1,21 +1,30 @@
-Generate Python Tool
----------------------
+Generate Python tool project setup
+----------------------------------
 
-**gen_py_tool** is package for generation of Python tool.
+**gen_py_tool** is toolset for generation of Clean Architecture Python tool project setup.
 
-Developed in `python <https://www.python.org/>`_ code: **100%**.
+Developed in `python <https://www.python.org/>`_ code.
 
-The README is used to introduce the modules and provide instructions on
-how to install the modules, any machine dependencies it may have and any
-other information that should be provided before the modules are installed.
+The README is used to introduce the tool and provide instructions on
+how to install the tool, any machine dependencies it may have and any
+other information that should be provided before the tool is installed.
 
-|gen_py_tool python checker| |gen_py_tool python package| |github issues| |documentation status| |github contributors|
+|gen_py_tool python checker| |gen_py_tool python package| |gen_py_tool interface checker| |gen_py_tool isp checker| |gen_py_tool srp checker| |github issues| |documentation status| |github contributors|
 
 .. |gen_py_tool python checker| image:: https://github.com/vroncevic/gen_py_tool/actions/workflows/gen_py_tool_python_checker.yml/badge.svg
    :target: https://github.com/vroncevic/gen_py_tool/actions/workflows/gen_py_tool_python_checker.yml
 
 .. |gen_py_tool python package| image:: https://github.com/vroncevic/gen_py_tool/actions/workflows/gen_py_tool_package_checker.yml/badge.svg
-   :target: https://github.com/vroncevic/gen_py_tool/actions/workflows/gen_py_tool_package.yml
+   :target: https://github.com/vroncevic/gen_py_tool/actions/workflows/gen_py_tool_package_checker.yml
+
+.. |gen_py_tool interface checker| image:: https://github.com/vroncevic/gen_py_tool/actions/workflows/gen_py_tool_interface_checker.yml/badge.svg
+   :target: https://github.com/vroncevic/gen_py_tool/actions/workflows/gen_py_tool_interface_checker.yml
+
+.. |gen_py_tool isp checker| image:: https://github.com/vroncevic/gen_py_tool/actions/workflows/gen_py_tool_isp_checker.yml/badge.svg
+   :target: https://github.com/vroncevic/gen_py_tool/actions/workflows/gen_py_tool_isp_checker.yml
+
+.. |gen_py_tool srp checker| image:: https://github.com/vroncevic/gen_py_tool/actions/workflows/gen_py_tool_srp_checker.yml/badge.svg
+   :target: https://github.com/vroncevic/gen_py_tool/actions/workflows/gen_py_tool_srp_checker.yml
 
 .. |github issues| image:: https://img.shields.io/github/issues/vroncevic/gen_py_tool.svg
    :target: https://github.com/vroncevic/gen_py_tool/issues
@@ -23,9 +32,8 @@ other information that should be provided before the modules are installed.
 .. |github contributors| image:: https://img.shields.io/github/contributors/vroncevic/gen_py_tool.svg
    :target: https://github.com/vroncevic/gen_py_tool/graphs/contributors
 
-.. |documentation status| image:: https://readthedocs.org/projects/gen-py-tool/badge/?version=latest
-    :target: https://gen-py-tool.readthedocs.io/en/latest/?badge=latest
-    :alt: Documentation Status
+.. |documentation status| image:: https://readthedocs.org/projects/gen_py_tool/badge/?version=latest
+   :target: https://gen_py_tool.readthedocs.io/en/latest/?badge=latest
 
 .. toctree::
    :maxdepth: 4
@@ -34,8 +42,8 @@ other information that should be provided before the modules are installed.
    self
    modules
 
-Installation
--------------
+🚀 Installation
+---------------
 
 |gen_py_tool python3 build|
 
@@ -54,7 +62,7 @@ To install **gen_py_tool** type the following
     cd gen_py_tool-x.y.z/
     # python3
     wget https://bootstrap.pypa.io/get-pip.py
-    python3 get-pip.py 
+    python3 get-pip.py
     python3 -m pip install --upgrade setuptools
     python3 -m pip install --upgrade pip
     python3 -m pip install --upgrade build
@@ -62,64 +70,107 @@ To install **gen_py_tool** type the following
     python3 -m build --no-isolation --wheel
     pip3 install ./dist/gen_py_tool-*-py3-none-any.whl
     rm -f get-pip.py
-    chmod 755 /usr/local/lib/python3.10/dist-packages/usr/local/bin/gen_py_tool_run.py
-    ln -s /usr/local/lib/python3.10/dist-packages/usr/local/bin/gen_py_tool_run.py /usr/local/bin/gen_py_tool_run.py
 
 You can use Docker to create image/container, or You can use pip to install
 
 .. code-block:: bash
 
-    # pyton3
+    # python3
     pip3 install gen_py_tool
 
-Dependencies
--------------
+📦 Dependencies
+---------------
 
 **gen_py_tool** requires next modules and libraries
 
 * `ats-utilities - Python App/Tool/Script Utilities <https://pypi.org/project/ats-utilities/>`_
 
+📁 Tool structure
+-----------------
+
+**gen_py_tool** is based on OOP and Clean Architecture.
+
 Tool structure
----------------
-
-**gen_py_tool** is based on OOP
-
-Code structure
 
 .. code-block:: bash
 
     gen_py_tool/
-         ├── application/
+         ├── core/
          │   ├── __init__.py
-         │   └── service.py
-         ├── domain/
-         │   ├── __init__.py
-         │   ├── models.py
-         │   └── ports/
+         │   ├── model/
+         │   │   ├── __init__.py
+         │   │   └── project_setup.py
+         │   └── service/
+         │       ├── engine.py
          │       ├── __init__.py
          │       ├── iservice.py
          │       └── isubprocessor.py
          ├── engine.py
-         ├── gen_py_tool_bundle.py
          ├── infrastructure/
-         │   ├── cli.py
-         │   ├── cli_bundle.py
+         │   ├── cli/
+         │   │   ├── engine.py
+         │   │   ├── icli.py
+         │   │   ├── __init__.py
+         │   │   └── setup/
+         │   │       ├── bundle.py
+         │   │       ├── dep_validator.py
+         │   │       ├── dependencies.py
+         │   │       ├── factory.py
+         │   │       ├── __init__.py
+         │   │       ├── keys.py
+         │   │       ├── opt_validator.py
+         │   │       ├── options.py
+         │   │       ├── registry.py
+         │   │       └── validator.py
+         │   ├── command/
+         │   │   ├── bundle.py
+         │   │   ├── definition.py
+         │   │   ├── executor.py
+         │   │   ├── idefinition.py
+         │   │   ├── iexecutor.py
+         │   │   └── __init__.py
          │   ├── config/
          │   │   ├── gen_py_tool.cfg
          │   │   ├── gen_py_tool.logo
          │   │   ├── scheme.json
          │   │   └── templates.tgz
-         │   ├── create_command.py
-         │   ├── icli.py
-         │   ├── icli_command.py
          │   ├── __init__.py
          │   └── subprocessor.py
-         └── __init__.py
+         ├── __init__.py
+         ├── py.typed
+         └── setup/
+             ├── bundle.py
+             ├── dep_validator.py
+             ├── dependencies.py
+             ├── factory.py
+             ├── __init__.py
+             ├── keys.py
+             ├── opt_validator.py
+             ├── options.py
+             ├── registry.py
+             └── validator.py
 
-     6 directories, 21 files
+     10 directories, 45 files
 
-Usage
------
+✨ Features
+-----------
+
+* Automatically scaffolds minimal Clean Architecture Python CLI tool projects ready for customization.
+* Generated starter tool includes a complete Clean Architecture pipeline (CLI -> Command -> Service -> SubProcessor writing to stdout), 1-to-1 unit tests, Sphinx docs, and GitHub Actions workflows.
+* Strictly adheres to SOLID principles, structural Protocol interfaces, and inward dependency inversion.
+* Robust validation of project bundles, dependencies, and options via ats-utilities.
+* High code quality with full static typing and 100% unit test coverage.
+
+📊 Code coverage
+----------------
+
+.. csv-table:: Code coverage
+   :file: coverage_table.csv
+   :widths: 60, 10, 10, 20
+   :header-rows: 1
+
+🛠 Usage
+--------
 
 Install package
 
@@ -127,72 +178,38 @@ Install package
 
     pip3 install gen_py_tool
 
-Prepare main entry point by downloading `main.py <https://raw.githubusercontent.com/vroncevic/gen_py_tool/master/main.py>`_ or create your own.
+Prepare main entry point by downloading `main.py` or create your own.
 
 .. code-block:: bash
 
-    wget -O main.py https://raw.githubusercontent.com/vroncevic/gen_py_tool/master/main.py
+    wget -O main.py https://raw.githubusercontent.com/vroncevic/gen_py_tool/main/main.py
 
-Running tool for creating new py tool
-
-.. code-block:: bash
-
-    mkdir -p demo/mytool/
-    python3 main.py create --name mytool --type tool --output ./demo/mytool/
-
-Running tool for creating new py tool with ats (ats-utilities) support
+Running tool for creating new Python tool project
 
 .. code-block:: bash
 
-    mkdir -p demo/mytoolwithats/
-    python3 main.py create --name mytoolwithats --type tool_ats --output ./demo/mytoolwithats/
+    python3 main.py create --name my_tool --output ./demo/
 
-Running tool for creating new py generator
+📚 Docs
+-------
 
-.. code-block:: bash
+More documentation and info at
 
-    mkdir -p demo/mygenerator/
-    python3 main.py create --name mygenerator --type gen --output ./demo/mygenerator/
+* `gen_py_tool.readthedocs.io <https://gen_py_tool.readthedocs.io>`_
+* `www.python.org <https://www.python.org/>`_
 
-Running tool for creating new py generator with ats (ats-utilities) support
+👥 Contributing
+---------------
 
-.. code-block:: bash
+`Contributing to gen_py_tool <https://github.com/vroncevic/gen_py_tool/blob/dev/CONTRIBUTING.md>`_
 
-    mkdir -p demo/mygeneratorwithats/
-    python3 main.py create --name mygeneratorwithats --type gen_ats --output ./demo/mygeneratorwithats/
+📄 Copyright and licence
+-------------------------
 
-Copyright and licence
-----------------------
-
-|License: GPL v3| |License: Apache 2.0|
-
-.. |License: GPL v3| image:: https://img.shields.io/badge/License-GPLv3-blue.svg
-   :target: https://www.gnu.org/licenses/gpl-3.0
-
-.. |License: Apache 2.0| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
-   :target: https://opensource.org/licenses/Apache-2.0
-
-Copyright (C) 2017 - 2026 by `vroncevic.github.io/gen_py_tool <https://vroncevic.github.io/gen_py_tool>`_
+Copyright (C) 2021 - 2026 by `vroncevic.github.io/gen_py_tool <https://vroncevic.github.io/gen_py_tool>`_
 
 **gen_py_tool** is free software; you can redistribute it and/or modify
 it under the same terms as Python itself, either Python version 3.x or,
 at your option, any later version of Python 3 you may have available.
 
 Lets help and support PSF.
-
-|Python Software Foundation|
-
-.. |Python Software Foundation| image:: https://raw.githubusercontent.com/vroncevic/gen_py_tool/dev/docs/psf-logo-alpha.png
-   :target: https://www.python.org/psf/
-
-|Donate|
-
-.. |Donate| image:: https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif
-   :target: https://psfmember.org/index.php?q=civicrm/contribute/transact&reset=1&id=2
-
-Indices and tables
-------------------
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

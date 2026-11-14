@@ -7,9 +7,9 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   gen_py_tool.application
-   gen_py_tool.domain
+   gen_py_tool.core
    gen_py_tool.infrastructure
+   gen_py_tool.setup
 
 Submodules
 ----------
@@ -18,7 +18,6 @@ Submodules
    :maxdepth: 4
 
    gen_py_tool.engine
-   gen_py_tool.gen_py_tool_bundle
 
 Module contents
 ---------------

@@ -4,7 +4,7 @@
 Module
     main.py
 Copyright
-    Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
+    Copyright (C) 2021 - 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     gen_py_tool is free software: you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by the
     Free Software Foundation, either version 3 of the License, or
@@ -16,30 +16,36 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Main entry point for Task Code Generator CLI.
+    Main entry point for gen_py_tool CLI.
 '''
 
+from __future__ import annotations
+
+from sys import exit as sys_exit
+
 from gen_py_tool.engine import GenPyTool
+from gen_py_tool.setup.factory import GenPyToolBundleFactory
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/gen_py_tool'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
-__version__: str = '1.4.1'
-__maintainer__: str = 'Vladimir Roncevic'
-__email__: str = 'elektron.ronca@gmail.com'
-__status__: str = 'Development'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = 'Copyright (C) 2021 - 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/gen_py_tool/blob/dev/LICENSE'
+__version__ = '1.4.2'
+__maintainer__ = 'Vladimir Roncevic'
+__email__ = 'elektron.ronca@gmail.com'
+__status__ = 'Updated'
 
 
-def main() -> None:
+def main() -> bool:
     '''
-        Bootstraps and runs the CLI application with required adapters.
+        Bootstraps and runs gen_py_tool with required adapters and configuration.
 
-        :exceptions: None
+        :return: True if successful, False otherwise.
+        :exceptions: None.
     '''
-    gen_py_tool = GenPyTool()
-    gen_py_tool.process()
+    tool: GenPyTool = GenPyTool(GenPyToolBundleFactory.create_bundle())
+    return tool.process()
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    sys_exit(0 if main() else 1)

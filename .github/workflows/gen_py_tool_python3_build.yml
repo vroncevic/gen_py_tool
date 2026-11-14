@@ -1,19 +1,22 @@
 name: gen_py_tool_python3_build
 on:
   push:
-    branches: [ master ]
+    branches: [ master, main ]
     paths:
       - 'gen_py_tool/**'
       - 'MANIFEST.in'
       - 'pyproject.toml'
       - 'setup.py'
   pull_request:
-    branches: [ master ]
+    branches: [ master, main ]
     paths:
       - 'gen_py_tool/**'
       - 'MANIFEST.in'
       - 'pyproject.toml'
       - 'setup.py'
+permissions:
+  contents: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
